@@ -2,7 +2,7 @@
 
 A student-run, voluntary group at the University of Amsterdam where we learn to develop [JASP](https://jasp-stats.org) together. No grades, no tests, and no coding experience required.
 
-**👉 Course website: https://YOUR-USERNAME.github.io/jasp-student-developers/**
+**👉 Course website: https://ziyuanl06.github.io/jasp-student-developers/**
 
 ## This year's mission
 
