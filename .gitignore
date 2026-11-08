@@ -1,0 +1,13 @@
+# Never publish the answers to the mystery dataset
+ANSWER_KEY.md
+calm_minds_CLEAN_reference.csv
+make_mystery.py
+answer_key*.tsv
+
+# R / RStudio / Quarto leftovers
+.Rhistory
+.RData
+.Rproj.user/
+*_files/
+.quarto/
+.DS_Store
