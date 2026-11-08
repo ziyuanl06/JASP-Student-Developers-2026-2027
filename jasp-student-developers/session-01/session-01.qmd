@@ -1,0 +1,317 @@
+---
+title: "Session 1: Your First JASP Module"
+format:
+  html:
+    title-block-style: none
+    toc: false
+    code-copy: true
+    embed-resources: true
+    theme: cosmo
+    css: style.css
+    include-before-body: ribbon.html
+    include-after-body: extras.html
+    grid:
+      body-width: 900px
+---
+
+```{=html}
+<!--
+  ✏️ HOW TO EDIT (for Leo)
+  ⚠️ Edit this file in "Source" mode, NOT "Visual" mode.
+     Visual mode rewrites the ```{=html} blocks below into plain code and breaks the page.
+
+  - Normal text: just type. A blank line starts a new paragraph.
+  - ## Heading {#id}  = a new section. Section links live in ribbon.html (href="#id").
+  - **bold**, *italic*, `code`.
+  - - [ ] item   = a checkbox students can tick.
+  - [⏱ 10 min]{.timing} [0:10–0:20]{.timing .clock} at the end of a ## heading = the time badges (shown on the right).
+    Times count from the start of the session (0:00), because the two sessions start at different times.
+  - Boxes start with ::: {.something} and end with :::
+      .callout-note            -> grey note box
+      .callout-note .option    -> an exercise section (collapse="true" = closed, "false" = open)
+      .callout-warning         -> orange TODO box (for you only; delete when done)
+  - ```{=html} ... ``` blocks hold the designed components (reveal card, cards, mini-lab).
+    You can change the TEXT inside them; leave the <tags> and class="..." as they are.
+  - Colours and styling live in style.css.
+  - Click "Render" to rebuild session-01.html.
+-->
+```
+
+## Before we begin [⏱ 5 min]{.timing} [0:00–0:05]{.timing .clock} {#before}
+
+A quick check before we start. **Don't worry if something isn't ready yet:** we'll sort it out together in the first minutes.
+
+::: prep
+- [ ] 💻 Laptop
+- [ ] 📶 Connected to the Wi-Fi
+- [ ] 🧮 JASP (nightly build) installed · [download ↗](https://static.jasp-stats.org/Nightlies/){target="_blank"}
+- [ ] 📊 R and RStudio installed · [how to ↗](https://rstudio-education.github.io/hopr/starting.html){target="_blank"}
+- [ ] 🐙 A GitHub account (know your username and password) · [sign up ↗](https://github.com/signup){target="_blank"}
+- [ ] 💬 Joined our Mattermost channel · invite link in your email
+:::
+
+```{=html}
+<div class="mini-note"><strong>Something missing?</strong> Raise your hand. The first part of today involves some waiting while things install, so there's time to catch up.</div>
+```
+
+## Overview [⏱ 5 min]{.timing} [0:05–0:10]{.timing .clock} {#welcome}
+
+The big picture: **what** we're building this term, **how** we'll get there, **what's in it** for you, **when** we meet, and what we'll do **today**.
+
+### 🕵️ The mission
+
+```{=html}
+<div class="mission-intro"><span class="kicker">THIS TERM · SECRET MISSION</span><h3>Can you make JASP do something new?</h3><p>No coding experience required. Just bring your curiosity.</p><details class="reveal-card" id="intro-reveal"><summary><span>🎁 Reveal the mission</span><span class="reveal-hint">Click to unlock ↗</span></summary><div class="reveal-content"><span class="kicker">WELCOME TO THE TEAM</span><h3>You're not just using JASP. You're building it.</h3><p>Welcome to the <strong>JASP Student Developers Group</strong>! This term, we'll build a <strong>data-wrangling module</strong> together: step by step, session by session, until it's a tool real researchers can use.</p><h4>Meet our mystery dataset 🕵️</h4><p>It looks normal at first glance. What could be hiding in it?</p><div class="dataview"><table data-quarto-disable-processing="true"><thead><tr><th></th><th>ID</th><th>wave</th><th>Age</th><th>gender</th><th>Condition</th><th>anxiety_1</th><th>Anx3</th><th>anx_4R</th><th>ANXIETY 5</th><th>anx.6</th><th>…</th></tr></thead><tbody><tr><td>1</td><td>P001</td><td>pre</td><td>20</td><td>female</td><td>control</td><td>2</td><td>4</td><td>4</td><td>4</td><td>3</td><td>…</td></tr><tr><td>2</td><td>P001</td><td>follow-up</td><td>20</td><td>F</td><td>Control</td><td>2</td><td>2</td><td>3</td><td>4</td><td>3</td><td>…</td></tr><tr><td>3</td><td>P001</td><td>post</td><td>20</td><td>F</td><td>control</td><td>3</td><td>3</td><td>4</td><td>3</td><td class="missing-value"></td><td>…</td></tr><tr><td>4</td><td>P002</td><td>pre</td><td>31</td><td>Male</td><td>Treatment </td><td>3</td><td>3</td><td>3</td><td>4</td><td>3</td><td>…</td></tr><tr><td>5</td><td>P002</td><td>post</td><td>31</td><td>Male</td><td>Treatment </td><td>2</td><td>2</td><td>4</td><td>3</td><td class="missing-value"></td><td>…</td></tr></tbody></table></div><p class="micro-note">First 5 of 351 rows · 15 columns</p><div class="data-download"><a href="../data/calm_minds_mystery.csv" download>⬇️ Download the dataset (.csv)</a><a href="../data/codebook.html" target="_blank">📖 Codebook</a></div><p>Every tool we build will help us investigate the data. How many problems will we discover?</p></div></details></div>
+```
+
+### 🤔 But, how?
+
+```{=html}
+<p class="flip-hint">👆 Click a card to see what we'll build in each part</p>
+<div class="journey-grid">
+<button type="button" class="flip-card" aria-pressed="false"><div class="flip-inner">
+<div class="journey-step flip-front"><div class="journey-emoji">🔎</div><span class="step-count">01 · BEFORE CHRISTMAS</span><h4>Diagnose</h4><p>Find missing values, inspect distributions, spot outliers.</p><div aria-hidden="true" class="mini-bars"><i style="height:32%"></i><i style="height:70%"></i><i style="height:43%"></i><i style="height:95%"></i><i style="height:56%"></i><i style="height:80%"></i></div><span class="flip-cue">What will we build? ↻</span></div>
+<div class="journey-step flip-back"><span class="step-count">01 · DIAGNOSE · OUR TOOLS</span><ul class="tool-list"><li><b>📋 Missing-values report</b><small>Session 2</small></li><li><b>📊 Distribution check</b><small>Practical 2</small></li><li><b>🚩 Outlier check</b><small>Session 3</small></li></ul><p>Each tool uncovers some of the dataset's secrets.</p><span class="flip-cue">↻ Back</span></div>
+</div></button>
+<div class="journey-connector">→</div>
+<button type="button" class="flip-card" aria-pressed="false"><div class="flip-inner">
+<div class="journey-step green flip-front"><div class="journey-emoji">🛠️</div><span class="step-count">02 · AFTER CHRISTMAS</span><h4>Fix</h4><p>Transform messy data, then export a clean dataset.</p><div aria-hidden="true" class="mini-clean"><span>?</span><span>✓</span><span>✓</span><span>✓</span><span>✓</span></div><span class="flip-cue">What will we build? ↻</span></div>
+<div class="journey-step green flip-back"><span class="step-count">02 · FIX · OUR TOOLS</span><ul class="tool-list"><li><b>🔁 Recode &amp; clean values</b><small>January</small></li><li><b>🧮 Compute new variables</b><small>January</small></li><li><b>💾 Export a clean dataset</b><small>February</small></li></ul><p>Which fixes exactly? <strong>You decide</strong>, based on what we find.</p><span class="flip-cue">↻ Back</span></div>
+</div></button>
+</div>
+```
+
+### 🎒 Loot & side quests
+
+```{=html}
+<div class="loot" id="loot"><div class="loot-top"><p>What do you get out of this? Click a badge to unlock it.</p><span class="loot-count" aria-live="polite"><b id="loot-n">0</b> / 6 unlocked</span></div><div class="badge-grid"><button type="button" class="loot-badge" aria-pressed="false"><span class="badge-icon">🧑‍💻</span><span class="badge-lock">🔒</span><strong>R Programmer</strong><small>Write R functions that real software runs.</small></button><button type="button" class="loot-badge" aria-pressed="false"><span class="badge-icon">🎛️</span><span class="badge-lock">🔒</span><strong>Interface Builder</strong><small>Design analysis windows people click on.</small></button><button type="button" class="loot-badge" aria-pressed="false"><span class="badge-icon">🐙</span><span class="badge-lock">🔒</span><strong>Git Wizard</strong><small>Fork, clone, pull request: the open-source workflow.</small></button><button type="button" class="loot-badge" aria-pressed="false"><span class="badge-icon">🕵️</span><span class="badge-lock">🔒</span><strong>Data Detective</strong><small>Spot and fix messy data. Your thesis will thank you.</small></button><button type="button" class="loot-badge" aria-pressed="false"><span class="badge-icon">🚀</span><span class="badge-lock">🔒</span><strong>JASP Contributor</strong><small>Your code could end up in JASP, used by researchers worldwide.</small></button><button type="button" class="loot-badge" aria-pressed="false"><span class="badge-icon">🤝</span><span class="badge-lock">🔒</span><strong>Team Player</strong><small>Pair work, code review, and meeting the JASP team.</small></button></div>
+<div class="side-quests"><span class="kicker">⚔️ OPTIONAL SIDE QUESTS</span><p>Finished the main quest early, or looking for something different? The JASP team has more for you: writing a blog post about a new module, building an example library from real exam questions, or fixing a beginner-friendly issue on GitHub. Just ask Leo.</p></div></div>
+```
+
+### 📅 How we meet
+
+```{=html}
+<div class="worry"><div class="worry-q">😰 “I can’t code yet. How am I supposed to build a JASP module?”</div><div class="worry-a">That’s exactly what our meetings are for: <b>we show you, then you try</b>, one small step at a time.</div></div>
+<div class="session-grid"><div><span>💡 THURSDAYS · 11:30–13:00</span><strong>Sessions</strong><em class="tagline">We show you how.</em><div class="tbar"><div class="seg blue" style="flex:60">💬 Explain<small>60 min</small></div><div class="seg green" style="flex:30">🧩 Practice<small>30 min</small></div></div></div><div><span>🧩 ALTERNATE THURSDAYS · 15:00–16:30</span><strong>Practicals</strong><em class="tagline">You try it, with backup.</em><div class="tbar"><div class="seg sky" style="flex:30">🔁 Recap<small>30 min</small></div><div class="seg teal" style="flex:30">❓ Q&amp;A<small>30 min</small></div><div class="seg green" style="flex:30">🧩 Practice<small>30 min</small></div></div></div></div>
+<div class="faq-row"><details class="faq"><summary>🤔 What if I get stuck?</summary><p>Ask! Every practical has Q&amp;A time, and our Mattermost channel is open all week.</p></details><details class="faq"><summary>📅 I can’t come every week</summary><p>No problem. Pick your plan in the calendar below 👇</p></details><details class="faq"><summary>📝 Is this graded?</summary><p>No grades. No tests. No stupid questions.</p></details></div>
+<div class="cal" id="my-cal" data-mode="both"><div class="cal-top"><strong>Until Christmas</strong><span class="cal-legend"><i class="session"></i>Session <i class="practical"></i>Practical</span></div><div class="cal-ask"><span>Which can you make?</span><div class="cal-modes" role="group" aria-label="Which meetings can you attend?"><button type="button" data-mode="both" aria-pressed="true">🙌 Both</button><button type="button" data-mode="sessions" aria-pressed="false">💡 Sessions only</button><button type="button" data-mode="practicals" aria-pressed="false">🧩 Practicals only</button></div></div><p class="cal-summary" id="cal-summary" aria-live="polite"></p><div class="cal-grid"><div class="cal-head">Mon</div><div class="cal-head">Tue</div><div class="cal-head">Wed</div><div class="cal-head">Thu</div><div class="cal-head">Fri</div><div class="cal-day"><span class="cal-num">9 <em>Nov</em></span></div><div class="cal-day"><span class="cal-num">10</span></div><div class="cal-day"><span class="cal-num">11</span></div><div class="cal-day has-session"><span class="cal-num">12</span><div class="cal-ev session" data-both="go" data-note-both="Pick one of the two runs" data-sessions="go" data-note-sessions="" data-practicals="skip" data-note-practicals="Come on Tue 17 instead"><b>Session 1</b><small>11:30–13:00</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">13</span></div><div class="cal-day"><span class="cal-num">16</span></div><div class="cal-day has-session"><span class="cal-num">17</span><div class="cal-ev session" data-both="alt" data-note-both="…or this run" data-sessions="alt" data-note-sessions="Backup run" data-practicals="go" data-note-practicals="Your Session 1"><b>Session 1 · 2nd run</b><small>13:00–14:30</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">18</span></div><div class="cal-day has-practical"><span class="cal-num">19</span><div class="cal-ev practical" data-both="go" data-note-both="Optional if you know R" data-sessions="skip" data-note-sessions="Materials posted online" data-practicals="go" data-note-practicals=""><b>Practical 1 · R crash course</b><small>15:00–16:30</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">20</span></div><div class="cal-day"><span class="cal-num">23</span></div><div class="cal-day"><span class="cal-num">24</span></div><div class="cal-day"><span class="cal-num">25</span></div><div class="cal-day has-session"><span class="cal-num">26</span><div class="cal-ev session" data-both="go" data-note-both="" data-sessions="go" data-note-sessions="" data-practicals="skip" data-note-practicals="Materials shared after class"><b>Session 2</b><small>11:30–13:00</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">27</span></div><div class="cal-day"><span class="cal-num">30</span></div><div class="cal-day"><span class="cal-num">1 <em>Dec</em></span></div><div class="cal-day"><span class="cal-num">2</span></div><div class="cal-day has-practical"><span class="cal-num">3</span><div class="cal-ev practical" data-both="go" data-note-both="Skip the recap: arrive 15:30" data-sessions="skip" data-note-sessions="Exercises online, try at home" data-practicals="go" data-note-practicals="Starts with a recap of Session 2"><b>Practical 2</b><small>15:00–16:30</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">4</span></div><div class="cal-day"><span class="cal-num">7</span></div><div class="cal-day"><span class="cal-num">8</span></div><div class="cal-day"><span class="cal-num">9</span></div><div class="cal-day has-session"><span class="cal-num">10</span><div class="cal-ev session" data-both="go" data-note-both="" data-sessions="go" data-note-sessions="" data-practicals="skip" data-note-practicals="Materials online · recap in January"><b>Session 3</b><small>11:30–13:00</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">11</span></div></div><div class="cal-xmas">📚 Exam week (14–18 Dec) · 🎄 Christmas break · we'll poll for a new schedule for January</div></div>
+
+```
+
+### 🎯 Today's route
+
+```{=html}
+<div class="mission-win">🎯 <strong>Today's win:</strong> your own button appears in JASP.</div>
+<div class="route-strip"><a href="#token">⚙️ Set up</a><b>→</b><a href="#install">👋 Meet</a><b>→</b><a href="#structure">🧩 Explore</a><b>→</b><a href="#load">🚀 Load</a><b>→</b><a href="#button">✅ Your button</a></div><p class="flip-hint">👆 Click a step to jump there</p>
+```
+
+## Get your GitHub token [⏱ 10 min]{.timing} [0:10–0:20]{.timing .clock} {#token}
+
+::: {.callout-warning icon="false"}
+## TODO (Leo): after your test run
+
+- Is a token needed at all? (Test on a computer **without** `GITHUB_PAT` set.) If not, delete this whole section, and its link in `ribbon.html`.
+- Final steps + screenshot of the token page.
+- Reminder text: "Tick no boxes" and "The token is shown only once: copy it now!"
+:::
+
+Direct link: <https://github.com/settings/tokens/new>
+
+- [ ] Logged in to GitHub
+- [ ] Token generated and copied
+
+## Install the module & meet each other [⏱ 25 min]{.timing} [0:20–0:45]{.timing .clock} {#install}
+
+::: {.callout-warning icon="false"}
+## TODO (Leo): after your test run
+
+- Where students get the template (zip link / file name).
+- Exact steps: open the `.Rproj` file in RStudio → set the token → run the install.
+- Typical install time, and the errors you met (with fixes).
+:::
+
+``` r
+# TODO (Leo): confirm the exact commands
+Sys.setenv(GITHUB_PAT = "paste-your-token-here")
+renv::install(".")
+```
+
+- [ ] Project opened in RStudio
+- [ ] Installation started
+
+### While it installs: introductions 👋
+
+The installation takes a while, so let's use the time to get to know each other. Please share:
+
+1.  Your **name** and **programme**
+2.  How you would describe your **R experience** (none at all is perfectly fine!)
+3.  🔍 **Before you analyse data in JASP, what do you usually have to do to it first, and where?** (Excel? R? SPSS? By hand?)
+
+::: {.callout-note icon="false"}
+## Note
+
+Your answers to question 3 are the start of our research: they help decide which data wrangling tools our module should offer.
+:::
+
+## How a JASP module works [⏱ 15 min]{.timing} [0:45–1:00]{.timing .clock} {#structure}
+
+A JASP module is an **R package** with extra files for the JASP interface. Think of it as three pieces working together:
+
+```{=html}
+<div class="anatomy-grid"><div class="anatomy-node"><div class="anatomy-icon">📋</div><strong>Description.qml</strong><span>Menu entry</span><small>Where your analysis appears</small></div><div class="anatomy-arrow">→</div><div class="anatomy-node"><div class="anatomy-icon">🎛️</div><strong>missingValues.qml</strong><span>Controls</span><small>What users click</small></div><div class="anatomy-arrow">→</div><div class="anatomy-node"><div class="anatomy-icon">📊</div><strong>missingValues.R</strong><span>Computation</span><small>What JASP calculates</small></div></div>
+<details class="file-peek"><summary>📂 Where do these files live? · Show folder structure</summary><pre><code>myModule/
+├── DESCRIPTION            ← R package info (name, dependencies)
+├── R/
+│   └── missingValues.R    ← the computation (R)
+└── inst/
+    ├── Description.qml    ← adds the module to JASP's menu
+    └── qml/
+        └── missingValues.qml  ← the analysis window (buttons, checkboxes, ...)</code></pre></details>
+```
+
+**1. The menu entry** *(simplified)*
+
+``` qml
+Description
+{
+    title : qsTr("Data Wrangling")
+
+    Analysis
+    {
+        title : qsTr("Missing Values")   // what users see in the menu
+        func  : "missingValues"          // the R function to call
+    }
+}
+```
+
+**2. The interface**
+
+``` qml
+Form
+{
+    VariablesForm
+    {
+        AvailableVariablesList { name: "allVariables" }
+        AssignedVariablesList  { name: "variables"; title: qsTr("Variables") }
+    }
+
+    CheckBox { name: "showPercentage"; label: qsTr("Show percentages") }
+}
+```
+
+**3. The computation**
+
+``` r
+missingValues <- function(jaspResults, dataset, options) {
+  # options$variables       -> the variables the user selected
+  # options$showPercentage  -> TRUE or FALSE (the checkbox!)
+  # ... compute, then put tables and plots into jaspResults
+}
+```
+
+### Try it: predict what JASP sends to R 🎮
+
+```{=html}
+<div class="option-lab" id="option-lab" aria-label="Interactive QML and R options exercise">
+  <div class="lab-top"><div><span class="kicker">INTERACTIVE · 3 MINI CHALLENGES</span><h4>Click it. Predict it. Reveal it.</h4><p>Play with a JASP-style control, then predict the value R would receive.</p></div><div class="lab-progress" aria-live="polite"><strong id="lab-score">0 / 3</strong><small>solved</small></div></div>
+  <div class="lab-switcher" role="group" aria-label="Choose challenge"><button type="button" class="lab-tab is-active" data-level="0" aria-pressed="true">01 · Checkbox</button><button type="button" class="lab-tab" data-level="1" aria-pressed="false">02 · Variables</button><button type="button" class="lab-tab" data-level="2" aria-pressed="false">03 · Untick</button></div>
+  <div class="lab-board">
+    <div class="lab-pane"><div class="lab-pane-heading"><span>🎛️ MOCK ANALYSIS OPTIONS</span><span class="lab-status">YOU CONTROL THIS</span></div><div class="lab-controls" id="lab-controls"></div><div class="lab-qml"><span>QML CONTROL</span><code id="lab-qml-text"></code></div></div>
+    <div class="lab-pane lab-predict"><div class="lab-pane-heading"><span>🧠 YOUR PREDICTION</span><span class="lab-status">THINK FIRST</span></div><p class="lab-question" id="lab-question"></p><div class="lab-choices" id="lab-choices" role="group" aria-label="Possible R option values"></div><button type="button" id="lab-check" class="lab-action" disabled>Check my prediction →</button><div id="lab-feedback" class="lab-feedback" aria-live="polite" hidden></div></div>
+  </div>
+  <div class="lab-bottom"><span>🔗 <strong>Remember:</strong> QML <code>name</code> → R <code>options$name</code></span><button type="button" id="lab-reset" class="lab-reset">↻ Try again</button></div>
+  <p class="lab-disclaimer">Teaching simulation only: the controls demonstrate the idea; they do not run JASP or R. The examples below illustrate common option values, not every possible QML setup.</p>
+</div>
+```
+
+### The magic connection ✨
+
+```{=html}
+<div class="magic-flow"><div class="magic-node"><span>🎛️ QML</span><small>Tick a checkbox</small></div><b>→</b><div class="magic-node"><span>📦 options</span><small>showPercentage = TRUE</small></div><b>→</b><div class="magic-node"><span>🧮 R</span><small>Read the option</small></div><b>→</b><div class="magic-node"><span>📊 Results</span><small>Update output</small></div></div>
+<div class="mini-note"><strong>The one thing to remember:</strong> the QML control's <code>name</code> is how R reads its value: <code>options$showPercentage</code>. Today we focus on the interface.</div>
+```
+
+## Load the module in JASP [⏱ 10 min]{.timing} [1:00–1:10]{.timing .clock} {#load}
+
+::: {.callout-warning icon="false"}
+## TODO (Leo): after your test run
+
+- JASP version / nightly build used.
+- Step-by-step: Menu → Preferences → Advanced → Developer mode → Enable renv mode → library path → module name → Install Developer Module.
+- The command that prints the right library path (e.g. `.libPaths()[1]`, to be confirmed).
+- Screenshot of the settings screen.
+:::
+
+- [ ] Developer mode on
+- [ ] Module visible in the JASP menu 🎉
+
+## Add your first button [⏱ 15 min]{.timing} [1:10–1:25]{.timing .clock} {#button}
+
+::: {.callout-warning icon="false"}
+## TODO (Leo): after your test run
+
+- Which file to open and where to paste.
+- The final QML snippets for each level.
+- Confirm the update loop: save → RStudio **Build → Install** → refresh in JASP.
+:::
+
+Work in pairs. Start with **Basic**; open the next section when you're done.
+
+::: {.callout-note .option icon="false" collapse="false"}
+## ⭐ Basic
+
+Add a checkbox to the Missing Values window.
+
+``` qml
+// TODO (Leo): final snippet
+CheckBox { name: "myFirstCheckbox"; label: qsTr("My first checkbox") }
+```
+:::
+
+::: {.callout-note .option icon="false" collapse="true"}
+## ⭐⭐ Intermediate
+
+Change the label text, then add a second control of a *different* type.
+
+*Hint:* TODO (Leo)
+:::
+
+::: {.callout-note .option icon="false" collapse="true"}
+## ⭐⭐⭐ Challenge
+
+No instructions here, just a goal: **make the analysis show a different title in the JASP menu.**
+:::
+
+### Your edit–build–refresh loop
+
+```{=html}
+<div class="route-strip build-loop"><span>💾 Save <code>.qml</code></span><b>→</b><span>🛠️ Build → Install</span><b>→</b><span>🔄 Refresh in JASP</span><b>↺</b></div><p class="micro-note">Confirm the exact refresh action after your test run.</p>
+```
+
+## Wrap-up [⏱ 5 min]{.timing} [1:25–1:30]{.timing .clock} {#wrapup}
+
+### What you did today
+
+- ✅ Set up a JASP development environment
+- ✅ Learned the three files of a JASP module
+- ✅ Changed JASP's interface yourself
+
+### What's next
+
+| When | What |
+|------------------------------------|------------------------------------|
+| Thu 19 Nov · 15:00–16:30 | **Practical: R crash course.** Data frames, finding missing values, writing a function. Optional if you're comfortable with R; we'll also fix leftover setup problems. |
+| Thu 26 Nov · 11:30–13:00 | **Session 2:** connect the interface to R and build your first table. |
+
+: Coming up
+
+### Before next time
+
+- **Something broke at home?** Post it in our Mattermost channel, or bring your laptop to the practical.
+- **Curious?** Open `inst/qml/` and look at the other files. What else could you change?
+
+::: {.callout-note icon="false"}
+## 🕵️ A first peek
+
+Next week, in the R crash course, you'll compute a simple average from the mystery dataset… and something will look *very* wrong.
+:::

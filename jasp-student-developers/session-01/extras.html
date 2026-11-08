@@ -1,0 +1,100 @@
+<script>
+  // Keep exercise checklists interactive in the stand-alone HTML.
+  document.querySelectorAll('ul.task-list input[type="checkbox"]').forEach(function (box) {
+    box.removeAttribute('disabled');
+  });
+</script>
+
+<script>
+/* Flip cards in "But, how?" */
+document.querySelectorAll('.flip-card').forEach(function(card){card.addEventListener('click',function(){var f=card.classList.toggle('is-flipped');card.setAttribute('aria-pressed',String(f));});});
+</script>
+
+<script>
+/* Offline QML → R options prediction mini-lab; no JASP connection required. */
+(function () {
+  const root=document.getElementById('option-lab'); if (!root) return;
+  const levels=[
+    { question:'You tick “Show percentages”. What is options$showPercentage?', qml:'CheckBox { name: "showPercentage"; label: "Show percentages" }',choices:['TRUE','FALSE','"Show percentages"'],answer:0,explanation:'A checked CheckBox produces the logical value TRUE. R reads it as options$showPercentage.',type:'check',initial:true },
+    { question:'You choose age. What is options$variables in this simplified example?', qml:'AssignedVariablesList { name: "variables"; title: qsTr("Variables") }',choices:['"age"','TRUE','"variables"'],answer:0,explanation:'The selected variable name is passed to options$variables (typically a vector of variable names). For this one-variable example, that is "age".',type:'variable',initial:'age'},
+    { question:'You leave “Show percentages” unticked. What does R receive?', qml:'CheckBox { name: "showPercentage"; label: "Show percentages" }',choices:['NULL','FALSE','0%'],answer:1,explanation:'An unchecked CheckBox gives the logical value FALSE — not NULL, and not a numeric percentage.',type:'check',initial:false}
+  ];
+  let current=0,chosen=null; const solved=[false,false,false];
+  const one=(sel)=>root.querySelector(sel);
+  function draw(){
+    const d=levels[current]; chosen=null;
+    one('#lab-question').textContent=d.question;
+    one('#lab-qml-text').textContent=d.qml;
+    one('#lab-controls').replaceChildren();
+    if(d.type==='check'){
+      const label=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.checked=d.initial;
+      const desc=document.createElement('span');desc.textContent='Show percentages';label.append(check,desc);one('#lab-controls').append(label);
+      const hint=document.createElement('p');hint.className='lab-mini-help';hint.textContent='Try toggling this control. Then make your prediction.';one('#lab-controls').append(hint);
+      check.addEventListener('change',()=>{chosen=null;one('#lab-feedback').hidden=true;drawChoices();});
+    } else {
+      const lbl=document.createElement('label');lbl.htmlFor='lab-var';lbl.textContent='Variables'; const select=document.createElement('select');select.id='lab-var';
+      for(const value of ['age','anxiety_1','anxiety_2']){const opt=document.createElement('option');opt.value=value;opt.textContent=value;select.append(opt)}
+      one('#lab-controls').append(lbl,select);
+      const hint=document.createElement('p');hint.className='lab-mini-help';hint.textContent='Try choosing a different variable.';one('#lab-controls').append(hint);
+      select.addEventListener('change',()=>{chosen=null;one('#lab-feedback').hidden=true;drawChoices()});
+    }
+    one('#lab-feedback').hidden=true;drawChoices();
+    root.querySelectorAll('.lab-tab').forEach((b,i)=>{b.classList.toggle('is-active',i===current);b.classList.toggle('is-solved',solved[i]);b.setAttribute('aria-pressed',String(i===current))});
+    one('#lab-score').textContent=solved.filter(Boolean).length+' / 3';
+  }
+  function expected(){const d=levels[current];if(d.type==='variable')return '"'+one('#lab-var').value+'"';return one('#lab-controls input').checked?'TRUE':'FALSE'}
+  function options(){const d=levels[current];return d.type==='variable'? [expected(),'TRUE','"variables"']:d.choices}
+  function drawChoices(){const box=one('#lab-choices');box.replaceChildren();options().forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-pressed',String(chosen===i));b.addEventListener('click',()=>{chosen=i;drawChoices();one('#lab-feedback').hidden=true});box.append(b)});one('#lab-check').disabled=chosen===null}
+  one('#lab-check').addEventListener('click',()=>{
+    if(chosen===null)return;
+    const correct=options()[chosen]===expected(),f=one('#lab-feedback');
+    if(correct)solved[current]=true;
+    f.hidden=false;f.classList.toggle('is-wrong',!correct);
+    const expl=levels[current].type==='variable'?'The value is the selected variable name, not the label of the control. In a JASP analysis it is commonly represented as a vector of names.':(expected()==='TRUE'?'When the checkbox is ticked, R receives the logical TRUE.':'When the checkbox is unticked, R receives the logical FALSE.');
+    f.replaceChildren();const title=document.createElement('strong');title.textContent=correct?'✅ You got it!':'🔎 Not quite — take another look';const body=document.createElement('span');body.textContent='Correct value: options$'+(levels[current].type==='variable'?'variables':'showPercentage')+' = '+expected()+'. '+expl;f.append(title,body);
+    root.querySelectorAll('.lab-tab').forEach((b,i)=>b.classList.toggle('is-solved',solved[i]));one('#lab-score').textContent=solved.filter(Boolean).length+' / 3';
+  });
+  root.querySelectorAll('.lab-tab').forEach((b,i)=>b.addEventListener('click',()=>{current=i;draw()}));
+  one('#lab-reset').addEventListener('click',()=>{solved.fill(false);current=0;draw()});
+  draw();
+})();
+</script>
+
+<script>
+/* Interactive calendar: show a personal plan for each attendance choice */
+(function(){
+  var cal=document.getElementById('my-cal'); if(!cal) return;
+  var summaries={
+    both:'🎉 You can join everything. Come to Session 1 on <b>Thu 12</b> or <b>Tue 17</b>. At practicals, feel free to skip the 30-min recap and arrive at 15:30.',
+    sessions:'💡 You’ll join every session. Practical exercises are posted online: try them at home and ask questions on Mattermost.',
+    practicals:'🧩 Your Session 1 is on <b>Tue 17 Nov</b> (can’t make that either? No worries, we’ll set you up separately). Each practical starts with a 30-min recap of the session you missed. Session 3’s recap comes in January.'
+  };
+  function set(mode){
+    cal.dataset.mode=mode;
+    cal.querySelectorAll('.cal-modes button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.mode===mode));});
+    cal.querySelectorAll('.cal-ev').forEach(function(ev){
+      var st=ev.dataset[mode]||'go';
+      ev.classList.remove('is-go','is-alt','is-skip'); ev.classList.add('is-'+st);
+      ev.querySelector('.cal-note').textContent=ev.dataset['note'+mode.charAt(0).toUpperCase()+mode.slice(1)]||'';
+    });
+    document.getElementById('cal-summary').innerHTML=summaries[mode];
+  }
+  cal.querySelectorAll('.cal-modes button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.mode);});});
+  set('both');
+})();
+</script>
+
+<script>
+/* Loot badges: click to unlock */
+(function(){
+  var root=document.getElementById('loot'); if(!root) return;
+  var n=document.getElementById('loot-n');
+  root.querySelectorAll('.loot-badge').forEach(function(b){
+    b.addEventListener('click',function(){
+      var on=b.classList.toggle('is-unlocked'); b.setAttribute('aria-pressed',String(on));
+      if(on){b.classList.remove('just-unlocked'); void b.offsetWidth; b.classList.add('just-unlocked');}
+      n.textContent=root.querySelectorAll('.loot-badge.is-unlocked').length;
+    });
+  });
+})();
+</script>
