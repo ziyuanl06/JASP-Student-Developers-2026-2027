@@ -2,6 +2,8 @@
 
 A student-run, voluntary group at the University of Amsterdam where we learn to develop [JASP](https://jasp-stats.org) together. No grades, no tests, and no coding experience required.
 
+** Group Homepage: https://ziyuanl06.github.io/JASP-Student-Developers-2026-2027/**
+
 ## This year's mission
 
 We're building a **data wrangling module** for JASP, so researchers can get their raw data ready for analysis without leaving JASP.
