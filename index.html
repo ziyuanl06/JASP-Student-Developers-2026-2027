@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JASP Student Developers Group 2026–27</title>
-<link rel="icon" href="jasp-logo.png">
 <!--
   ✏️ HOW TO EDIT (for Leo)
   - To publish a new session: find its card below, change class="card soon" to class="card",
@@ -15,15 +14,15 @@
 @font-face{font-family:"Fredoka";src:url("session-01/fonts/fredoka.woff2") format("woff2");font-weight:300 700;font-display:swap}
 :root{--blue:#3a8dcc;--green:#98c353;--deep:#1f4e68;--muted:#5d7988;--line:#d7e9ee;--bg:#f5fafc}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#22343f;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.7}
+body{margin:0;background:var(--bg);color:#22343f;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.73}
 .wrap{max-width:920px;margin:0 auto;padding:0 20px 60px}
 header{background:linear-gradient(120deg,#2f7fc0 0%,#4aa7da 45%,#7cbf86 80%,#98c353 100%);color:#fff;border-radius:0 0 28px 28px;padding:28px 36px 46px;margin-bottom:34px}
-.top{display:flex;align-items:center;gap:14px;font-weight:700;font-size:15px}
+.top{font-family:"Fredoka",system-ui,sans-serif;font-weight:600;font-size:19px;letter-spacing:.01em}
 .top img{height:38px;border-radius:7px;background:#fff;padding:4px}
-h1,h2,h3{font-family:"Fredoka",system-ui,sans-serif;letter-spacing:0}
-h1{font-size:clamp(32px,5vw,50px);font-weight:600;line-height:1.15;margin:34px 0 10px}
-header p{margin:0;font-size:19px;opacity:.95;max-width:640px}
-h2{color:var(--deep);font-weight:600;font-size:28px;margin:44px 0 12px}
+h1,h2,h3,h4{font-family:"Fredoka",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:0}
+h1{font-size:clamp(34px,5.4vw,57px);font-weight:600;line-height:1.12;letter-spacing:.005em;margin:34px 0 12px}
+header p{margin:0;font-size:clamp(16px,2vw,20px);opacity:.96;max-width:640px}
+h2{color:var(--deep);font-weight:600;font-size:28px;line-height:1.2;margin:44px 0 12px}
 .mission{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 24px}
 .phases{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .phase{border-radius:14px;padding:14px 16px;background:#eaf5fb}
@@ -36,7 +35,7 @@ h2{color:var(--deep);font-weight:600;font-size:28px;margin:44px 0 12px}
 .card.practical{border-top:5px solid var(--green)}
 .card.session{border-top:5px solid var(--blue)}
 .card .when{font-size:13px;font-weight:800;color:var(--muted)}
-.card h3{margin:0;font-weight:600;font-size:20px;color:var(--deep)}
+.card h3{margin:0;font-weight:550;font-size:20px;color:var(--deep)}
 .card p{margin:0;font-size:15px;color:#3f6475}
 .card.soon{opacity:.6}
 .go,.soon-tag{margin-top:8px;align-self:flex-start;font-size:13px;font-weight:800;border-radius:30px;padding:6px 14px;text-decoration:none}
@@ -53,7 +52,7 @@ footer{margin-top:50px;font-size:14px;color:var(--muted);border-top:1px solid va
 <body>
 <header>
   <div class="wrap" style="padding-bottom:0">
-    <div class="top"><img src="jasp-logo.png" alt="JASP"> Student Developers Group · 2026–27</div>
+    <div class="top">JASP Student Developers Group · 2026–27</div>
     <h1>Let's build JASP together.</h1>
     <p>A student-run group where we learn to develop JASP, one small step at a time. No grades, no tests, no coding experience required.</p>
   </div>
@@ -63,8 +62,8 @@ footer{margin-top:50px;font-size:14px;color:var(--muted);border-top:1px solid va
   <div class="mission">
     <b>This year's mission:</b> a <b>data wrangling module</b> for JASP, so researchers can get their raw data ready without leaving JASP.
     <div class="phases">
-      <div class="phase"><small>Before Christmas</small><b>🔎 Diagnose</b><br>Missing values, distributions, outliers.</div>
-      <div class="phase fix"><small>After Christmas</small><b>🛠️ Fix</b><br>Clean, transform and export the data.</div>
+      <div class="phase"><small>Starts before Christmas</small><b>🔎 Diagnose</b><br>Missing values, distributions, outliers.</div>
+      <div class="phase fix"><small>Mostly after Christmas</small><b>🛠️ Fix</b><br>Clean, transform and export the data.</div>
     </div>
   </div>
 
@@ -82,7 +81,7 @@ footer{margin-top:50px;font-size:14px;color:var(--muted);border-top:1px solid va
     </div>
     <div class="card session soon">
       <span class="when">Thu 26 Nov · 11:30–13:00</span>
-      <h3>Session 2</h3><p>Connect the interface to R</p>
+      <h3>Session 2</h3><p>Your first R function in JASP</p>
       <span class="soon-tag">Coming soon</span>
     </div>
     <div class="card practical soon">
@@ -92,7 +91,7 @@ footer{margin-top:50px;font-size:14px;color:var(--muted);border-top:1px solid va
     </div>
     <div class="card session soon">
       <span class="when">Thu 10 Dec · 11:30–13:00</span>
-      <h3>Session 3</h3><p>Build your own control</p>
+      <h3>Session 3</h3><p>Your first data tool: missing values</p>
       <span class="soon-tag">Coming soon</span>
     </div>
   </div>

@@ -253,3 +253,6 @@ h3,h4{font-weight:550}
 .side-quests{margin-top:14px;padding:14px 18px;border-radius:14px;background:#fff;border:1px solid #d7e9ee}
 .side-quests p{margin:4px 0 0;font-size:14.5px;color:#3f6475}
 @media(max-width:700px){.badge-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* Text-only brand (no logo) */
+.jasp-wave-brand{font-family:"Fredoka",system-ui,sans-serif;font-size:18px;font-weight:600;letter-spacing:.01em}
