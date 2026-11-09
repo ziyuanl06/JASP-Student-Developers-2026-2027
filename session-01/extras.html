@@ -1,8 +1,76 @@
 <script>
-  // Keep exercise checklists interactive in the stand-alone HTML.
-  document.querySelectorAll('ul.task-list input[type="checkbox"]').forEach(function (box) {
-    box.removeAttribute('disabled');
+// Checklists → quest cards: click a card to tick it, watch the bar fill, clear the level.
+(function () {
+  var quests = {
+    before:  {title: 'Pre-flight check',  done: 'Ready for take-off! ✈️',        burst: ['✈️','✨','🎉']},
+    token:   {title: 'Set-up quest',      done: 'Module + token secured! 🔑',     burst: ['🔑','✨','📦']},
+    install: {title: 'Install quest',     done: 'Packages in the bag! 📦',        burst: ['📦','✨','🎉']},
+    load:    {title: 'Lift-off',          done: 'JASP sees your module! 🚀',      burst: ['🚀','⭐','🎉']}
+  };
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+
+  document.querySelectorAll('ul.task-list').forEach(function (ul, n) {
+    if (ul.parentElement.closest('ul.task-list')) return;
+    var sec = ul.closest('section[id]'), id = sec ? sec.id : 'list' + n;
+    var q = quests[id] || {title: 'Checklist', done: 'All done! 🎉', burst: ['✨','🎉','⭐']};
+    var items = Array.prototype.slice.call(ul.children);
+
+    var box = document.createElement('div'); box.className = 'quest';
+    box.innerHTML = '<div class="quest-head"><span class="quest-title"></span>' +
+      '<span class="quest-count" aria-live="polite"></span>' +
+      '<button type="button" class="quest-reset" title="Untick all">↺</button></div>' +
+      '<div class="quest-bar"><i></i></div>';
+    box.querySelector('.quest-title').textContent = q.title;
+    ul.parentNode.insertBefore(box, ul); box.appendChild(ul);
+    if (!ul.closest('.prep')) ul.classList.add('quest-grid');
+
+    function update(celebrate) {
+      var k = items.filter(function (li) { return li.classList.contains('is-done'); }).length;
+      var all = k === items.length;
+      box.querySelector('.quest-count').textContent = all ? q.done : k + ' / ' + items.length;
+      box.querySelector('.quest-bar i').style.width = (100 * k / items.length) + '%';
+      box.classList.toggle('is-cleared', all);
+      if (all && celebrate) burst(box, q.burst);
+    }
+    function set(li, i, on) {
+      li.classList.toggle('is-done', on);
+      var inp = li.querySelector('input[type="checkbox"]'); if (inp) { inp.checked = on; inp.removeAttribute('disabled'); }
+      store('jsdg-s1-' + id + '-' + i, on ? '1' : '0');
+    }
+    items.forEach(function (li, i) {
+      li.classList.add('quest-card');
+      var tick = document.createElement('span'); tick.className = 'quest-tick'; tick.setAttribute('aria-hidden', 'true');
+      li.insertBefore(tick, li.firstChild);
+      set(li, i, store('jsdg-s1-' + id + '-' + i) === '1');
+      li.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;           // links still work
+        e.preventDefault();
+        var on = !li.classList.contains('is-done');
+        set(li, i, on);
+        if (on) { li.classList.remove('pop'); void li.offsetWidth; li.classList.add('pop'); }
+        update(on);
+      });
+    });
+    box.querySelector('.quest-reset').addEventListener('click', function () {
+      items.forEach(function (li, i) { set(li, i, false); }); update(false);
+    });
+    update(false);
   });
+
+  function burst(el, emojis) {
+    var r = el.querySelector('.quest-head');
+    for (var i = 0; i < 14; i++) {
+      var s = document.createElement('span'); s.className = 'quest-confetti';
+      s.textContent = emojis[i % emojis.length];
+      var a = Math.random() * Math.PI * 2, d = 50 + Math.random() * 90;
+      s.style.setProperty('--dx', Math.cos(a) * d + 'px');
+      s.style.setProperty('--dy', (Math.sin(a) * d - 30) + 'px');
+      s.style.left = (30 + Math.random() * 40) + '%';
+      r.appendChild(s);
+      setTimeout(function (x) { return function () { x.remove(); }; }(s), 1100);
+    }
+  }
+})();
 </script>
 
 <script>
@@ -96,5 +164,71 @@ document.querySelectorAll('.flip-card').forEach(function(card){card.addEventList
       n.textContent=root.querySelectorAll('.loot-badge.is-unlocked').length;
     });
   });
+})();
+</script>
+<script>
+// "Find the partner": click a QML name to light up the matching options$ in R (and vice versa)
+(function () {
+  var lab = document.getElementById('pair-lab'); if (!lab) return;
+  var hint = document.getElementById('pair-hint');
+  lab.querySelectorAll('.pair').forEach(function (el) {
+    el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button');
+    function go() {
+      var k = el.dataset.pair;
+      lab.querySelectorAll('.pair').forEach(function (x) { x.classList.toggle('is-lit', x.dataset.pair === k); });
+      lab.querySelectorAll('.pair.is-lit').forEach(function (x) { x.classList.remove('flash'); void x.offsetWidth; x.classList.add('flash'); });
+      hint.innerHTML = '✨ <code>name: "' + k + '"</code> in QML &nbsp;→&nbsp; <code>options$' + k + '</code> in R';
+    }
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+})();
+</script>
+<script>
+// Sticky "where are we" trail: one segment per timed section, shows the step you're reading.
+(function () {
+  var secs = Array.prototype.filter.call(document.querySelectorAll('section.level2[id]'), function (s) {
+    var h = s.querySelector(':scope > h2'); return h && h.querySelector('.timing');
+  });
+  if (!secs.length) return;
+  function label(s) {
+    var h = s.querySelector(':scope > h2').cloneNode(true);
+    h.querySelectorAll('.timing, .anchorjs-link').forEach(function (x) { x.remove(); });
+    return h.textContent.trim();
+  }
+  function clock(s) { var c = s.querySelector(':scope > h2 .clock'); return c ? c.textContent.trim() : ''; }
+
+  var bar = document.createElement('div'); bar.className = 'trail'; bar.setAttribute('aria-label', 'Session progress');
+  bar.innerHTML = '<div class="trail-top"><span class="trail-title">Session 01 · Your First JASP Module</span>' +
+    '<span class="trail-step"></span></div><div class="trail-segs"></div>' +
+    '<div class="trail-now"><span class="trail-pin">📍</span> <span class="trail-label"></span><span class="trail-clock"></span></div>';
+  var segs = bar.querySelector('.trail-segs');
+  secs.forEach(function (s, i) {
+    var a = document.createElement('a'); a.href = '#' + s.id; a.className = 'trail-seg';
+    a.title = (i + 1) + '. ' + label(s) + (clock(s) ? '  (' + clock(s) + ')' : '');
+    a.innerHTML = '<i></i><span>' + (i + 1) + '</span>';
+    segs.appendChild(a);
+  });
+  document.body.appendChild(bar);
+
+  var nav = document.querySelector('.jasp-wave-nav');
+  var current = -1;
+  function update() {
+    var y = window.scrollY, trigger = 140, idx = -1;
+    secs.forEach(function (s, i) { if (s.getBoundingClientRect().top - trigger <= 0) idx = i; });
+    var showAfter = nav ? nav.getBoundingClientRect().bottom < 0 : y > 300;
+    bar.classList.toggle('is-shown', showAfter);
+    if (idx === current) return; current = idx;
+    var shown = Math.max(idx, 0);
+    segs.querySelectorAll('.trail-seg').forEach(function (a, i) {
+      a.classList.toggle('is-done', i < idx); a.classList.toggle('is-here', i === idx);
+    });
+    bar.querySelector('.trail-step').textContent = idx < 0 ? '' : 'Step ' + (idx + 1) + ' of ' + secs.length;
+    bar.querySelector('.trail-label').textContent = idx < 0 ? 'Getting started' : label(secs[shown]);
+    bar.querySelector('.trail-clock').textContent = idx < 0 ? '' : clock(secs[shown]);
+  }
+  window.addEventListener('scroll', update, {passive: true});
+  window.addEventListener('resize', update);
+  update();
 })();
 </script>

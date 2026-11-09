@@ -44,6 +44,7 @@ p,li {margin-bottom:.65em;}
 .callout.option .callout-header {background:#eaf5fa !important; border-bottom:1px solid #d9ecf2 !important;}
 .callout.option .callout-body-container {padding:7px 13px;}
 .callout.callout-warning {background:#fff8ed !important; border:1px dashed #e6ae60 !important; border-left:4px solid #e6ae60 !important;}
+.callout.callout-important {background:#fff3f3 !important; border:1px solid #f2c9c9 !important; border-left:4px solid #e06666 !important;} .callout.callout-important .callout-title-container {color:#a83232;}
 .dataview {border:1px solid #c9e2ee; border-radius:10px; overflow-x:auto; margin:18px 0 8px; background:white;}
 table {width:100%; margin:20px 0 25px; font-size:14px; border-top:2px solid #5c9fc2 !important; border-bottom:2px solid #5c9fc2 !important;}
 table th {background:#edf7fc; color:#235875; border-bottom:1px solid #a8d0e2 !important; font-weight:700;}
@@ -95,7 +96,9 @@ blockquote {border-left:4px solid var(--jasp-green); padding-left:18px;}
 /* Before we begin: checklist as small cards */
 .prep ul.task-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0;margin:18px 0;list-style:none}
 .prep ul.task-list li{background:#fff;border:1px solid #d7e9ee;border-radius:12px;padding:12px 14px;margin:0;font-size:15px}
-@media(max-width:700px){.prep ul.task-list{grid-template-columns:1fr}}
+.prep ul.task-list li:nth-child(5){grid-row:span 2} /* Build tools (5th item) spans two rows, so GitHub + Mattermost stack in column 2 */
+.prep ul.task-list li li{border:0;background:none;padding:3px 0;font-size:14px;border-radius:0} .prep ul.task-list li ul{margin:8px 0 0 28px;padding-left:16px}
+@media(max-width:700px){.prep ul.task-list{grid-template-columns:1fr} .prep ul.task-list li:nth-child(5){grid-row:auto}}
 .prep ul.task-list li input[type="checkbox"]{position:static !important;margin:0 10px 0 0 !important;vertical-align:middle}
 .prep ul.task-list li a{font-size:13px;font-weight:700;text-decoration:none;color:#2c7fb0;white-space:nowrap}
 .prep ul.task-list li a:hover{text-decoration:underline}
@@ -256,3 +259,99 @@ h3,h4{font-weight:550}
 
 /* Text-only brand (no logo) */
 .jasp-wave-brand{font-family:"Fredoka",system-ui,sans-serif;font-size:18px;font-weight:600;letter-spacing:.01em}
+.intro-chips{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 22px}
+.intro-chips span{font-family:'Fredoka',system-ui,sans-serif;font-size:20px;font-weight:600;padding:12px 20px;border-radius:999px;background:white;border:1px solid #d4e9f1;color:#286987;box-shadow:0 2px 6px #23587514}
+
+/* ── Quest-card checklists ─────────────────────────────────────────── */
+.quest{position:relative;margin:22px 0;padding:14px 16px 16px;border:1px solid #d4e9f1;border-radius:16px;background:linear-gradient(180deg,#f6fbfd,#fff);transition:border-color .3s, box-shadow .3s}
+.quest.is-cleared{border-color:#8fd0c4;box-shadow:0 6px 18px #55a4a426}
+.quest-head{position:relative;display:flex;align-items:center;gap:12px}
+.quest-title{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:18px;color:#255e7c}
+.quest-count{margin-left:auto;font-size:14px;font-weight:750;color:#286987}
+.quest.is-cleared .quest-count{color:#2f8f7f}
+.quest-reset{border:0;background:none;color:#8aaebf;font-size:17px;cursor:pointer;padding:2px 6px;border-radius:8px}
+.quest-reset:hover{background:#eaf5fa;color:#286987}
+.quest-bar{height:8px;border-radius:99px;background:#e3f0f5;margin:10px 0 14px;overflow:hidden}
+.quest-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#70b4d4,#55a4a4);transition:width .45s cubic-bezier(.3,1.4,.5,1)}
+.quest ul.task-list{margin:0;padding:0;list-style:none}
+.quest ul.quest-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.quest ul.task-list > li.quest-card{position:relative;background:#fff;border:1px solid #d7e9ee;border-radius:12px;padding:12px 14px 12px 48px;margin:0;font-size:15px;cursor:pointer;user-select:none;transition:background .2s,border-color .2s,transform .15s,box-shadow .15s}
+.quest ul.task-list > li.quest-card:hover{transform:translateY(-2px);box-shadow:0 4px 10px #2358751a;border-color:#b9dbe8}
+.quest ul.task-list > li.quest-card input[type="checkbox"]{position:absolute !important;opacity:0;width:1px;height:1px;margin:0 !important}
+.quest ul.task-list > li.quest-card:focus-within{outline:2px solid #70b4d4;outline-offset:2px}
+.quest-tick{position:absolute;left:13px;top:11px;width:24px;height:24px;border-radius:50%;border:2px solid #b9dbe8;background:#fff;transition:all .2s}
+.quest-card.is-done{background:#eefaf6 !important;border-color:#9fd8cb !important}
+.quest-card.is-done .quest-tick{background:#55a4a4;border-color:#55a4a4}
+.quest-card.is-done .quest-tick::after{content:'';position:absolute;left:7px;top:3px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.quest-card.is-done > label{color:#4f7d74}
+.quest-card.pop .quest-tick{animation:quest-pop .35s ease}
+@keyframes quest-pop{0%{transform:scale(.6)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+.quest-confetti{position:absolute;top:0;font-size:20px;pointer-events:none;animation:quest-fly 1.1s ease-out forwards}
+@keyframes quest-fly{from{transform:translate(0,0) scale(.6);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(1.1) rotate(25deg);opacity:0}}
+.prep .quest{margin:18px 0}
+.prep ul.task-list li.quest-card{font-size:15px}
+@media (prefers-reduced-motion: reduce){.quest-card,.quest-bar i,.quest-tick{transition:none}.quest-card.pop .quest-tick,.quest-confetti{animation:none;display:none}}
+
+/* ── Step trails ───────────────────────────────────────────────────── */
+.steps{counter-reset:step;position:relative;margin:20px 0 22px;padding-left:4px}
+.step{counter-increment:step;position:relative;padding:2px 0 22px 58px}
+.step::before{content:counter(step);position:absolute;left:0;top:0;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:19px;color:#fff;background:linear-gradient(135deg,#70b4d4,#55a4a4);box-shadow:0 3px 8px #23587533;z-index:1}
+.step::after{content:'';position:absolute;left:18px;top:40px;bottom:2px;width:2px;background:repeating-linear-gradient(#bfdde9 0 6px,transparent 6px 11px)}
+.step:last-child::after{display:none}
+.step.step-final::before{content:'🚀';font-size:18px;background:linear-gradient(135deg,#f3b562,#e98a6b)}
+.step > p:first-child{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:5px 0 8px}
+.step-title{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:19px;color:#1f4f69}
+.app{font-size:12.5px;font-weight:750;padding:3px 10px;border-radius:999px;letter-spacing:.2px;border:1px solid transparent;white-space:nowrap}
+.app-web{background:#eef1fb;color:#4a5bb0;border-color:#d6dcf5}
+.app-gh{background:#f1f1f3;color:#333;border-color:#dcdce2}
+.app-r{background:#e9f2fb;color:#2a6db0;border-color:#cfe1f3}
+.app-jasp{background:#e8f6f3;color:#2f8f7f;border-color:#c7e8e0}
+.app-files{background:#fbf3e6;color:#9a6a1f;border-color:#f1dfbf}
+.step .sourceCode, .step pre{margin:8px 0}
+.step .callout{margin:12px 0}
+.token-form{display:grid;gap:6px;margin:10px 0 8px;max-width:420px;padding:12px 14px;border:1px solid #dcdce2;border-radius:12px;background:#fafafb}
+.token-form div{display:grid;grid-template-columns:100px 1fr;align-items:center;font-size:14.5px}
+.token-form span{color:#6a737d;font-weight:650}
+.token-form .tick-nothing b{color:#c0392b}
+details.stuck{margin:10px 0 2px;font-size:14.5px}
+details.stuck summary{cursor:pointer;display:inline-block;padding:4px 12px;border-radius:999px;background:#fff8ed;border:1px dashed #e6ae60;color:#8a5a14;font-weight:700;list-style:none}
+details.stuck summary::-webkit-details-marker{display:none}
+details.stuck[open] summary{background:#fdeccf}
+details.stuck p{margin:8px 0 0;padding:10px 14px;border-left:3px solid #e6ae60;background:#fffaf2;border-radius:0 10px 10px 0}
+@media(max-width:600px){.step{padding-left:48px}.step::before{width:32px;height:32px;font-size:16px}.step::after{left:15px;top:34px}}
+
+/* ── Find-the-partner code lab ─────────────────────────────────────── */
+.pair-lab{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 6px}
+.pair-pane{border:1px solid #d4e9f1;border-radius:14px;background:#fbfdfe;overflow:hidden}
+.pair-head{padding:8px 14px;font-weight:750;font-size:13.5px;color:#255e7c;background:#eaf5fa;border-bottom:1px solid #d9ecf2}
+.pair-pane pre{margin:0;padding:12px 14px;background:transparent;border:0;font-size:13px;line-height:1.6;white-space:pre;overflow-x:auto}
+.pair{cursor:pointer;border-radius:5px;padding:1px 3px;background:#fff3d6;border-bottom:2px dotted #e6ae60;transition:background .2s}
+.pair:hover{background:#ffe7ad}
+.pair.is-lit{background:#55a4a4;color:#fff;border-bottom-color:#2f8f7f}
+.pair.flash{animation:pair-flash .5s ease}
+@keyframes pair-flash{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+.pair-hint{grid-column:1/-1;margin:2px 0 0;text-align:center;font-size:14.5px;color:#286987;font-weight:650}
+@media(max-width:760px){.pair-lab{grid-template-columns:1fr}}
+
+/* ── Sticky progress trail ─────────────────────────────────────────── */
+.trail{position:fixed;top:0;left:0;right:0;z-index:1040;padding:9px max(16px,calc((100vw - 1100px)/2)) 8px;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #d7e9ee;box-shadow:0 4px 14px #2358751a;transform:translateY(-110%);transition:transform .25s ease}
+.trail.is-shown{transform:none}
+.trail-top{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.trail-title{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:15px;color:#1f4f69}
+.trail-step{margin-left:auto;font-size:13px;font-weight:700;color:#6f93a6}
+.trail-segs{display:flex;gap:4px}
+.trail-seg{flex:1;position:relative;text-decoration:none;padding:4px 0}
+.trail-seg i{display:block;height:6px;border-radius:99px;background:#dbe8ee;transition:background .3s}
+.trail-seg span{position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;color:transparent}
+.trail-seg:hover i{background:#b9dbe8}
+.trail-seg.is-done i{background:linear-gradient(90deg,#70b4d4,#55a4a4)}
+.trail-seg.is-here i{background:linear-gradient(90deg,#55a4a4,#7ccab3);box-shadow:0 0 0 2px #55a4a433;animation:trail-pulse 1.8s ease-in-out infinite}
+@keyframes trail-pulse{50%{box-shadow:0 0 0 4px #55a4a422}}
+.trail-now{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:13.5px;color:#286987;font-weight:650}
+.trail-clock{margin-left:8px;padding:1px 8px;border-radius:99px;background:#eef8e8;color:#4b7a2f;font-size:12px;font-weight:750}
+.trail-clock:empty{display:none}
+@media(max-width:600px){.trail-title{display:none}.trail-step{margin-left:0}}
+@media (prefers-reduced-motion: reduce){.trail{transition:none}.trail-seg.is-here i{animation:none}}
+section.level2{scroll-margin-top:96px}
+.cal-ev small.cal-room{display:block;font-weight:750;opacity:.85;margin-top:1px}
+.cal-ev small.cal-room::before{content:none}

@@ -45,7 +45,10 @@ A quick check before we start. **Don't worry if something isn't ready yet:** we'
 - [ ] 💻 Laptop
 - [ ] 📶 Connected to the Wi-Fi
 - [ ] 🧮 JASP (nightly build) installed · [download ↗](https://static.jasp-stats.org/Nightlies/){target="_blank"}
-- [ ] 📊 R and RStudio installed · [how to ↗](https://rstudio-education.github.io/hopr/starting.html){target="_blank"}
+- [ ] 📊 R (**4.5 or newer**) and RStudio installed · [how to ↗](https://rstudio-education.github.io/hopr/starting.html){target="_blank"} · check your version: run `R.version.string` in RStudio
+- [ ] 🛠️ Build tools, so R can compile packages
+    - **Mac:** open Terminal and run `xcode-select --install` (if it says *already installed*: you're done 🎉)
+    - **Windows:** install [Rtools45 ↗](https://cran.r-project.org/bin/windows/Rtools/){target="_blank"} (a big download, so best done before the session)
 - [ ] 🐙 A GitHub account (know your username and password) · [sign up ↗](https://github.com/signup){target="_blank"}
 - [ ] 💬 Joined our Mattermost channel · invite link in your email
 :::
@@ -54,7 +57,7 @@ A quick check before we start. **Don't worry if something isn't ready yet:** we'
 <div class="mini-note"><strong>Something missing?</strong> Raise your hand. The first part of today involves some waiting while things install, so there's time to catch up.</div>
 ```
 
-## Overview [⏱ 5 min]{.timing} [0:05–0:10]{.timing .clock} {#welcome}
+## Overview [⏱ 15 min]{.timing} [0:05–0:20]{.timing .clock} {#welcome}
 
 The big picture: **what** we're building this term, **how** we'll get there, **what's in it** for you, **when** we meet, and what we'll do **today**.
 
@@ -94,7 +97,7 @@ The big picture: **what** we're building this term, **how** we'll get there, **w
 <div class="worry"><div class="worry-q">😰 “I can’t code yet. How am I supposed to build a JASP module?”</div><div class="worry-a">That’s exactly what our meetings are for: <b>we show you, then you try</b>, one small step at a time.</div></div>
 <div class="session-grid"><div><span>💡 THURSDAYS · 11:30–13:00</span><strong>Sessions</strong><em class="tagline">We show you how.</em><div class="tbar"><div class="seg blue" style="flex:60">💬 Explain<small>60 min</small></div><div class="seg green" style="flex:30">🧩 Practice<small>30 min</small></div></div></div><div><span>🧩 ALTERNATE THURSDAYS · 15:00–16:30</span><strong>Practicals</strong><em class="tagline">You try it, with backup.</em><div class="tbar"><div class="seg sky" style="flex:30">🔁 Recap<small>30 min</small></div><div class="seg teal" style="flex:30">❓ Q&amp;A<small>30 min</small></div><div class="seg green" style="flex:30">🧩 Practice<small>30 min</small></div></div></div></div>
 <div class="faq-row"><details class="faq"><summary>🤔 What if I get stuck?</summary><p>Ask! Every practical has Q&amp;A time, and our Mattermost channel is open all week.</p></details><details class="faq"><summary>📅 I can’t come every week</summary><p>No problem. Pick your plan in the calendar below 👇</p></details><details class="faq"><summary>📝 Is this graded?</summary><p>No grades. No tests. No stupid questions.</p></details></div>
-<div class="cal" id="my-cal" data-mode="both"><div class="cal-top"><strong>Until Christmas</strong><span class="cal-legend"><i class="session"></i>Session <i class="practical"></i>Practical</span></div><div class="cal-ask"><span>Which can you make?</span><div class="cal-modes" role="group" aria-label="Which meetings can you attend?"><button type="button" data-mode="both" aria-pressed="true">🙌 Both</button><button type="button" data-mode="sessions" aria-pressed="false">💡 Sessions only</button><button type="button" data-mode="practicals" aria-pressed="false">🧩 Practicals only</button></div></div><p class="cal-summary" id="cal-summary" aria-live="polite"></p><div class="cal-grid"><div class="cal-head">Mon</div><div class="cal-head">Tue</div><div class="cal-head">Wed</div><div class="cal-head">Thu</div><div class="cal-head">Fri</div><div class="cal-day"><span class="cal-num">9 <em>Nov</em></span></div><div class="cal-day"><span class="cal-num">10</span></div><div class="cal-day"><span class="cal-num">11</span></div><div class="cal-day has-session"><span class="cal-num">12</span><div class="cal-ev session" data-both="go" data-note-both="Pick one of the two runs" data-sessions="go" data-note-sessions="" data-practicals="skip" data-note-practicals="Come on Tue 17 instead"><b>Session 1</b><small>11:30–13:00</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">13</span></div><div class="cal-day"><span class="cal-num">16</span></div><div class="cal-day has-session"><span class="cal-num">17</span><div class="cal-ev session" data-both="alt" data-note-both="…or this run" data-sessions="alt" data-note-sessions="Backup run" data-practicals="go" data-note-practicals="Your Session 1"><b>Session 1 · 2nd run</b><small>13:00–14:30</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">18</span></div><div class="cal-day has-practical"><span class="cal-num">19</span><div class="cal-ev practical" data-both="go" data-note-both="Optional if you know R" data-sessions="skip" data-note-sessions="Materials posted online" data-practicals="go" data-note-practicals=""><b>Practical 1 · R crash course</b><small>15:00–16:30</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">20</span></div><div class="cal-day"><span class="cal-num">23</span></div><div class="cal-day"><span class="cal-num">24</span></div><div class="cal-day"><span class="cal-num">25</span></div><div class="cal-day has-session"><span class="cal-num">26</span><div class="cal-ev session" data-both="go" data-note-both="" data-sessions="go" data-note-sessions="" data-practicals="skip" data-note-practicals="Materials shared after class"><b>Session 2</b><small>11:30–13:00</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">27</span></div><div class="cal-day"><span class="cal-num">30</span></div><div class="cal-day"><span class="cal-num">1 <em>Dec</em></span></div><div class="cal-day"><span class="cal-num">2</span></div><div class="cal-day has-practical"><span class="cal-num">3</span><div class="cal-ev practical" data-both="go" data-note-both="Skip the recap: arrive 15:30" data-sessions="skip" data-note-sessions="Exercises online, try at home" data-practicals="go" data-note-practicals="Starts with a recap of Session 2"><b>Practical 2</b><small>15:00–16:30</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">4</span></div><div class="cal-day"><span class="cal-num">7</span></div><div class="cal-day"><span class="cal-num">8</span></div><div class="cal-day"><span class="cal-num">9</span></div><div class="cal-day has-session"><span class="cal-num">10</span><div class="cal-ev session" data-both="go" data-note-both="" data-sessions="go" data-note-sessions="" data-practicals="skip" data-note-practicals="Materials online · recap in January"><b>Session 3</b><small>11:30–13:00</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">11</span></div></div><div class="cal-xmas">📚 Exam week (14–18 Dec) · 🎄 Christmas break · we'll poll for a new schedule for January</div></div>
+<div class="cal" id="my-cal" data-mode="both"><div class="cal-top"><strong>Until Christmas</strong><span class="cal-legend"><i class="session"></i>Session <i class="practical"></i>Practical</span></div><div class="cal-ask"><span>Which can you make?</span><div class="cal-modes" role="group" aria-label="Which meetings can you attend?"><button type="button" data-mode="both" aria-pressed="true">🙌 Both</button><button type="button" data-mode="sessions" aria-pressed="false">💡 Sessions only</button><button type="button" data-mode="practicals" aria-pressed="false">🧩 Practicals only</button></div></div><p class="cal-summary" id="cal-summary" aria-live="polite"></p><div class="cal-grid"><div class="cal-head">Mon</div><div class="cal-head">Tue</div><div class="cal-head">Wed</div><div class="cal-head">Thu</div><div class="cal-head">Fri</div><div class="cal-day"><span class="cal-num">9 <em>Nov</em></span></div><div class="cal-day"><span class="cal-num">10</span></div><div class="cal-day"><span class="cal-num">11</span></div><div class="cal-day has-session"><span class="cal-num">12</span><div class="cal-ev session" data-both="go" data-note-both="Pick one of the two runs" data-sessions="go" data-note-sessions="" data-practicals="skip" data-note-practicals="Come on Tue 17 instead"><b>Session 1</b><small>11:30–13:00</small><small class="cal-room">📍 REC L0.10</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">13</span></div><div class="cal-day"><span class="cal-num">16</span></div><div class="cal-day has-session"><span class="cal-num">17</span><div class="cal-ev session" data-both="alt" data-note-both="…or this run" data-sessions="alt" data-note-sessions="Backup run" data-practicals="go" data-note-practicals="Your Session 1"><b>Session 1 · 2nd run</b><small>13:00–14:30</small><small class="cal-room">📍 REC GS.34</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">18</span></div><div class="cal-day has-practical"><span class="cal-num">19</span><div class="cal-ev practical" data-both="go" data-note-both="Optional if you know R" data-sessions="skip" data-note-sessions="Materials posted online" data-practicals="go" data-note-practicals=""><b>Practical 1 · R crash course</b><small>15:00–16:30</small><small class="cal-room">📍 REC GS.34</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">20</span></div><div class="cal-day"><span class="cal-num">23</span></div><div class="cal-day"><span class="cal-num">24</span></div><div class="cal-day"><span class="cal-num">25</span></div><div class="cal-day has-session"><span class="cal-num">26</span><div class="cal-ev session" data-both="go" data-note-both="" data-sessions="go" data-note-sessions="" data-practicals="skip" data-note-practicals="Materials shared after class"><b>Session 2</b><small>11:30–13:00</small><small class="cal-room">📍 REC JKK.26</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">27</span></div><div class="cal-day"><span class="cal-num">30</span></div><div class="cal-day"><span class="cal-num">1 <em>Dec</em></span></div><div class="cal-day"><span class="cal-num">2</span></div><div class="cal-day has-practical"><span class="cal-num">3</span><div class="cal-ev practical" data-both="go" data-note-both="Skip the recap: arrive 15:30" data-sessions="skip" data-note-sessions="Exercises online, try at home" data-practicals="go" data-note-practicals="Starts with a recap of Session 2"><b>Practical 2</b><small>15:00–16:30</small><small class="cal-room">📍 REC GS.08</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">4</span></div><div class="cal-day"><span class="cal-num">7</span></div><div class="cal-day"><span class="cal-num">8</span></div><div class="cal-day"><span class="cal-num">9</span></div><div class="cal-day has-session"><span class="cal-num">10</span><div class="cal-ev session" data-both="go" data-note-both="" data-sessions="go" data-note-sessions="" data-practicals="skip" data-note-practicals="Materials online · recap in January"><b>Session 3</b><small>11:30–13:00</small><small class="cal-room">📍 REC V0.12</small><em class="cal-note"></em></div></div><div class="cal-day"><span class="cal-num">11</span></div></div><div class="cal-xmas">📚 Exam week (14–18 Dec) · 🎄 Christmas break · we'll poll for a new schedule for January</div></div>
 
 ```
 
@@ -102,111 +105,250 @@ The big picture: **what** we're building this term, **how** we'll get there, **w
 
 ```{=html}
 <div class="mission-win">🎯 <strong>Today's win:</strong> your own button appears in JASP.</div>
-<div class="route-strip"><a href="#token">⚙️ Set up</a><b>→</b><a href="#install">👋 Meet</a><b>→</b><a href="#structure">🧩 Explore</a><b>→</b><a href="#load">🚀 Load</a><b>→</b><a href="#button">✅ Your button</a></div><p class="flip-hint">👆 Click a step to jump there</p>
+<div class="route-strip"><a href="#intros">👋 Meet</a><b>→</b><a href="#token">⚙️ Set up</a><b>→</b><a href="#load">🚀 Load</a><b>→</b><a href="#structure">🧩 Explore</a><b>→</b><a href="#button">✅ Your button</a></div><p class="flip-hint">👆 Click a step to jump there</p>
 ```
 
-## Get your GitHub token [⏱ 10 min]{.timing} [0:10–0:20]{.timing .clock} {#token}
+### 👋 Your turn: introductions {#intros}
 
-::: {.callout-warning icon="false"}
-## TODO (Leo): after your test run
+Before we touch any code: who's here?
 
-- Is a token needed at all? (Test on a computer **without** `GITHUB_PAT` set.) If not, delete this whole section, and its link in `ribbon.html`.
-- Final steps + screenshot of the token page.
-- Reminder text: "Tick no boxes" and "The token is shown only once: copy it now!"
+```{=html}
+<div class="intro-chips"><span>🙋 Your name</span><span>🎓 Your programme</span><span>💛 Your favorite thing</span></div>
+```
+
+## Get the module & a GitHub token [⏱ 5 min]{.timing} [0:20–0:25]{.timing .clock} {#token}
+
+::::: {.steps}
+:::: {.step}
+[🌐 Browser]{.app .app-web} [Grab the module]{.step-title}
+
+Download the starter module and unzip it somewhere you'll find again (e.g. your Documents folder).
+
+```{=html}
+<div class="data-download"><a href="../module/jaspDataWrangling.zip" download>⬇️ Download jaspDataWrangling.zip</a></div>
+```
+::::
+
+:::: {.step}
+[🐙 GitHub]{.app .app-gh} [Create a token]{.step-title}
+
+Logged in to GitHub? Open <https://github.com/settings/tokens/new> and fill in:
+
+```{=html}
+<div class="token-form">
+  <div><span>Note</span><code>JASP</code></div>
+  <div><span>Expiration</span><code>90 days</code></div>
+  <div class="tick-nothing"><span>Scopes</span><b>☐ tick nothing!</b></div>
+  <div><span>Then</span><b>Generate token ↓</b></div>
+</div>
+<details class="stuck"><summary>🤔 Why a token at all?</summary><p>Our module downloads two packages (<code>jaspBase</code>, <code>jaspGraphs</code>) from GitHub. Without a login, GitHub allows only <strong>60 requests per hour per network</strong>, and the whole room shares one network. A token gives each of you your own allowance. With no boxes ticked, it can only read public stuff, so it can't do any harm.</p></details>
+```
+
+::: {.callout-important icon="false"}
+## Copy it now!
+
+GitHub shows the token (`ghp_...`) **only once**. Lost it? No drama: just make a new one.
 :::
+::::
 
-Direct link: <https://github.com/settings/tokens/new>
+:::: {.step}
+[📊 RStudio]{.app .app-r} [Hand the token to R]{.step-title}
 
-- [ ] Logged in to GitHub
-- [ ] Token generated and copied
-
-## Install the module & meet each other [⏱ 25 min]{.timing} [0:20–0:45]{.timing .clock} {#install}
-
-::: {.callout-warning icon="false"}
-## TODO (Leo): after your test run
-
-- Where students get the template (zip link / file name).
-- Exact steps: open the `.Rproj` file in RStudio → set the token → run the install.
-- Typical install time, and the errors you met (with fixes).
-:::
+Open RStudio (**just RStudio, not the project yet**) and run in the Console:
 
 ``` r
-# TODO (Leo): confirm the exact commands
-Sys.setenv(GITHUB_PAT = "paste-your-token-here")
+file.edit("~/.Renviron")
+```
+
+Add this line with your own token, **press Enter once** (R can skip a last line without a line break 🙃), and save:
+
+``` text
+GITHUB_PAT=ghp_paste-your-token-here
+```
+
+```{=html}
+<details class="stuck"><summary>🤔 Why this file?</summary><p><code>.Renviron</code> is read every time R starts, so you only do this once on this computer. R picks it up in the <strong>next</strong> R session, which starts automatically when you open the project.</p></details>
+```
+::::
+:::::
+
+- [ ] Module downloaded & unzipped
+- [ ] Logged in to GitHub
+- [ ] Token generated and copied
+- [ ] `GITHUB_PAT=...` saved in `.Renviron`
+
+## Install the module [⏱ 20 min]{.timing} [0:25–0:45]{.timing .clock} {#install}
+
+::::: {.steps}
+:::: {.step}
+[📁 Finder / Explorer]{.app .app-files} [Open the project]{.step-title}
+
+Double-click `jaspDataWrangling.Rproj`. RStudio's Console should greet you with:
+
+``` text
+- Project '~/.../jaspDataWrangling' loaded. [renv 1.x.x]
+```
+
+```{=html}
+<details class="stuck"><summary>😵 No such line?</summary><p>RStudio didn't open it as a project. Use <strong>File → Open Project…</strong> and pick the <code>.Rproj</code> file.</p></details>
+```
+::::
+
+:::: {.step}
+[📊 RStudio]{.app .app-r} [Did the token arrive?]{.step-title}
+
+``` r
+Sys.getenv("GITHUB_PAT")
+```
+
+It should print something starting with `ghp_`.
+
+```{=html}
+<details class="stuck"><summary>😵 It prints an empty ""</summary><p>R hasn't read your <code>.Renviron</code> yet. <strong>Session → Restart R</strong>, then try again.</p></details>
+```
+::::
+
+:::: {.step}
+[📊 RStudio]{.app .app-r} [Install everything]{.step-title}
+
+``` r
 renv::install(".")
 ```
 
-- [ ] Project opened in RStudio
-- [ ] Installation started
-
-### While it installs: introductions 👋
-
-The installation takes a while, so let's use the time to get to know each other. Please share:
-
-1.  Your **name** and **programme**
-2.  How you would describe your **R experience** (none at all is perfectly fine!)
-3.  🔍 **Before you analyse data in JASP, what do you usually have to do to it first, and where?** (Excel? R? SPSS? By hand?)
-
-::: {.callout-note icon="false"}
-## Note
-
-Your answers to question 3 are the start of our research: they help decide which data wrangling tools our module should offer.
-:::
-
-## How a JASP module works [⏱ 15 min]{.timing} [0:45–1:00]{.timing .clock} {#structure}
-
-A JASP module is an **R package** with extra files for the JASP interface. Think of it as three pieces working together:
+Sit back ☕ This compiles a few packages and takes a while. You're done when R says `Successfully installed`.
 
 ```{=html}
-<div class="anatomy-grid"><div class="anatomy-node"><div class="anatomy-icon">📋</div><strong>Description.qml</strong><span>Menu entry</span><small>Where your analysis appears</small></div><div class="anatomy-arrow">→</div><div class="anatomy-node"><div class="anatomy-icon">🎛️</div><strong>missingValues.qml</strong><span>Controls</span><small>What users click</small></div><div class="anatomy-arrow">→</div><div class="anatomy-node"><div class="anatomy-icon">📊</div><strong>missingValues.R</strong><span>Computation</span><small>What JASP calculates</small></div></div>
-<details class="file-peek"><summary>📂 Where do these files live? · Show folder structure</summary><pre><code>myModule/
-├── DESCRIPTION            ← R package info (name, dependencies)
-├── R/
-│   └── missingValues.R    ← the computation (R)
-└── inst/
-    ├── Description.qml    ← adds the module to JASP's menu
-    └── qml/
-        └── missingValues.qml  ← the analysis window (buttons, checkboxes, ...)</code></pre></details>
+<details class="stuck"><summary>😵 Red ERROR somewhere?</summary><p>Scroll <strong>up</strong> to the <em>first</em> red ERROR: that's the real cause. <code>dependency 'X' is not available</code> only means X failed earlier. Screenshot that first error and wave at Leo 👋</p></details>
 ```
+::::
+:::::
 
-**1. The menu entry** *(simplified)*
+- [ ] Project opened (saw the `Project ... loaded` line)
+- [ ] Installation finished (`Successfully installed ...`)
 
-``` qml
-Description
-{
-    title : qsTr("Data Wrangling")
+## Load the module in JASP [⏱ 10 min]{.timing} [0:45–0:55]{.timing .clock} {#load}
 
-    Analysis
-    {
-        title : qsTr("Missing Values")   // what users see in the menu
-        func  : "missingValues"          // the R function to call
-    }
-}
-```
+::::: {.steps}
+:::: {.step}
+[🧮 JASP]{.app .app-jasp} [Open the developer settings]{.step-title}
 
-**2. The interface**
+Menu (☰, top left) → **Preferences** → **Advanced**. Find the **Development module** box and keep this window open.
+::::
 
-``` qml
-Form
-{
-    VariablesForm
-    {
-        AvailableVariablesList { name: "allVariables" }
-        AssignedVariablesList  { name: "variables"; title: qsTr("Variables") }
-    }
+:::: {.step}
+[📊 RStudio]{.app .app-r} [Find where renv put everything]{.step-title}
 
-    CheckBox { name: "showPercentage"; label: qsTr("Show percentages") }
-}
-```
-
-**3. The computation**
+With the project still open, run:
 
 ``` r
-missingValues <- function(jaspResults, dataset, options) {
-  # options$variables       -> the variables the user selected
-  # options$showPercentage  -> TRUE or FALSE (the checkbox!)
-  # ... compute, then put tables and plots into jaspResults
+.libPaths()
+```
+
+Copy the **first** path, the one marked `[1]`. It contains `jaspDataWrangling` and ends with your R version and computer type, something like:
+
+``` text
+[1] "/Users/you/.../jaspDataWrangling-5f03db05/macos/R-4.5/aarch64-apple-darwin20"
+```
+
+Copy only the path itself: no `[1]`, no quotes.
+::::
+
+:::: {.step}
+[🧮 JASP]{.app .app-jasp} [Paste it]{.step-title}
+
+Under **Development module**: tick **Enable renv mode**, paste the path into **Project library**, and type `jaspDataWrangling` as **Module name**.
+
+![](img/jasp-dev-module.png){width=560 fig-alt="JASP Development module settings: Enable renv mode ticked, Project library path, Module name jaspDataWrangling"}
+::::
+
+:::: {.step .step-final}
+[🧮 JASP]{.app .app-jasp} [Lift-off!]{.step-title}
+
+Click **Install Developer Module**. A **Data Wrangling** button appears on the ribbon 🎉 Open **Control Playground** and poke every control: watch the text, table and plot react. Then peek at **Missing Values**: that's the one you'll build.
+::::
+:::::
+
+- [ ] Enable renv mode ticked
+- [ ] Library path pasted
+- [ ] Module visible in the JASP menu 🎉
+
+## How a JASP module works [⏱ 15 min]{.timing} [0:55–1:10]{.timing .clock} {#structure}
+
+You just played with **Control Playground**. Time to open the hood! A JASP module is an **R package** with a few extra files for the JASP interface. Every analysis is made of three pieces:
+
+```{=html}
+<div class="anatomy-grid"><div class="anatomy-node"><div class="anatomy-icon">📋</div><strong>Description.qml</strong><span>Menu entry</span><small>Puts “Control Playground” in the ribbon</small></div><div class="anatomy-arrow">→</div><div class="anatomy-node"><div class="anatomy-icon">🎛️</div><strong>controlPlayground.qml</strong><span>Controls</span><small>The left panel you clicked</small></div><div class="anatomy-arrow">→</div><div class="anatomy-node"><div class="anatomy-icon">📊</div><strong>controlPlayground.R</strong><span>Computation</span><small>The text, table &amp; plot on the right</small></div></div>
+<details class="file-peek"><summary>📂 Where do these files live? · Show the jaspDataWrangling folder</summary><pre><code>jaspDataWrangling/
+├── DESCRIPTION                  ← R package info (name, dependencies)
+├── NAMESPACE                    ← which R functions JASP may call
+├── R/
+│   ├── controlPlayground.R      ← 📊 computation for Control Playground
+│   ├── missingValues.R          ← 📊 computation for Missing Values
+│   └── common.R                 ← small helpers both analyses share
+└── inst/
+    ├── Description.qml          ← 📋 the module's menu
+    └── qml/
+        ├── controlPlayground.qml ← 🎛️ the Control Playground window
+        └── missingValues.qml    ← 🎛️ the Missing Values window</code></pre></details>
+```
+
+Open these files in RStudio's **Files** pane as we go. Here are the key lines (simplified):
+
+**1. The menu entry** · `inst/Description.qml`
+
+``` qml
+Analysis
+{
+    title : qsTr("Control Playground")   // what you saw in the menu
+    func  : "controlPlayground"          // the R function JASP calls
+    qml   : "controlPlayground.qml"      // the window it opens
 }
+```
+
+**2 + 3. The controls and the computation**, side by side. **Click a highlighted name** to find its partner:
+
+```{=html}
+<div class="pair-lab" id="pair-lab">
+  <div class="pair-pane">
+    <div class="pair-head">🎛️ controlPlayground.qml</div>
+<pre><code>TextField {
+    name: <span class="pair" data-pair="yourName">"yourName"</span>
+    label: qsTr("Your name")
+}
+IntegerField {
+    name: <span class="pair" data-pair="sampleSize">"sampleSize"</span>
+    defaultValue: 100
+}
+Slider {
+    name: <span class="pair" data-pair="sd">"sd"</span>
+    value: 1
+}
+CheckBox {
+    name: <span class="pair" data-pair="showPlot">"showPlot"</span>
+    label: qsTr("Show histogram")
+}</code></pre>
+  </div>
+  <div class="pair-pane">
+    <div class="pair-head">📊 controlPlayground.R</div>
+<pre><code>controlPlayground &lt;- function(jaspResults,
+                              dataset, options) {
+
+  # text
+  hello &lt;- paste("Hello,", <span class="pair" data-pair="yourName">options$yourName</span>)
+
+  # simulate data
+  x &lt;- rnorm(n  = <span class="pair" data-pair="sampleSize">options$sampleSize</span>,
+             sd = <span class="pair" data-pair="sd">options$sd</span>)
+
+  # plot, only if ticked
+  if (<span class="pair" data-pair="showPlot">options$showPlot</span>) {
+    # ... draw the histogram
+  }
+}</code></pre>
+  </div>
+  <p class="pair-hint" id="pair-hint" aria-live="polite">👆 Click any highlighted name</p>
+</div>
+<details class="stuck"><summary>🤔 Quick check: in JASP, untick “Show histogram”. Which R line decides that no plot appears?</summary><p><code>if (options$showPlot)</code>. Unticked means <code>options$showPlot</code> is <code>FALSE</code>, so R skips the whole plotting block. Tick it again, and the plot is back.</p></details>
 ```
 
 ### Try it: predict what JASP sends to R 🎮
@@ -227,23 +369,9 @@ missingValues <- function(jaspResults, dataset, options) {
 ### The magic connection ✨
 
 ```{=html}
-<div class="magic-flow"><div class="magic-node"><span>🎛️ QML</span><small>Tick a checkbox</small></div><b>→</b><div class="magic-node"><span>📦 options</span><small>showPercentage = TRUE</small></div><b>→</b><div class="magic-node"><span>🧮 R</span><small>Read the option</small></div><b>→</b><div class="magic-node"><span>📊 Results</span><small>Update output</small></div></div>
-<div class="mini-note"><strong>The one thing to remember:</strong> the QML control's <code>name</code> is how R reads its value: <code>options$showPercentage</code>. Today we focus on the interface.</div>
+<div class="magic-flow"><div class="magic-node"><span>🎛️ QML</span><small>Tick a checkbox</small></div><b>→</b><div class="magic-node"><span>📦 options</span><small>showPlot = TRUE</small></div><b>→</b><div class="magic-node"><span>🧮 R</span><small>Read the option</small></div><b>→</b><div class="magic-node"><span>📊 Results</span><small>Update output</small></div></div>
+<div class="mini-note"><strong>The one thing to remember:</strong> the QML control's <code>name</code> is how R reads its value: <code>name: "showPlot"</code> in QML becomes <code>options$showPlot</code> in R. Today we focus on the interface.</div>
 ```
-
-## Load the module in JASP [⏱ 10 min]{.timing} [1:00–1:10]{.timing .clock} {#load}
-
-::: {.callout-warning icon="false"}
-## TODO (Leo): after your test run
-
-- JASP version / nightly build used.
-- Step-by-step: Menu → Preferences → Advanced → Developer mode → Enable renv mode → library path → module name → Install Developer Module.
-- The command that prints the right library path (e.g. `.libPaths()[1]`, to be confirmed).
-- Screenshot of the settings screen.
-:::
-
-- [ ] Developer mode on
-- [ ] Module visible in the JASP menu 🎉
 
 ## Add your first button [⏱ 15 min]{.timing} [1:10–1:25]{.timing .clock} {#button}
 
@@ -300,8 +428,8 @@ No instructions here, just a goal: **make the analysis show a different title in
 
 | When | What |
 |------------------------------------|------------------------------------|
-| Thu 19 Nov · 15:00–16:30 | **Practical: R crash course.** Data frames, finding missing values, writing a function. Optional if you're comfortable with R; we'll also fix leftover setup problems. |
-| Thu 26 Nov · 11:30–13:00 | **Session 2:** connect the interface to R and build your first table. |
+| Thu 19 Nov · 15:00–16:30 · REC GS.34 | **Practical: R crash course.** Data frames, finding missing values, writing a function. Optional if you're comfortable with R; we'll also fix leftover setup problems. |
+| Thu 26 Nov · 11:30–13:00 · REC JKK.26 | **Session 2:** connect the interface to R and build your first table. |
 
 : Coming up
 
@@ -315,3 +443,12 @@ No instructions here, just a goal: **make the analysis show a different title in
 
 Next week, in the R crash course, you'll compute a simple average from the mystery dataset… and something will look *very* wrong.
 :::
+
+### 🧭 Curious what else you could work on?
+
+Have a look at our list of potential student projects: ideas from the JASP team, ideas from other students, and beginner-friendly issues on GitHub. Some involve a lot of coding, some hardly any.
+
+```{=html}
+<div class="data-download"><a href="https://docs.google.com/spreadsheets/d/1SUtcm54EjAVyw6KdJ-t5AjNIC07EKB0Yocrb1vaSB7M/edit?usp=sharing" target="_blank" rel="noopener">📋 Potential student projects ↗</a></div>
+```
+
