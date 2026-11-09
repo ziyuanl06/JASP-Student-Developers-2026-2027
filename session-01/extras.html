@@ -5,7 +5,11 @@
     before:  {title: 'Pre-flight check',  done: 'Ready for take-off! ✈️',        burst: ['✈️','✨','🎉']},
     token:   {title: 'Set-up quest',      done: 'Module + token secured! 🔑',     burst: ['🔑','✨','📦']},
     install: {title: 'Install quest',     done: 'Packages in the bag! 📦',        burst: ['📦','✨','🎉']},
-    load:    {title: 'Lift-off',          done: 'JASP sees your module! 🚀',      burst: ['🚀','⭐','🎉']}
+    load:    {title: 'Lift-off',          done: 'JASP sees your module! 🚀',      burst: ['🚀','⭐','🎉']},
+    menu:    {title: 'Menu makeover',     done: 'You just changed JASP! ✨',       burst: ['✨','📋','🎉']},
+    spot:    {title: 'Missions',          done: 'Sharp eyes! 👀',                 burst: ['👀','🔍','✨']},
+    change:  {title: 'Missions',           done: 'Case closed! 🕵️',                burst: ['🕵️','✏️','🎉']},
+    detectives: {title: 'Detective missions', done: 'Case closed! 🕵️',           burst: ['🕵️','🔍','🎉']}
   };
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
 
@@ -82,44 +86,61 @@ document.querySelectorAll('.flip-card').forEach(function(card){card.addEventList
 /* Offline QML → R options prediction mini-lab; no JASP connection required. */
 (function () {
   const root=document.getElementById('option-lab'); if (!root) return;
+  const one=(sel)=>root.querySelector(sel);
+  // Mini "JASP window" checkbox: o = {label, checked, disabled, indent}
+  function cb(o){return '<span class="mock-cb'+(o.disabled?' is-off':'')+(o.indent?' is-indent':'')+'"><i class="'+(o.checked?'on':'')+'"></i>'+o.label+'</span>'}
   const levels=[
-    { question:'You tick “Show percentages”. What is options$showPercentage?', qml:'CheckBox { name: "showPercentage"; label: "Show percentages" }',choices:['TRUE','FALSE','"Show percentages"'],answer:0,explanation:'A checked CheckBox produces the logical value TRUE. R reads it as options$showPercentage.',type:'check',initial:true },
-    { question:'You choose age. What is options$variables in this simplified example?', qml:'AssignedVariablesList { name: "variables"; title: qsTr("Variables") }',choices:['"age"','TRUE','"variables"'],answer:0,explanation:'The selected variable name is passed to options$variables (typically a vector of variable names). For this one-variable example, that is "age".',type:'variable',initial:'age'},
-    { question:'You leave “Show percentages” unticked. What does R receive?', qml:'CheckBox { name: "showPercentage"; label: "Show percentages" }',choices:['NULL','FALSE','0%'],answer:1,explanation:'An unchecked CheckBox gives the logical value FALSE — not NULL, and not a numeric percentage.',type:'check',initial:false}
+    { code:'CheckBox\n{\n    name : "showPlot"\n    label: qsTr("Show histogram")\n}',
+      question:'Which text appears next to the checkbox in JASP?',
+      choices:[cb({label:'Show histogram'}), cb({label:'showPlot'}), cb({label:'CheckBox'})], answer:0,
+      explain:'<code>label</code> is the text users see. <code>name</code> is a hidden ID that R uses to read the value: we’ll need it in Session 2.',
+      window:{parent:{label:'Show histogram',checked:false}} },
+    { code:'CheckBox\n{\n    name   : "showPlot"\n    label  : qsTr("Show histogram")\n    checked: true\n}',
+      question:'You open the analysis. What does the checkbox look like?',
+      choices:[cb({label:'Show histogram',checked:true}), cb({label:'Show histogram'}), cb({label:'Show histogram: true'})], answer:0,
+      explain:'<code>checked: true</code> sets the <em>default</em>: it starts ticked. Delete that line and it starts unticked.',
+      window:{parent:{label:'Show histogram',checked:true}} },
+    { code:'CheckBox\n{\n    name : "showPlot"\n    label: qsTr("Show histogram")\n\n    CheckBox\n    {\n        name : "showMeanLine"\n        label: qsTr("Mark the mean")\n    }\n}',
+      question:'“Show histogram” is unticked. What happens to “Mark the mean”?',
+      choices:[cb({label:'Show histogram'})+cb({label:'Mark the mean'}), cb({label:'Show histogram'})+cb({label:'Mark the mean',indent:true,disabled:true}), cb({label:'Show histogram'})], answer:1,
+      explain:'A control <em>inside</em> a CheckBox is indented, and greyed out until its parent is ticked. Try it: tick “Show histogram” in the window on the left (or in Control Playground!).',
+      window:{parent:{label:'Show histogram',checked:false},child:{label:'Mark the mean'}} }
   ];
   let current=0,chosen=null; const solved=[false,false,false];
-  const one=(sel)=>root.querySelector(sel);
+  // Live, clickable mini window (shown after checking)
+  function renderWindow(revealed){
+    const w=one('#lab-window'), d=levels[current].window;
+    if(!revealed){w.innerHTML='<span class="lab-window-wait">❓ Make a prediction to reveal</span>';return;}
+    const st={p:d.parent.checked};
+    function paint(){
+      w.innerHTML=cb({label:d.parent.label,checked:st.p})+(d.child?cb({label:d.child.label,indent:true,disabled:!st.p,checked:st.c}):'');
+      const boxes=w.querySelectorAll('.mock-cb');
+      boxes[0].addEventListener('click',()=>{st.p=!st.p;paint()});
+      if(d.child) boxes[1].addEventListener('click',()=>{if(st.p){st.c=!st.c;paint()}});
+      const t=document.createElement('p');t.className='lab-mini-help';t.textContent='👆 This window is clickable.';w.append(t);
+    }
+    paint();
+  }
   function draw(){
     const d=levels[current]; chosen=null;
     one('#lab-question').textContent=d.question;
-    one('#lab-qml-text').textContent=d.qml;
-    one('#lab-controls').replaceChildren();
-    if(d.type==='check'){
-      const label=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.checked=d.initial;
-      const desc=document.createElement('span');desc.textContent='Show percentages';label.append(check,desc);one('#lab-controls').append(label);
-      const hint=document.createElement('p');hint.className='lab-mini-help';hint.textContent='Try toggling this control. Then make your prediction.';one('#lab-controls').append(hint);
-      check.addEventListener('change',()=>{chosen=null;one('#lab-feedback').hidden=true;drawChoices();});
-    } else {
-      const lbl=document.createElement('label');lbl.htmlFor='lab-var';lbl.textContent='Variables'; const select=document.createElement('select');select.id='lab-var';
-      for(const value of ['age','anxiety_1','anxiety_2']){const opt=document.createElement('option');opt.value=value;opt.textContent=value;select.append(opt)}
-      one('#lab-controls').append(lbl,select);
-      const hint=document.createElement('p');hint.className='lab-mini-help';hint.textContent='Try choosing a different variable.';one('#lab-controls').append(hint);
-      select.addEventListener('change',()=>{chosen=null;one('#lab-feedback').hidden=true;drawChoices()});
-    }
-    one('#lab-feedback').hidden=true;drawChoices();
+    one('#lab-code').textContent=d.code;
+    one('#lab-feedback').hidden=true; renderWindow(false); drawChoices();
     root.querySelectorAll('.lab-tab').forEach((b,i)=>{b.classList.toggle('is-active',i===current);b.classList.toggle('is-solved',solved[i]);b.setAttribute('aria-pressed',String(i===current))});
     one('#lab-score').textContent=solved.filter(Boolean).length+' / 3';
   }
-  function expected(){const d=levels[current];if(d.type==='variable')return '"'+one('#lab-var').value+'"';return one('#lab-controls input').checked?'TRUE':'FALSE'}
-  function options(){const d=levels[current];return d.type==='variable'? [expected(),'TRUE','"variables"']:d.choices}
-  function drawChoices(){const box=one('#lab-choices');box.replaceChildren();options().forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-pressed',String(chosen===i));b.addEventListener('click',()=>{chosen=i;drawChoices();one('#lab-feedback').hidden=true});box.append(b)});one('#lab-check').disabled=chosen===null}
+  function drawChoices(){
+    const box=one('#lab-choices');box.replaceChildren();
+    levels[current].choices.forEach((html,i)=>{const b=document.createElement('button');b.type='button';b.className='mock-choice';b.innerHTML='<b>'+'ABC'[i]+'</b><span class="mock-win">'+html+'</span>';b.setAttribute('aria-pressed',String(chosen===i));b.addEventListener('click',()=>{chosen=i;drawChoices();one('#lab-feedback').hidden=true});box.append(b)});
+    one('#lab-check').disabled=chosen===null;
+  }
   one('#lab-check').addEventListener('click',()=>{
     if(chosen===null)return;
-    const correct=options()[chosen]===expected(),f=one('#lab-feedback');
+    const d=levels[current], correct=chosen===d.answer, f=one('#lab-feedback');
     if(correct)solved[current]=true;
     f.hidden=false;f.classList.toggle('is-wrong',!correct);
-    const expl=levels[current].type==='variable'?'The value is the selected variable name, not the label of the control. In a JASP analysis it is commonly represented as a vector of names.':(expected()==='TRUE'?'When the checkbox is ticked, R receives the logical TRUE.':'When the checkbox is unticked, R receives the logical FALSE.');
-    f.replaceChildren();const title=document.createElement('strong');title.textContent=correct?'✅ You got it!':'🔎 Not quite — take another look';const body=document.createElement('span');body.textContent='Correct value: options$'+(levels[current].type==='variable'?'variables':'showPercentage')+' = '+expected()+'. '+expl;f.append(title,body);
+    f.innerHTML='<strong>'+(correct?'✅ You got it!':'🔎 Not quite: it’s '+'ABC'[d.answer])+'</strong><span>'+d.explain+'</span>';
+    renderWindow(true);
     root.querySelectorAll('.lab-tab').forEach((b,i)=>b.classList.toggle('is-solved',solved[i]));one('#lab-score').textContent=solved.filter(Boolean).length+' / 3';
   });
   root.querySelectorAll('.lab-tab').forEach((b,i)=>b.addEventListener('click',()=>{current=i;draw()}));
@@ -216,8 +237,9 @@ document.querySelectorAll('.flip-card').forEach(function(card){card.addEventList
   function update() {
     var y = window.scrollY, trigger = 140, idx = -1;
     secs.forEach(function (s, i) { if (s.getBoundingClientRect().top - trigger <= 0) idx = i; });
-    var showAfter = nav ? nav.getBoundingClientRect().bottom < 0 : y > 300;
-    bar.classList.toggle('is-shown', showAfter);
+    // hysteresis: show a bit after the nav leaves, hide a bit before it returns (no flicker at the edge)
+    var edge = nav ? nav.getBoundingClientRect().bottom : 300 - y;
+    if (edge < -40) bar.classList.add('is-shown'); else if (edge > 0) bar.classList.remove('is-shown');
     if (idx === current) return; current = idx;
     var shown = Math.max(idx, 0);
     segs.querySelectorAll('.trail-seg').forEach(function (a, i) {
@@ -227,8 +249,98 @@ document.querySelectorAll('.flip-card').forEach(function(card){card.addEventList
     bar.querySelector('.trail-label').textContent = idx < 0 ? 'Getting started' : label(secs[shown]);
     bar.querySelector('.trail-clock').textContent = idx < 0 ? '' : clock(secs[shown]);
   }
-  window.addEventListener('scroll', update, {passive: true});
+  var queued = false;
+  window.addEventListener('scroll', function () { if (!queued) { queued = true; requestAnimationFrame(function () { queued = false; update(); }); } }, {passive: true});
   window.addEventListener('resize', update);
   update();
+})();
+</script>
+<script>
+// Control gallery: live slider readout + copy buttons
+(function () {
+  document.querySelectorAll('.mk-slider').forEach(function (l) {
+    var r = l.querySelector('input'), o = l.querySelector('output');
+    r.addEventListener('input', function () { o.textContent = Number(r.value).toFixed(1); });
+  });
+  document.querySelectorAll('.ctl-copy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = b.parentElement.querySelector('code').textContent;
+      (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () {
+        b.textContent = 'Copied ✓'; setTimeout(function () { b.textContent = 'Copy'; }, 1400);
+      }, function () { b.textContent = 'Select & copy'; });
+    });
+  });
+})();
+</script>
+<script>
+// Interactive file tree: click a row → explanation; click a folder again → fold/unfold
+(function () {
+  var ft = document.getElementById('file-tree'); if (!ft) return;
+  var data = JSON.parse(document.getElementById('ft-data').textContent);
+  var rows = Array.prototype.slice.call(ft.querySelectorAll('.ft-row'));
+  var panel = document.getElementById('ft-info');
+  function show(row) {
+    var d = data[row.dataset.key];
+    rows.forEach(function (r) { r.classList.toggle('is-active', r === row); });
+    panel.innerHTML = '<div class="ft-card"><span class="ft-big">' + d.icon + '</span><h5>' + d.title + '</h5><p>' + d.text +
+      '</p><span class="ft-tag ' + d.cls + '">' + d.tag + '</span></div>';
+  }
+  function setOpen(row, open) {
+    row.classList.toggle('is-closed', !open);
+    var depth = +row.dataset.depth, i = rows.indexOf(row) + 1;
+    for (; i < rows.length && +rows[i].dataset.depth > depth; i++) {
+      // hide all descendants when closing; when opening, only show direct-open chains
+      var hidden = !open || rows.slice(rows.indexOf(row) + 1, i).some(function (p) {
+        return +p.dataset.depth < +rows[i].dataset.depth && p.classList.contains('is-closed') && +p.dataset.depth > depth;
+      });
+      rows[i].hidden = hidden;
+    }
+  }
+  rows.forEach(function (row) {
+    row.addEventListener('click', function () {
+      var isDir = row.classList.contains('ft-dir');
+      if (isDir && row.classList.contains('is-active') && row.dataset.key !== 'root') setOpen(row, row.classList.contains('is-closed'));
+      show(row);
+    });
+  });
+})();
+</script>
+<script>
+// Bug hunt: click the broken line
+(function () {
+  var root = document.getElementById('bug-hunt'); if (!root) return;
+  var bugs = JSON.parse(document.getElementById('bug-data').textContent);
+  var cur = 0, solved = bugs.map(function () { return false; });
+  var tabs = root.querySelector('.bug-tabs'), code = root.querySelector('#bug-code'), fb = root.querySelector('#bug-feedback');
+  function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function draw() {
+    var b = bugs[cur];
+    tabs.innerHTML = bugs.map(function (x, i) {
+      return '<button type="button" class="bug-tab' + (i === cur ? ' is-active' : '') + (solved[i] ? ' is-solved' : '') + '" data-i="' + i + '">Bug ' + (i + 1) + (solved[i] ? ' · ' + x.title : '') + '</button>';
+    }).join('');
+    tabs.querySelectorAll('.bug-tab').forEach(function (t) { t.addEventListener('click', function () { cur = +t.dataset.i; draw(); }); });
+    root.querySelector('#bug-symptom').innerHTML = '<b>Symptom:</b> ' + b.symptom;
+    code.innerHTML = b.lines.map(function (l, i) {
+      return '<button type="button" class="bug-line" data-i="' + i + '"><span class="bug-no">' + (i + 1) + '</span><code>' + (esc(l) || '&nbsp;') + '</code></button>';
+    }).join('');
+    code.querySelectorAll('.bug-line').forEach(function (line) {
+      line.addEventListener('click', function () {
+        var i = +line.dataset.i, hit = [].concat(b.bug).indexOf(i) > -1;
+        code.querySelectorAll('.bug-line').forEach(function (l) { l.classList.remove('is-miss'); });
+        line.classList.add(hit ? 'is-hit' : 'is-miss');
+        fb.hidden = false; fb.classList.toggle('is-wrong', !hit);
+        if (hit) {
+          solved[cur] = true;
+          fb.innerHTML = '<strong>🎯 Squashed!</strong> ' + b.explain + '<br><b>Fix:</b> ' + b.fix;
+          var tb = tabs.querySelectorAll('.bug-tab')[cur]; tb.classList.add('is-solved'); tb.textContent = 'Bug ' + (cur + 1) + ' · ' + b.title;
+        } else {
+          fb.innerHTML = '<strong>🔎 Not this line.</strong> Look again: compare it with the working example above.';
+        }
+        root.querySelector('#bug-score').textContent = '🐛 ' + solved.filter(Boolean).length + ' / ' + bugs.length + ' squashed' + (solved.every(Boolean) ? ' · Bug hunter! 🏆' : '');
+      });
+    });
+    fb.hidden = true;
+  }
+  draw();
 })();
 </script>

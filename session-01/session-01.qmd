@@ -279,99 +279,105 @@ You just played with **Control Playground**. Time to open the hood! A JASP modul
 
 ```{=html}
 <div class="anatomy-grid"><div class="anatomy-node"><div class="anatomy-icon">📋</div><strong>Description.qml</strong><span>Menu entry</span><small>Puts “Control Playground” in the ribbon</small></div><div class="anatomy-arrow">→</div><div class="anatomy-node"><div class="anatomy-icon">🎛️</div><strong>controlPlayground.qml</strong><span>Controls</span><small>The left panel you clicked</small></div><div class="anatomy-arrow">→</div><div class="anatomy-node"><div class="anatomy-icon">📊</div><strong>controlPlayground.R</strong><span>Computation</span><small>The text, table &amp; plot on the right</small></div></div>
-<details class="file-peek"><summary>📂 Where do these files live? · Show the jaspDataWrangling folder</summary><pre><code>jaspDataWrangling/
-├── DESCRIPTION                  ← R package info (name, dependencies)
-├── NAMESPACE                    ← which R functions JASP may call
-├── R/
-│   ├── controlPlayground.R      ← 📊 computation for Control Playground
-│   ├── missingValues.R          ← 📊 computation for Missing Values
-│   └── common.R                 ← small helpers both analyses share
-└── inst/
-    ├── Description.qml          ← 📋 the module's menu
-    └── qml/
-        ├── controlPlayground.qml ← 🎛️ the Control Playground window
-        └── missingValues.qml    ← 🎛️ the Missing Values window</code></pre></details>
+<div class="ft" id="file-tree"><div class="ft-head">📂 What’s in the box? <small>Click any file or folder</small></div><div class="ft-body"><div class="ft-tree" role="tree"><button type="button" class="ft-row ft-dir" data-key="root" data-depth="0" style="--d:0"><span class="ft-caret">▾</span>📁 <code>jaspDataWrangling/</code><span class="ft-dot t-today"></span></button><button type="button" class="ft-row ft-file" data-key="DESCRIPTION" data-depth="1" style="--d:1"><span class="ft-caret"></span>📄 <code>DESCRIPTION</code><span class="ft-dot t-later"></span></button><button type="button" class="ft-row ft-file" data-key="NAMESPACE" data-depth="1" style="--d:1"><span class="ft-caret"></span>📄 <code>NAMESPACE</code><span class="ft-dot t-later"></span></button><button type="button" class="ft-row ft-dir" data-key="R" data-depth="1" style="--d:1"><span class="ft-caret">▾</span>📁 <code>R/</code><span class="ft-dot t-later"></span></button><button type="button" class="ft-row ft-file" data-key="controlPlaygroundR" data-depth="2" style="--d:2"><span class="ft-caret"></span>📄 <code>controlPlayground.R</code><span class="ft-dot t-later"></span></button><button type="button" class="ft-row ft-file" data-key="missingValuesR" data-depth="2" style="--d:2"><span class="ft-caret"></span>📄 <code>missingValues.R</code><span class="ft-dot t-later"></span></button><button type="button" class="ft-row ft-file" data-key="commonR" data-depth="2" style="--d:2"><span class="ft-caret"></span>📄 <code>common.R</code><span class="ft-dot t-later"></span></button><button type="button" class="ft-row ft-dir" data-key="inst" data-depth="1" style="--d:1"><span class="ft-caret">▾</span>📁 <code>inst/</code><span class="ft-dot t-today"></span></button><button type="button" class="ft-row ft-file" data-key="Description" data-depth="2" style="--d:2"><span class="ft-caret"></span>📄 <code>Description.qml</code><span class="ft-dot t-today"></span></button><button type="button" class="ft-row ft-dir" data-key="icons" data-depth="2" style="--d:2"><span class="ft-caret"></span>📁 <code>icons/</code><span class="ft-dot t-later"></span></button><button type="button" class="ft-row ft-dir" data-key="qml" data-depth="2" style="--d:2"><span class="ft-caret">▾</span>📁 <code>qml/</code><span class="ft-dot t-today"></span></button><button type="button" class="ft-row ft-file" data-key="controlPlaygroundQml" data-depth="3" style="--d:3"><span class="ft-caret"></span>📄 <code>controlPlayground.qml</code><span class="ft-dot t-today"></span></button><button type="button" class="ft-row ft-file" data-key="missingValuesQml" data-depth="3" style="--d:3"><span class="ft-caret"></span>📄 <code>missingValues.qml</code><span class="ft-dot t-today"></span></button><button type="button" class="ft-row ft-file" data-key="renv" data-depth="1" style="--d:1"><span class="ft-caret"></span>📄 <code>renv/ · renv.lock · .Rprofile</code><span class="ft-dot t-never"></span></button><button type="button" class="ft-row ft-file" data-key="Rproj" data-depth="1" style="--d:1"><span class="ft-caret"></span>📄 <code>jaspDataWrangling.Rproj</code><span class="ft-dot t-today"></span></button><button type="button" class="ft-row ft-file" data-key="README" data-depth="1" style="--d:1"><span class="ft-caret"></span>📄 <code>README.md</code><span class="ft-dot t-later"></span></button></div><div class="ft-info" id="ft-info" aria-live="polite"><div class="ft-empty">👈 Pick a file to find out what it does.<br><br><span class="ft-legend"><span class="ft-dot t-today"></span> today <span class="ft-dot t-later"></span> later <span class="ft-dot t-never"></span> don’t touch</span></div></div></div><script type="application/json" id="ft-data">{"root": {"icon": "📦", "title": "The whole module", "text": "A JASP module is just an R package with a few extra files for JASP. Everything lives in this one folder.", "tag": "✏️ You’ll use this today", "cls": "t-today"}, "DESCRIPTION": {"icon": "🪪", "title": "The ID card", "text": "The package’s name, version, authors and which other packages it needs (here: jaspBase and jaspGraphs).", "tag": "👀 Comes later", "cls": "t-later"}, "NAMESPACE": {"icon": "🚪", "title": "The guest list", "text": "Lists which R functions JASP is allowed to call. Add a new analysis? Its function has to be on this list, or JASP says “could not find function”.", "tag": "👀 Comes later", "cls": "t-later"}, "R": {"icon": "🧮", "title": "The brains", "text": "All the R code: the calculations behind each analysis. One file per analysis.", "tag": "👀 Comes later", "cls": "t-later"}, "controlPlaygroundR": {"icon": "📊", "title": "Control Playground: computation", "text": "Reads what you clicked, simulates data, and builds the text, table and histogram you saw on the right.", "tag": "👀 Comes later", "cls": "t-later"}, "missingValuesR": {"icon": "📊", "title": "Missing Values: computation", "text": "For now it only shows what R received. In Session 3 it will start counting the holes in your data.", "tag": "👀 Comes later", "cls": "t-later"}, "commonR": {"icon": "🧰", "title": "The toolbox", "text": "Small helper functions that both analyses share.", "tag": "👀 Comes later", "cls": "t-later"}, "inst": {"icon": "🎨", "title": "The JASP side", "text": "Everything JASP itself reads: the menu, the windows and the icon.", "tag": "✏️ You’ll use this today", "cls": "t-today"}, "Description": {"icon": "📋", "title": "The menu", "text": "Decides what appears when you click Data Wrangling: the headings and which analyses you can open.", "tag": "✏️ You’ll use this today", "cls": "t-today"}, "icons": {"icon": "🖼️", "title": "The icon", "text": "The picture on the ribbon button.", "tag": "👀 Comes later", "cls": "t-later"}, "qml": {"icon": "🎛️", "title": "The windows", "text": "One QML file per analysis: the controls in the left panel.", "tag": "✏️ You’ll use this today", "cls": "t-today"}, "controlPlaygroundQml": {"icon": "🎛️", "title": "Control Playground: window", "text": "Every control you played with: text field, slider, dropdown… A great place to copy from.", "tag": "✏️ You’ll use this today", "cls": "t-today"}, "missingValuesQml": {"icon": "🎛️", "title": "Missing Values: window", "text": "Your workbench today: this is where your first button goes.", "tag": "✏️ You’ll use this today", "cls": "t-today"}, "renv": {"icon": "🔒", "title": "The lock", "text": "renv remembers the exact package versions, so everyone’s module behaves the same. It runs by itself when you open the project.", "tag": "🚫 Don’t touch", "cls": "t-never"}, "Rproj": {"icon": "🚀", "title": "The launcher", "text": "Double-click it to open the project in RStudio (and switch renv on).", "tag": "✏️ You’ll use this today", "cls": "t-today"}, "README": {"icon": "📖", "title": "The manual", "text": "How to install the module and add a new analysis. Read it when you forget a step.", "tag": "👀 Comes later", "cls": "t-later"}}</script></div>
 ```
 
-Open these files in RStudio's **Files** pane as we go. Here are the key lines (simplified):
+### 📋 Start with the menu {#menu}
 
-**1. The menu entry** · `inst/Description.qml`
+The easiest piece to see: `inst/Description.qml` decides what appears when you click **Data Wrangling** on the ribbon. Open it and compare it with the menu in JASP:
 
 ``` qml
+GroupTitle
+{
+    title: qsTr("Playground")              // a heading in the menu
+}
+
 Analysis
 {
-    title : qsTr("Control Playground")   // what you saw in the menu
-    func  : "controlPlayground"          // the R function JASP calls
-    qml   : "controlPlayground.qml"      // the window it opens
+    title: qsTr("Control Playground")      // an item you can click
+    func : "controlPlayground"             // the R function it runs
+    qml  : "controlPlayground.qml"         // the window it opens
 }
 ```
 
-**2 + 3. The controls and the computation**, side by side. **Click a highlighted name** to find its partner:
+**Your first edit:** add a heading of your own to the **Data Wrangling** menu. Any title you like! No code given this time: the snippet above has everything you need.
+
+When you're done: save → RStudio **Build → Install** → in JASP, **Install Developer Module** again → click **Data Wrangling**.
 
 ```{=html}
-<div class="pair-lab" id="pair-lab">
-  <div class="pair-pane">
-    <div class="pair-head">🎛️ controlPlayground.qml</div>
-<pre><code>TextField {
-    name: <span class="pair" data-pair="yourName">"yourName"</span>
-    label: qsTr("Your name")
-}
-IntegerField {
-    name: <span class="pair" data-pair="sampleSize">"sampleSize"</span>
-    defaultValue: 100
-}
-Slider {
-    name: <span class="pair" data-pair="sd">"sd"</span>
-    value: 1
-}
-CheckBox {
-    name: <span class="pair" data-pair="showPlot">"showPlot"</span>
-    label: qsTr("Show histogram")
-}</code></pre>
-  </div>
-  <div class="pair-pane">
-    <div class="pair-head">📊 controlPlayground.R</div>
-<pre><code>controlPlayground &lt;- function(jaspResults,
-                              dataset, options) {
+<details class="stuck"><summary>💡 Hint 1</summary><p>How did the heading <em>“Playground”</em> get into the menu? Find that word in <code>Description.qml</code>.</p></details>
+<details class="stuck"><summary>💡 Hint 2</summary><p>You need a new block of the same type as the one around <em>“Playground”</em>. Copy it, change one thing. Where you paste it decides where it appears.</p></details>
+<details class="stuck"><summary>🔓 Still stuck? Show the answer</summary><pre><code>GroupTitle
+{
+    title: qsTr("My corner")
+}</code></pre><p>Paste it just above the last <code>}</code> of the file, so it lands at the bottom of the menu.</p></details>
+```
 
-  # text
-  hello &lt;- paste("Hello,", <span class="pair" data-pair="yourName">options$yourName</span>)
+- [ ] My heading shows up in the menu
+- [ ] Bonus: move it *between* Control Playground and Missing Values. What changes?
 
-  # simulate data
-  x &lt;- rnorm(n  = <span class="pair" data-pair="sampleSize">options$sampleSize</span>,
-             sd = <span class="pair" data-pair="sd">options$sd</span>)
+### 🐛 Bug hunt {#bughunt}
 
-  # plot, only if ticked
-  if (<span class="pair" data-pair="showPlot">options$showPlot</span>) {
-    # ... draw the histogram
-  }
-}</code></pre>
-  </div>
-  <p class="pair-hint" id="pair-hint" aria-live="polite">👆 Click any highlighted name</p>
+Something went wrong in `Description.qml`… five times. Read the symptom, then **click the line you think is broken**.
+
+```{=html}
+<div class="bug-hunt" id="bug-hunt">
+  <div class="bug-tabs" role="group" aria-label="Choose a bug"></div>
+  <p class="bug-symptom" id="bug-symptom"></p>
+  <div class="bug-code" id="bug-code" role="group" aria-label="Code lines: click the broken one"></div>
+  <div class="bug-feedback" id="bug-feedback" aria-live="polite" hidden></div>
+  <div class="bug-foot"><span id="bug-score">🐛 0 / 5 squashed</span><span class="bug-tip">Tip: in real life, compare with a version that works. Bugs hide in tiny details!</span></div>
+  <script type="application/json" id="bug-data">[{"title": "Missing piece", "symptom": "After Build → Install, the whole Data Wrangling menu is gone. 😱", "lines": ["GroupTitle", "{", "    title: qsTr(\"Playground\")", "", "Analysis", "{", "    title: qsTr(\"Control Playground\")", "    func : \"controlPlayground\"", "    qml  : \"controlPlayground.qml\"", "}"], "bug": [1, 2, 3], "explain": "The GroupTitle block opens with <code>{</code> but never closes it. Every <code>{</code> needs its own <code>}</code>. One broken bracket and JASP can’t read the file at all, so the whole menu disappears.", "fix": "Add a <code>}</code> after <code>title: qsTr(\"Playground\")</code>."}, {"title": "Lost in translation", "symptom": "After Build → Install, your new heading doesn’t show up properly.", "lines": ["GroupTitle", "{", "    title: qsTr(Coming soon)", "}"], "bug": 2, "explain": "Text must always sit inside quotes: <code>\"Coming soon\"</code>. Without them, QML thinks <code>Coming</code> and <code>soon</code> are names of things that don’t exist.", "fix": "<code>title: qsTr(\"Coming soon\")</code>"}, {"title": "Big C, small c", "symptom": "The menu item is there, but clicking “Control Playground” doesn’t open the window.", "lines": ["Analysis", "{", "    title: qsTr(\"Control Playground\")", "    func : \"controlPlayground\"", "    qml  : \"ControlPlayground.qml\"", "}"], "bug": 4, "explain": "The file is called <code>controlPlayground.qml</code> with a small <em>c</em>. To a computer, <code>C</code> and <code>c</code> are different letters, so JASP can’t find the window.", "fix": "<code>qml: \"controlPlayground.qml\"</code>"}, {"title": "Typo", "symptom": "The menu item is there, but clicking “Control Playground” gives an error about a function it can’t find.", "lines": ["Analysis", "{", "    title: qsTr(\"Control Playground\")", "    func : \"controlPlaygorund\"", "    qml  : \"controlPlayground.qml\"", "}"], "bug": 3, "explain": "<code>controlPlaygorund</code>: the <em>o</em> and <em>u</em> swapped places. JASP looks for an R function with exactly this name, and there is none. Typos in names are invisible to the eye but fatal to the computer.", "fix": "<code>func: \"controlPlayground\"</code>"}, {"title": "Shrinking capital", "symptom": "After Build → Install, the whole Data Wrangling menu is gone. Again! 😩", "lines": ["groupTitle", "{", "    title: qsTr(\"Playground\")", "}"], "bug": 0, "explain": "QML building blocks always start with a <strong>capital</strong> letter: <code>GroupTitle</code>, <code>Analysis</code>, <code>CheckBox</code>. With a small <em>g</em>, QML doesn’t recognise it. (The settings inside, like <code>title</code>, start with a small letter.)", "fix": "<code>GroupTitle</code>"}]</script>
 </div>
-<details class="stuck"><summary>🤔 Quick check: in JASP, untick “Show histogram”. Which R line decides that no plot appears?</summary><p><code>if (options$showPlot)</code>. Unticked means <code>options$showPlot</code> is <code>FALSE</code>, so R skips the whole plotting block. Tick it again, and the plot is back.</p></details>
 ```
 
-### Try it: predict what JASP sends to R 🎮
+### 👯 Pair up: QML detectives {#detectives}
+
+Work with your neighbour: **one of you opens the QML file, the other opens JASP.** Then solve these missions together, switching roles whenever you like:
 
 ```{=html}
-<div class="option-lab" id="option-lab" aria-label="Interactive QML and R options exercise">
-  <div class="lab-top"><div><span class="kicker">INTERACTIVE · 3 MINI CHALLENGES</span><h4>Click it. Predict it. Reveal it.</h4><p>Play with a JASP-style control, then predict the value R would receive.</p></div><div class="lab-progress" aria-live="polite"><strong id="lab-score">0 / 3</strong><small>solved</small></div></div>
-  <div class="lab-switcher" role="group" aria-label="Choose challenge"><button type="button" class="lab-tab is-active" data-level="0" aria-pressed="true">01 · Checkbox</button><button type="button" class="lab-tab" data-level="1" aria-pressed="false">02 · Variables</button><button type="button" class="lab-tab" data-level="2" aria-pressed="false">03 · Untick</button></div>
+<div class="role-cards">
+  <div class="role-card role-code"><span class="role-icon">🕵️</span><strong>Code</strong><small>📊 RStudio · <code>inst/qml/controlPlayground.qml</code></small></div>
+  <div class="role-swap" aria-hidden="true">⇄</div>
+  <div class="role-card role-jasp"><span class="role-icon">🧭</span><strong>JASP</strong><small>🧮 Control Playground</small></div>
+</div>
+```
+
+#### Round 1 · Spot it 🔍 {#spot}
+
+Just look, no editing yet.
+
+- [ ] **The welcome note.** Near the top of the file is a line starting with `info:`. Where does that text appear in JASP?
+- [ ] **Ticked from the start.** Which boxes are already ticked when the window opens? Find the line that makes each one ticked.
+- [ ] **The grey one.** “Mark the mean” is greyed out. Why? Find the reason in the code.
+- [ ] **The hidden drawer.** Some options are hidden when the window opens. Find them in JASP, and find what hides them in the code.
+
+#### Round 2 · Change it ✏️ {#change}
+
+For each mission: **predict first, then edit.** Make all four edits, then **Build → Install** once and check your predictions in JASP.
+
+- [ ] **Wider box.** The *Your name* field has `fieldWidth: 160`. Change it to `300`. What happens?
+- [ ] **Over the limit.** Type `20000` as *Sample size* in JASP. What happens? Change the code so `20000` is allowed.
+- [ ] **More precision.** The slider has `decimals: 1`. Change it to `2`. What changes when you drag it?
+- [ ] **Your lucky number.** Add your own number to the *Random seed* dropdown. Does it show up?
+
+```{=html}
+<details class="stuck"><summary>🔍 Reveal the answers (after you've tried!)</summary><p><strong>Round 1.</strong> <code>info</code> is the help text behind the ⓘ button. Ticked at start: “Show histogram”, “Teal” and “Show what R received”, each with <code>checked: true</code>. “Mark the mean” sits <em>inside</em> the “Show histogram” CheckBox, so it follows its parent. The drawer is a <code>Section</code>.<br><strong>Round 2.</strong> The name box gets wider. JASP won’t accept 20000 because of <code>max: 10000</code>: raise it to e.g. <code>max: 50000</code>. With <code>decimals: 2</code> the slider shows 1.25 instead of 1.2. And your number appears at the end of the dropdown list (mind the quotes and commas!).</p></details>
+```
+
+### Try it: read the QML, predict the window 🎮
+
+```{=html}
+<div class="option-lab" id="option-lab" aria-label="Interactive QML prediction exercise">
+  <div class="lab-top"><div><span class="kicker">INTERACTIVE · 3 MINI CHALLENGES</span><h4>Read it. Predict it. Reveal it.</h4><p>Read a few lines of QML, then predict what shows up in the JASP window.</p></div><div class="lab-progress" aria-live="polite"><strong id="lab-score">0 / 3</strong><small>solved</small></div></div>
+  <div class="lab-switcher" role="group" aria-label="Choose challenge"><button type="button" class="lab-tab is-active" data-level="0" aria-pressed="true">01 · Label</button><button type="button" class="lab-tab" data-level="1" aria-pressed="false">02 · Ticked?</button><button type="button" class="lab-tab" data-level="2" aria-pressed="false">03 · Nested</button></div>
   <div class="lab-board">
-    <div class="lab-pane"><div class="lab-pane-heading"><span>🎛️ MOCK ANALYSIS OPTIONS</span><span class="lab-status">YOU CONTROL THIS</span></div><div class="lab-controls" id="lab-controls"></div><div class="lab-qml"><span>QML CONTROL</span><code id="lab-qml-text"></code></div></div>
-    <div class="lab-pane lab-predict"><div class="lab-pane-heading"><span>🧠 YOUR PREDICTION</span><span class="lab-status">THINK FIRST</span></div><p class="lab-question" id="lab-question"></p><div class="lab-choices" id="lab-choices" role="group" aria-label="Possible R option values"></div><button type="button" id="lab-check" class="lab-action" disabled>Check my prediction →</button><div id="lab-feedback" class="lab-feedback" aria-live="polite" hidden></div></div>
+    <div class="lab-pane"><div class="lab-pane-heading"><span>📄 THE QML</span><span class="lab-status">READ THIS</span></div><pre class="lab-code" id="lab-code"></pre><div class="lab-window"><span>🪟 JASP WINDOW</span><div id="lab-window" class="lab-window-body"></div></div></div>
+    <div class="lab-pane lab-predict"><div class="lab-pane-heading"><span>🧠 YOUR PREDICTION</span><span class="lab-status">THINK FIRST</span></div><p class="lab-question" id="lab-question"></p><div class="lab-choices" id="lab-choices" role="group" aria-label="Possible outcomes"></div><button type="button" id="lab-check" class="lab-action" disabled>Check my prediction →</button><div id="lab-feedback" class="lab-feedback" aria-live="polite" hidden></div></div>
   </div>
-  <div class="lab-bottom"><span>🔗 <strong>Remember:</strong> QML <code>name</code> → R <code>options$name</code></span><button type="button" id="lab-reset" class="lab-reset">↻ Try again</button></div>
-  <p class="lab-disclaimer">Teaching simulation only: the controls demonstrate the idea; they do not run JASP or R. The examples below illustrate common option values, not every possible QML setup.</p>
+  <div class="lab-bottom"><span>🔗 <strong>Remember:</strong> <code>label</code> is what users see · <code>name</code> is what R uses (that's Session 2!)</span><button type="button" id="lab-reset" class="lab-reset">↻ Try again</button></div>
+  <p class="lab-disclaimer">Teaching simulation only: the mini window imitates JASP; it doesn't run JASP. Check your answers for real in Control Playground.</p>
 </div>
-```
-
-### The magic connection ✨
-
-```{=html}
-<div class="magic-flow"><div class="magic-node"><span>🎛️ QML</span><small>Tick a checkbox</small></div><b>→</b><div class="magic-node"><span>📦 options</span><small>showPlot = TRUE</small></div><b>→</b><div class="magic-node"><span>🧮 R</span><small>Read the option</small></div><b>→</b><div class="magic-node"><span>📊 Results</span><small>Update output</small></div></div>
-<div class="mini-note"><strong>The one thing to remember:</strong> the QML control's <code>name</code> is how R reads its value: <code>name: "showPlot"</code> in QML becomes <code>options$showPlot</code> in R. Today we focus on the interface.</div>
 ```
 
 ## Add your first button [⏱ 15 min]{.timing} [1:10–1:25]{.timing .clock} {#button}
@@ -402,7 +408,7 @@ CheckBox { name: "myFirstCheckbox"; label: qsTr("My first checkbox") }
 
 Change the label text, then add a second control of a *different* type.
 
-*Hint:* TODO (Leo)
+*Hint:* need ideas for a different type? Peek at the [control tour below](#bonus) 🧰
 :::
 
 ::: {.callout-note .option icon="false" collapse="true"}
@@ -415,6 +421,69 @@ No instructions here, just a goal: **make the analysis show a different title in
 
 ```{=html}
 <div class="route-strip build-loop"><span>💾 Save <code>.qml</code></span><b>→</b><span>🛠️ Build → Install</span><b>→</b><span>🔄 Refresh in JASP</span><b>↺</b></div><p class="micro-note">Confirm the exact refresh action after your test run.</p>
+```
+
+## Bonus: more controls to play with 🧰 [Optional · for fast finishers]{.optional-badge} {#bonus}
+
+Checkboxes are just the start. **Control Playground** uses a whole toolbox of controls; here they are, one by one. Every mini control below is clickable, so try them!
+
+```{=html}
+<div class="ctl-gallery"><div class="ctl-card"><div class="ctl-head"><span class="ctl-icon">✏️</span><strong>TextField</strong></div><p class="ctl-use">Free text, like a name or a title.</p><div class="ctl-mock"><label class="mk-row">Your name <input type="text" value="JASP" size="10"></label></div><details class="ctl-code"><summary>Show the QML</summary><div class="ctl-pre"><button type="button" class="ctl-copy">Copy</button><pre><code>TextField
+{
+    name        : &quot;yourName&quot;
+    label       : qsTr(&quot;Your name&quot;)
+    defaultValue: &quot;JASP&quot;
+}</code></pre></div></details></div><div class="ctl-card"><div class="ctl-head"><span class="ctl-icon">🔢</span><strong>IntegerField</strong></div><p class="ctl-use">Whole numbers only, with limits.</p><div class="ctl-mock"><label class="mk-row">Sample size <input type="number" value="100" min="2" max="10000" step="1"></label></div><details class="ctl-code"><summary>Show the QML</summary><div class="ctl-pre"><button type="button" class="ctl-copy">Copy</button><pre><code>IntegerField
+{
+    name        : &quot;sampleSize&quot;
+    label       : qsTr(&quot;Sample size&quot;)
+    defaultValue: 100
+    min         : 2
+    max         : 10000
+}</code></pre></div></details></div><div class="ctl-card"><div class="ctl-head"><span class="ctl-icon">🎯</span><strong>DoubleField</strong></div><p class="ctl-use">Numbers with decimals (and minus signs, if you allow them).</p><div class="ctl-mock"><label class="mk-row">Mean <input type="number" value="0" step="any"></label></div><details class="ctl-code"><summary>Show the QML</summary><div class="ctl-pre"><button type="button" class="ctl-copy">Copy</button><pre><code>DoubleField
+{
+    name          : &quot;mean&quot;
+    label         : qsTr(&quot;Mean&quot;)
+    defaultValue  : 0
+    negativeValues: true
+}</code></pre></div></details></div><div class="ctl-card"><div class="ctl-head"><span class="ctl-icon">🎚️</span><strong>Slider</strong></div><p class="ctl-use">Drag to pick a value in a range.</p><div class="ctl-mock"><label class="mk-row mk-slider">SD <input type="range" min="0.1" max="5" step="0.1" value="1"><output>1.0</output></label></div><details class="ctl-code"><summary>Show the QML</summary><div class="ctl-pre"><button type="button" class="ctl-copy">Copy</button><pre><code>Slider
+{
+    name    : &quot;sd&quot;
+    label   : qsTr(&quot;Standard deviation&quot;)
+    value   : 1
+    min     : 0.1
+    max     : 5
+    decimals: 1
+}</code></pre></div></details></div><div class="ctl-card"><div class="ctl-head"><span class="ctl-icon">🔽</span><strong>DropDown</strong></div><p class="ctl-use">Pick one option from a list.</p><div class="ctl-mock"><label class="mk-row">Random seed <select><option>42</option><option>2026</option><option>123</option></select></label></div><details class="ctl-code"><summary>Show the QML</summary><div class="ctl-pre"><button type="button" class="ctl-copy">Copy</button><pre><code>DropDown
+{
+    name  : &quot;seed&quot;
+    label : qsTr(&quot;Random seed&quot;)
+    values: [&quot;42&quot;, &quot;2026&quot;, &quot;123&quot;]
+}</code></pre></div></details></div><div class="ctl-card"><div class="ctl-head"><span class="ctl-icon">🔘</span><strong>RadioButtonGroup</strong></div><p class="ctl-use">Exactly one of a few choices, all visible at once.</p><div class="ctl-mock"><div class="mk-group-title">Bar colour</div><label class="mk-row"><input type="radio" name="mkc" checked> Teal</label><label class="mk-row"><input type="radio" name="mkc"> Orange</label><label class="mk-row"><input type="radio" name="mkc"> Purple</label></div><details class="ctl-code"><summary>Show the QML</summary><div class="ctl-pre"><button type="button" class="ctl-copy">Copy</button><pre><code>RadioButtonGroup
+{
+    name : &quot;barColor&quot;
+    title: qsTr(&quot;Bar colour&quot;)
+    RadioButton { value: &quot;teal&quot;;   label: qsTr(&quot;Teal&quot;); checked: true }
+    RadioButton { value: &quot;orange&quot;; label: qsTr(&quot;Orange&quot;) }
+    RadioButton { value: &quot;purple&quot;; label: qsTr(&quot;Purple&quot;) }
+}</code></pre></div></details></div><div class="ctl-card"><div class="ctl-head"><span class="ctl-icon">🗂️</span><strong>Group</strong></div><p class="ctl-use">A titled box that keeps related controls together.</p><div class="ctl-mock"><div class="mk-group-title">Simulate data</div><div class="mk-indent"><label class="mk-row">Sample size <input type="number" value="100"></label><label class="mk-row">Mean <input type="number" value="0"></label></div></div><details class="ctl-code"><summary>Show the QML</summary><div class="ctl-pre"><button type="button" class="ctl-copy">Copy</button><pre><code>Group
+{
+    title: qsTr(&quot;Simulate data&quot;)
+
+    IntegerField { name: &quot;sampleSize&quot;; label: qsTr(&quot;Sample size&quot;) }
+    DoubleField  { name: &quot;mean&quot;;       label: qsTr(&quot;Mean&quot;) }
+}</code></pre></div></details></div><div class="ctl-card"><div class="ctl-head"><span class="ctl-icon">📂</span><strong>Section</strong></div><p class="ctl-use">A fold-out area for extra options, closed by default.</p><div class="ctl-mock"><details class="mk-section"><summary>Behind the scenes</summary><label class="mk-row"><input type="checkbox" checked> Show what R received</label></details></div><details class="ctl-code"><summary>Show the QML</summary><div class="ctl-pre"><button type="button" class="ctl-copy">Copy</button><pre><code>Section
+{
+    title: qsTr(&quot;Behind the scenes&quot;)
+
+    CheckBox { name: &quot;showOptions&quot;; label: qsTr(&quot;Show what R received&quot;) }
+}</code></pre></div></details></div></div>
+```
+
+**How to try one for real:** copy a snippet into `inst/qml/missingValues.qml` (inside the `Form { }`), save, **Build → Install**, and refresh JASP. All of them live in `inst/qml/controlPlayground.qml` too, if you want to see them in context.
+
+```{=html}
+<details class="stuck"><summary>🧩 Mini challenge: tweak the Slider</summary><p>Make the Slider run from <code>0</code> to <code>100</code>, start at <code>50</code>, and show no decimals. Which three lines do you change? (Answer: <code>min</code>, <code>max</code> and <code>value</code>, plus <code>decimals: 0</code>.)</p></details>
 ```
 
 ## Wrap-up [⏱ 5 min]{.timing} [1:25–1:30]{.timing .clock} {#wrapup}
