@@ -8,6 +8,7 @@ format:
     embed-resources: true
     theme: cosmo
     css: style.css
+    include-in-header: head.html
     include-before-body: ribbon.html
     include-after-body: extras.html
     grid:
