@@ -463,3 +463,4 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 .bug-tip{font-weight:500;color:#9a8466}
 @media (prefers-reduced-motion: reduce){.bug-line.is-miss{animation:none}}
 #spot .quest ul.quest-grid,#change .quest ul.quest-grid{grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+.target-shot{border:1px solid #d3e5eb;border-radius:10px;box-shadow:0 4px 12px #2358751a;background:#ececec;padding:4px;margin:4px 0 10px}

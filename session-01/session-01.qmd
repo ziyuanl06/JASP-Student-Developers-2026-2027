@@ -302,7 +302,7 @@ Analysis
 
 **Your first edit:** add a heading of your own to the **Data Wrangling** menu. Any title you like! No code given this time: the snippet above has everything you need.
 
-When you're done: save → RStudio **Build → Install** → in JASP, **Install Developer Module** again → click **Data Wrangling**.
+When you're done: save → in RStudio's Console run `renv::install(".")` → in JASP, **Install Developer Module** again → click **Data Wrangling**.
 
 ```{=html}
 <details class="stuck"><summary>💡 Hint 1</summary><p>How did the heading <em>“Playground”</em> get into the menu? Find that word in <code>Description.qml</code>.</p></details>
@@ -327,7 +327,7 @@ Something went wrong in `Description.qml`… five times. Read the symptom, then 
   <div class="bug-code" id="bug-code" role="group" aria-label="Code lines: click the broken one"></div>
   <div class="bug-feedback" id="bug-feedback" aria-live="polite" hidden></div>
   <div class="bug-foot"><span id="bug-score">🐛 0 / 5 squashed</span><span class="bug-tip">Tip: in real life, compare with a version that works. Bugs hide in tiny details!</span></div>
-  <script type="application/json" id="bug-data">[{"title": "Missing piece", "symptom": "After Build → Install, the whole Data Wrangling menu is gone. 😱", "lines": ["GroupTitle", "{", "    title: qsTr(\"Playground\")", "", "Analysis", "{", "    title: qsTr(\"Control Playground\")", "    func : \"controlPlayground\"", "    qml  : \"controlPlayground.qml\"", "}"], "bug": [1, 2, 3], "explain": "The GroupTitle block opens with <code>{</code> but never closes it. Every <code>{</code> needs its own <code>}</code>. One broken bracket and JASP can’t read the file at all, so the whole menu disappears.", "fix": "Add a <code>}</code> after <code>title: qsTr(\"Playground\")</code>."}, {"title": "Lost in translation", "symptom": "After Build → Install, your new heading doesn’t show up properly.", "lines": ["GroupTitle", "{", "    title: qsTr(Coming soon)", "}"], "bug": 2, "explain": "Text must always sit inside quotes: <code>\"Coming soon\"</code>. Without them, QML thinks <code>Coming</code> and <code>soon</code> are names of things that don’t exist.", "fix": "<code>title: qsTr(\"Coming soon\")</code>"}, {"title": "Big C, small c", "symptom": "The menu item is there, but clicking “Control Playground” doesn’t open the window.", "lines": ["Analysis", "{", "    title: qsTr(\"Control Playground\")", "    func : \"controlPlayground\"", "    qml  : \"ControlPlayground.qml\"", "}"], "bug": 4, "explain": "The file is called <code>controlPlayground.qml</code> with a small <em>c</em>. To a computer, <code>C</code> and <code>c</code> are different letters, so JASP can’t find the window.", "fix": "<code>qml: \"controlPlayground.qml\"</code>"}, {"title": "Typo", "symptom": "The menu item is there, but clicking “Control Playground” gives an error about a function it can’t find.", "lines": ["Analysis", "{", "    title: qsTr(\"Control Playground\")", "    func : \"controlPlaygorund\"", "    qml  : \"controlPlayground.qml\"", "}"], "bug": 3, "explain": "<code>controlPlaygorund</code>: the <em>o</em> and <em>u</em> swapped places. JASP looks for an R function with exactly this name, and there is none. Typos in names are invisible to the eye but fatal to the computer.", "fix": "<code>func: \"controlPlayground\"</code>"}, {"title": "Shrinking capital", "symptom": "After Build → Install, the whole Data Wrangling menu is gone. Again! 😩", "lines": ["groupTitle", "{", "    title: qsTr(\"Playground\")", "}"], "bug": 0, "explain": "QML building blocks always start with a <strong>capital</strong> letter: <code>GroupTitle</code>, <code>Analysis</code>, <code>CheckBox</code>. With a small <em>g</em>, QML doesn’t recognise it. (The settings inside, like <code>title</code>, start with a small letter.)", "fix": "<code>GroupTitle</code>"}]</script>
+  <script type="application/json" id="bug-data">[{"title": "Missing piece", "symptom": "After reinstalling, the whole Data Wrangling menu is gone. 😱", "lines": ["GroupTitle", "{", "    title: qsTr(\"Playground\")", "", "Analysis", "{", "    title: qsTr(\"Control Playground\")", "    func : \"controlPlayground\"", "    qml  : \"controlPlayground.qml\"", "}"], "bug": [1, 2, 3], "explain": "The GroupTitle block opens with <code>{</code> but never closes it. Every <code>{</code> needs its own <code>}</code>. One broken bracket and JASP can’t read the file at all, so the whole menu disappears.", "fix": "Add a <code>}</code> after <code>title: qsTr(\"Playground\")</code>."}, {"title": "Lost in translation", "symptom": "After reinstalling, your new heading doesn’t show up properly.", "lines": ["GroupTitle", "{", "    title: qsTr(Coming soon)", "}"], "bug": 2, "explain": "Text must always sit inside quotes: <code>\"Coming soon\"</code>. Without them, QML thinks <code>Coming</code> and <code>soon</code> are names of things that don’t exist.", "fix": "<code>title: qsTr(\"Coming soon\")</code>"}, {"title": "Big C, small c", "symptom": "The menu item is there, but clicking “Control Playground” doesn’t open the window.", "lines": ["Analysis", "{", "    title: qsTr(\"Control Playground\")", "    func : \"controlPlayground\"", "    qml  : \"ControlPlayground.qml\"", "}"], "bug": 4, "explain": "The file is called <code>controlPlayground.qml</code> with a small <em>c</em>. To a computer, <code>C</code> and <code>c</code> are different letters, so JASP can’t find the window.", "fix": "<code>qml: \"controlPlayground.qml\"</code>"}, {"title": "Typo", "symptom": "The menu item is there, but clicking “Control Playground” gives an error about a function it can’t find.", "lines": ["Analysis", "{", "    title: qsTr(\"Control Playground\")", "    func : \"controlPlaygorund\"", "    qml  : \"controlPlayground.qml\"", "}"], "bug": 3, "explain": "<code>controlPlaygorund</code>: the <em>o</em> and <em>u</em> swapped places. JASP looks for an R function with exactly this name, and there is none. Typos in names are invisible to the eye but fatal to the computer.", "fix": "<code>func: \"controlPlayground\"</code>"}, {"title": "Shrinking capital", "symptom": "After reinstalling, the whole Data Wrangling menu is gone. Again! 😩", "lines": ["groupTitle", "{", "    title: qsTr(\"Playground\")", "}"], "bug": 0, "explain": "QML building blocks always start with a <strong>capital</strong> letter: <code>GroupTitle</code>, <code>Analysis</code>, <code>CheckBox</code>. With a small <em>g</em>, QML doesn’t recognise it. (The settings inside, like <code>title</code>, start with a small letter.)", "fix": "<code>GroupTitle</code>"}]</script>
 </div>
 ```
 
@@ -354,7 +354,7 @@ Just look, no editing yet.
 
 #### Round 2 · Change it ✏️ {#change}
 
-For each mission: **predict first, then edit.** Make all four edits, then **Build → Install** once and check your predictions in JASP.
+For each mission: **predict first, then edit.** Make all four edits, then reinstall once (`renv::install(".")`) and check your predictions in JASP.
 
 - [ ] **Wider box.** The *Your name* field has `fieldWidth: 160`. Change it to `300`. What happens?
 - [ ] **Over the limit.** Type `20000` as *Sample size* in JASP. What happens? Change the code so `20000` is allowed.
@@ -382,46 +382,55 @@ For each mission: **predict first, then edit.** Make all four edits, then **Buil
 
 ## Add your first button [⏱ 15 min]{.timing} [1:10–1:25]{.timing .clock} {#button}
 
-::: {.callout-warning icon="false"}
-## TODO (Leo): after your test run
-
-- Which file to open and where to paste.
-- The final QML snippets for each level.
-- Confirm the update loop: save → RStudio **Build → Install** → refresh in JASP.
-:::
-
-Work in pairs. Start with **Basic**; open the next section when you're done.
-
-::: {.callout-note .option icon="false" collapse="false"}
-## ⭐ Basic
-
-Add a checkbox to the Missing Values window.
-
-``` qml
-// TODO (Leo): final snippet
-CheckBox { name: "myFirstCheckbox"; label: qsTr("My first checkbox") }
-```
-:::
-
-::: {.callout-note .option icon="false" collapse="true"}
-## ⭐⭐ Intermediate
-
-Change the label text, then add a second control of a *different* type.
-
-*Hint:* need ideas for a different type? Peek at the [control tour below](#bonus) 🧰
-:::
-
-::: {.callout-note .option icon="false" collapse="true"}
-## ⭐⭐⭐ Challenge
-
-No instructions here, just a goal: **make the analysis show a different title in the JASP menu.**
-:::
-
-### Your edit–build–refresh loop
+Time to build in **your own** window: **Missing Values**. Open `inst/qml/missingValues.qml`, look at each target picture, and rebuild it. Work in pairs, start with ⭐, and go as far as you like. It only has to *look* right: making it actually work is Session 3!
 
 ```{=html}
-<div class="route-strip build-loop"><span>💾 Save <code>.qml</code></span><b>→</b><span>🛠️ Build → Install</span><b>→</b><span>🔄 Refresh in JASP</span><b>↺</b></div><p class="micro-note">Confirm the exact refresh action after your test run.</p>
+<div class="route-strip build-loop"><span>💾 Save <code>.qml</code></span><b>→</b><span>🛠️ <code>renv::install(".")</code></span><b>→</b><span>🔄 Install Developer Module</span><b>→</b><span>👀 Open Missing Values</span><b>↺</b></div>
 ```
+
+::: {.callout-note .option icon="false" collapse="false"}
+## ⭐ A first question
+
+*The Calm Minds team opens their data file and asks the obvious question: “How much of this is missing?” Before any numbers, they need a way to ask for them.*
+
+**Build this:**
+
+![](img/target-1.png){.target-shot width=300 fig-alt="Target: a checkbox labelled Show percentage missing"}
+
+```{=html}
+<details class="stuck"><summary>💡 Hint</summary><p>Someone already left a line for you in the file. Why doesn’t it do anything yet?</p></details>
+```
+:::
+
+::: {.callout-note .option icon="false" collapse="true"}
+## ⭐⭐ Missing isn't always empty
+
+*Plot twist: the team didn’t only leave cells empty. Some research assistants typed `999`, others `-99`, whenever a participant skipped a question. A good tool lets users decide what counts as missing, and how to sort the report… but these settings only matter once someone actually asks for the report.*
+
+**Build this:**
+
+![](img/target-2.png){.target-shot width=520 fig-alt="Target: a group titled What counts as missing? with an Empty cells checkbox (ticked), a text box with 999, -99, and a Sort variables by dropdown"}
+
+```{=html}
+<details class="stuck"><summary>💡 Hint</summary><p>Every control here also appears in <code>controlPlayground.qml</code> or in the <a href="#bonus">control tour below</a> 🧰</p></details>
+```
+:::
+
+::: {.callout-note .option icon="false" collapse="true"}
+## ⭐⭐⭐ Boss level: the vanishing participants
+
+*Some participants skipped half the questionnaire. The team wants to spot them, but only when they ask for it. And this is an advanced option, so keep it tucked away until someone opens it.*
+
+**Build this:**
+
+![](img/target-3.png){.target-shot width=760 fig-alt="Target: a fold-out section Participants with a checkbox Flag participants with missing values and a nested number field Flag if more than 2 values are missing, greyed out"}
+
+No hints this time. 😈
+:::
+
+- [ ] ⭐ A first question
+- [ ] ⭐⭐ Missing isn't always empty
+- [ ] ⭐⭐⭐ The vanishing participants
 
 ## Bonus: more controls to play with 🧰 [Optional · for fast finishers]{.optional-badge} {#bonus}
 
@@ -480,7 +489,7 @@ Checkboxes are just the start. **Control Playground** uses a whole toolbox of co
 }</code></pre></div></details></div></div>
 ```
 
-**How to try one for real:** copy a snippet into `inst/qml/missingValues.qml` (inside the `Form { }`), save, **Build → Install**, and refresh JASP. All of them live in `inst/qml/controlPlayground.qml` too, if you want to see them in context.
+**How to try one for real:** copy a snippet into `inst/qml/missingValues.qml` (inside the `Form { }`), save, run `renv::install(".")`, and refresh JASP. All of them live in `inst/qml/controlPlayground.qml` too, if you want to see them in context.
 
 ```{=html}
 <details class="stuck"><summary>🧩 Mini challenge: tweak the Slider</summary><p>Make the Slider run from <code>0</code> to <code>100</code>, start at <code>50</code>, and show no decimals. Which three lines do you change? (Answer: <code>min</code>, <code>max</code> and <code>value</code>, plus <code>decimals: 0</code>.)</p></details>
