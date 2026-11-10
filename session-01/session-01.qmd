@@ -51,7 +51,7 @@ A quick check before we start. **Don't worry if something isn't ready yet:** we'
     - **Mac:** open Terminal and run `xcode-select --install` (if it says *already installed*: you're done 🎉)
     - **Windows:** install [Rtools45 ↗](https://cran.r-project.org/bin/windows/Rtools/){target="_blank"} (a big download, so best done before the session)
 - [ ] 🐙 A GitHub account (know your username and password) · [sign up ↗](https://github.com/signup){target="_blank"}
-- [ ] 💬 Joined our Mattermost channel · invite link in your email
+- [ ] 💬 Joined our Mattermost channel · [join here ↗](https://mattermost.jaspcom.xyz/signup_user_complete/?id=uc1d54mao7ndfpzxydeah9a86r){target="_blank"}
 :::
 
 ```{=html}
