@@ -398,7 +398,8 @@ Time to build in **your own** window: **Missing Values**. Open `inst/qml/missing
 ![](img/target-1.png){.target-shot width=300 fig-alt="Target: a checkbox labelled Show percentage missing"}
 
 ```{=html}
-<details class="stuck"><summary>💡 Hint</summary><p>Someone already left a line for you in the file. Why doesn’t it do anything yet?</p></details>
+<details class="stuck"><summary>💡 Hint 1</summary><p>You have seen a control exactly like this today. Where?</p></details>
+<details class="stuck"><summary>💡 Hint 2</summary><p>Borrow it from <code>controlPlayground.qml</code>, change one thing, and paste it inside <code>Form { }</code>, below the Variables box.</p></details>
 ```
 :::
 
@@ -497,25 +498,36 @@ Checkboxes are just the start. **Control Playground** uses a whole toolbox of co
 
 ## Wrap-up [⏱ 5 min]{.timing} [1:25–1:30]{.timing .clock} {#wrapup}
 
-### What you did today
+### 🏆 Achievements unlocked
 
-- ✅ Set up a JASP development environment
-- ✅ Learned the three files of a JASP module
-- ✅ Changed JASP's interface yourself
+Your badges light up by themselves as you tick off the missions on this page. How many did you collect?
 
-### What's next
+```{=html}
+<div class="ach" id="ach">
+  <div class="ach-top"><span class="ach-count" aria-live="polite"><b id="ach-n">0</b> / 5</span><span class="ach-bar"><i id="ach-bar"></i></span></div>
+  <div class="badge-grid ach-grid">
+    <div class="loot-badge ach-badge" data-need="install,load"><span class="badge-icon">⚙️</span><span class="badge-lock">🔒</span><strong>Setup Survivor</strong><small>Your own JASP module runs on your laptop.</small></div>
+    <div class="loot-badge ach-badge" data-need="menu:1"><span class="badge-icon">📋</span><span class="badge-lock">🔒</span><strong>Menu Maker</strong><small>You changed what JASP shows in its menu.</small></div>
+    <div class="loot-badge ach-badge" data-need="bugs:3"><span class="badge-icon">🐛</span><span class="badge-lock">🔒</span><strong>Bug Hunter</strong><small>You squashed at least three bugs.</small></div>
+    <div class="loot-badge ach-badge" data-need="spot"><span class="badge-icon">🕵️</span><span class="badge-lock">🔒</span><strong>QML Detective</strong><small>You can read QML and find it in JASP.</small></div>
+    <div class="loot-badge ach-badge" data-need="button:1"><span class="badge-icon">🛠️</span><span class="badge-lock">🔒</span><strong>Interface Builder</strong><small>You built your first control in your own window.</small></div>
+  </div>
+  <p class="ach-done" id="ach-done" hidden>🎉 Full house! See you at the next session.</p>
+</div>
+```
 
-| When | What |
-|------------------------------------|------------------------------------|
-| Thu 19 Nov · 15:00–16:30 · REC GS.34 | **Practical: R crash course.** Data frames, finding missing values, writing a function. Optional if you're comfortable with R; we'll also fix leftover setup problems. |
-| Thu 26 Nov · 11:30–13:00 · REC JKK.26 | **Session 2:** connect the interface to R and build your first table. |
+### 📅 What's next
 
-: Coming up
+```{=html}
+<div class="next-cards">
+  <div class="next-card practical"><span class="next-when">Thu 19 Nov · 15:00–16:30 · 📍 REC GS.34</span><strong>🧩 Practical 1: R crash course</strong><p>Data frames, finding missing values, writing a function. Optional if you know R, and the place to fix any leftover setup problems.</p></div>
+  <div class="next-card session"><span class="next-when">Thu 26 Nov · 11:30–13:00 · 📍 REC JKK.26</span><strong>💡 Session 2: wake up the R side</strong><p>Remember the <code>name</code> nobody could see? It’s how R hears your controls. Your first table is waiting.</p></div>
+</div>
+```
 
-### Before next time
-
-- **Something broke at home?** Post it in our Mattermost channel, or bring your laptop to the practical.
-- **Curious?** Open `inst/qml/` and look at the other files. What else could you change?
+```{=html}
+<div class="next-chips"><span>🆘 Something broke at home? Post it on Mattermost, or bring your laptop to the practical.</span><span>👀 Curious? Peek at the other files in <code>inst/qml/</code>. What else could you change?</span></div>
+```
 
 ::: {.callout-note icon="false"}
 ## 🕵️ A first peek
@@ -531,3 +543,7 @@ Have a look at our list of potential student projects: ideas from the JASP team,
 <div class="data-download"><a href="https://docs.google.com/spreadsheets/d/1SUtcm54EjAVyw6KdJ-t5AjNIC07EKB0Yocrb1vaSB7M/edit?usp=sharing" target="_blank" rel="noopener">📋 Potential student projects ↗</a></div>
 ```
 
+
+```{=html}
+<div class="sign-off"><span class="sign-wave">👋</span><strong>Thank you for building with us today!</strong><p>Until next time, and happy coding.</p><em>Leo &amp; the JASP Student Developers</em></div>
+```

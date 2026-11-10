@@ -464,3 +464,33 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 @media (prefers-reduced-motion: reduce){.bug-line.is-miss{animation:none}}
 #spot .quest ul.quest-grid,#change .quest ul.quest-grid{grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
 .target-shot{border:1px solid #d3e5eb;border-radius:10px;box-shadow:0 4px 12px #2358751a;background:#ececec;padding:4px;margin:4px 0 10px}
+
+/* ── Wrap-up: achievements + next cards ────────────────────────────── */
+.ach{margin:12px 0 22px}
+.ach-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.ach-count{font-family:'Fredoka',system-ui,sans-serif;font-size:18px;color:#255e7c}
+.ach-bar{flex:1;height:8px;border-radius:99px;background:#e3f0f5;overflow:hidden}
+.ach-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#70b4d4,#8cc152);transition:width .45s}
+.ach-grid{grid-template-columns:repeat(5,1fr)}
+.ach-badge{cursor:default}
+.ach-done{text-align:center;font-weight:750;color:#2f8f7f;margin:12px 0 0}
+@media(max-width:760px){.ach-grid{grid-template-columns:repeat(2,1fr)}}
+.next-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 12px}
+.next-card{border-radius:16px;padding:14px 16px;border:1px solid #d4e9f1;background:#fff}
+.next-card.practical{background:linear-gradient(160deg,#f1f9ea,#fff);border-color:#cfe6bf}
+.next-card.session{background:linear-gradient(160deg,#eaf5fa,#fff)}
+.next-when{display:block;font-size:12.5px;font-weight:750;color:#4c7081;margin-bottom:4px}
+.next-card strong{font-family:'Fredoka',system-ui,sans-serif;font-size:18px;color:#1f4f69}
+.next-card p{margin:6px 0 0;font-size:14.5px;color:#2b4b5a;line-height:1.5}
+.next-chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 16px}
+.next-chips span{font-size:13.5px;padding:7px 12px;border-radius:999px;background:#f4f8fa;border:1px solid #dcebf0;color:#33566a}
+@media(max-width:700px){.next-cards{grid-template-columns:1fr}}
+
+/* ── Sign-off ──────────────────────────────────────────────────────── */
+.sign-off{text-align:center;margin:36px auto 10px;padding:26px 20px;border-radius:20px;background:linear-gradient(135deg,#eaf5fa,#f1f9ea);border:1px solid #d4e9f1;max-width:640px}
+.sign-wave{display:inline-block;font-size:34px;animation:wave 2.2s ease-in-out infinite;transform-origin:70% 70%}
+@keyframes wave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(14deg)}20%,40%{transform:rotate(-8deg)}}
+.sign-off strong{display:block;font-family:'Fredoka',system-ui,sans-serif;font-size:24px;color:#1f4f69;margin-top:6px}
+.sign-off p{margin:6px 0 4px;color:#33566a}
+.sign-off em{font-size:13.5px;color:#6f93a6}
+@media (prefers-reduced-motion: reduce){.sign-wave{animation:none}}

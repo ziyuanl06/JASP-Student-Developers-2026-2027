@@ -345,3 +345,38 @@ document.querySelectorAll('.flip-card').forEach(function(card){card.addEventList
   draw();
 })();
 </script>
+<script>
+// Achievements: unlock from the quest cards and the bug hunt on this page
+(function () {
+  var root = document.getElementById('ach'); if (!root) return;
+  var badges = Array.prototype.slice.call(root.querySelectorAll('.ach-badge'));
+  function done(id) { // fraction of quest cards ticked in section id
+    var cards = document.querySelectorAll('#' + id + ' .quest-card');
+    var k = Array.prototype.filter.call(cards, function (c) { return c.classList.contains('is-done'); }).length;
+    return {k: k, n: cards.length};
+  }
+  function met(req) {
+    return req.split(',').every(function (part) {
+      var bits = part.split(':'), id = bits[0], min = bits[1] ? +bits[1] : null;
+      if (id === 'bugs') { var m = (document.getElementById('bug-score') || {}).textContent || ''; return (+(m.match(/(\d+)\s*\//) || [0, 0])[1]) >= min; }
+      var d = done(id); return min === null ? (d.n > 0 && d.k === d.n) : d.k >= min;
+    });
+  }
+  var first = true;
+  function update() {
+    var n = 0;
+    badges.forEach(function (b) {
+      var ok = met(b.dataset.need), was = b.classList.contains('is-unlocked');
+      b.classList.toggle('is-unlocked', ok);
+      if (ok && !was && !first) { b.classList.remove('just-unlocked'); void b.offsetWidth; b.classList.add('just-unlocked'); }
+      if (ok) n++;
+    });
+    document.getElementById('ach-n').textContent = n;
+    document.getElementById('ach-bar').style.width = (100 * n / badges.length) + '%';
+    document.getElementById('ach-done').hidden = n < badges.length;
+    first = false;
+  }
+  document.addEventListener('click', function () { setTimeout(update, 0); });
+  update();
+})();
+</script>
