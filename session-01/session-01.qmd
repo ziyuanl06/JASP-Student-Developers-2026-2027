@@ -16,6 +16,11 @@ format:
 ---
 
 ```{=html}
+<a class="stop-jump" href="#stopped">📍 Jump to where we stopped</a>
+```
+
+
+```{=html}
 <!--
   ✏️ HOW TO EDIT (for Leo)
   ⚠️ Edit this file in "Source" mode, NOT "Visual" mode.
@@ -315,6 +320,10 @@ When you're done: save → in RStudio's Console run `renv::install(".")` → in 
 
 - [ ] My heading shows up in the menu
 - [ ] Bonus: move it *between* Control Playground and Missing Values. What changes?
+
+```{=html}
+<div class="stop-here" id="stopped"><span class="stop-pin">📍</span><div><strong>We stopped here</strong><small>Thu 12 Nov · next time we’ll pick up from this point together</small></div></div>
+```
 
 ### 🐛 Bug hunt {#bughunt}
 

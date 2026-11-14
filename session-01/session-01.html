@@ -3546,6 +3546,15 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 .sign-off p{margin:6px 0 4px;color:#33566a}
 .sign-off em{font-size:13.5px;color:#6f93a6}
 @media (prefers-reduced-motion: reduce){.sign-wave{animation:none}}
+
+.stop-here{display:flex;align-items:center;gap:14px;margin:28px 0;padding:14px 18px;border-radius:14px;background:repeating-linear-gradient(135deg,#fff4e2 0 14px,#fdebd0 14px 28px);border:2px dashed #e6ae60;color:#7a4f12;scroll-margin-top:110px}
+.stop-pin{font-size:28px;animation:stop-bob 2s ease-in-out infinite}
+@keyframes stop-bob{50%{transform:translateY(-4px)}}
+.stop-here strong{display:block;font-family:'Fredoka',system-ui,sans-serif;font-size:20px;color:#8a5a14}
+.stop-here small{font-size:13.5px;color:#9a7038}
+.stop-jump{display:inline-block;margin:6px 0 4px;padding:6px 14px;border-radius:999px;background:#fff4e2;border:1px dashed #e6ae60;color:#8a5a14 !important;font-weight:750;font-size:13.5px;text-decoration:none}
+.stop-jump:hover{background:#fdebd0}
+@media (prefers-reduced-motion: reduce){.stop-pin{animation:none}}
 </style>
 </head>
 
@@ -3585,6 +3594,7 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 </header>
 
 
+<a class="stop-jump" href="#stopped">📍 Jump to where we stopped</a>
 <!--
   ✏️ HOW TO EDIT (for Leo)
   ⚠️ Edit this file in "Source" mode, NOT "Visual" mode.
@@ -3808,6 +3818,7 @@ Copy it now!
 <li><label><input type="checkbox">My heading shows up in the menu</label></li>
 <li><label><input type="checkbox">Bonus: move it <em>between</em> Control Playground and Missing Values. What changes?</label></li>
 </ul>
+<div class="stop-here" id="stopped"><span class="stop-pin">📍</span><div><strong>We stopped here</strong><small>Thu 12 Nov · next time we’ll pick up from this point together</small></div></div>
 </section>
 <section id="bughunt" class="level3">
 <h3 class="anchored" data-anchor-id="bughunt">🐛 Bug hunt</h3>
