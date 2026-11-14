@@ -1,5 +1,5 @@
 ---
-title: "Practical 1: R Detective"
+title: "Practical 1: R Puzzle Lab"
 format:
   html:
     title-block-style: none

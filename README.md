@@ -19,7 +19,7 @@ We're building a **data wrangling module** for JASP, so researchers can get thei
 |---|---|---|
 | Thu 12 Nov | 11:30–13:00 | **Session 1:** Your first JASP module |
 | Tue 17 Nov | 13:00–14:30 | **Session 1** (second run, same content) |
-| Thu 19 Nov | 15:00–16:30 | **Practical 1:** R crash course |
+| Thu 19 Nov | 15:00–16:30 | **Practical 1:** R Puzzle Lab |
 | Thu 26 Nov | 11:30–13:00 | **Session 2** |
 | Thu 3 Dec | 15:00–16:30 | **Practical 2** |
 | Thu 10 Dec | 11:30–13:00 | **Session 3** |

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates session-02.qmd (Practical 1 · R Detective) from the puzzle list below.
+"""Generates session-02.qmd (Practical 1 · R Puzzle Lab) from the puzzle list below.
 Edit the PUZZLES list, then run:  python3 build_puzzles.py && quarto render session-02.qmd
 """
 import html, json
@@ -219,7 +219,7 @@ def puzzle_html(i, p):
 
 out = []
 out.append('''---
-title: "Practical 1: R Detective"
+title: "Practical 1: R Puzzle Lab"
 format:
   html:
     title-block-style: none
