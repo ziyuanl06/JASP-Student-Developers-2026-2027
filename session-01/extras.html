@@ -380,3 +380,15 @@ document.querySelectorAll('.flip-card').forEach(function(card){card.addEventList
   update();
 })();
 </script>
+
+<script>
+// QML cheat sheet drawer
+(function () {
+  var btn = document.getElementById('cs-toggle'), panel = document.getElementById('cs-panel'); if (!btn) return;
+  document.body.appendChild(btn); document.body.appendChild(panel);
+  function set(open) { panel.hidden = !open; btn.setAttribute('aria-expanded', String(open)); btn.classList.toggle('is-open', open); }
+  btn.addEventListener('click', function () { set(panel.hidden); });
+  document.getElementById('cs-close').addEventListener('click', function () { set(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+})();
+</script>

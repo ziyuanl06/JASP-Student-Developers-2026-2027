@@ -1,0 +1,478 @@
+<script>
+// Checklists → quest cards: click a card to tick it, watch the bar fill, clear the level.
+(function () {
+  var quests = {
+    before:  {title: 'Pre-flight check',  done: 'Ready for take-off! ✈️',        burst: ['✈️','✨','🎉']},
+    token:   {title: 'Set-up quest',      done: 'Module + token secured! 🔑',     burst: ['🔑','✨','📦']},
+    install: {title: 'Install quest',     done: 'Packages in the bag! 📦',        burst: ['📦','✨','🎉']},
+    button:  {title: 'Your first button', done: 'You built a JASP interface! 🛠️', burst: ['🛠️','⭐','🎉']},
+    load:    {title: 'Lift-off',          done: 'JASP sees your module! 🚀',      burst: ['🚀','⭐','🎉']},
+    menu:    {title: 'Menu makeover',     done: 'You just changed JASP! ✨',       burst: ['✨','📋','🎉']},
+    spot:    {title: 'Missions',          done: 'Sharp eyes! 👀',                 burst: ['👀','🔍','✨']},
+    change:  {title: 'Missions',           done: 'Case closed! 🕵️',                burst: ['🕵️','✏️','🎉']},
+    detectives: {title: 'Detective missions', done: 'Case closed! 🕵️',           burst: ['🕵️','🔍','🎉']}
+  };
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+
+  document.querySelectorAll('ul.task-list').forEach(function (ul, n) {
+    if (ul.parentElement.closest('ul.task-list')) return;
+    var sec = ul.closest('section[id]'), id = sec ? sec.id : 'list' + n;
+    var q = quests[id] || {title: 'Checklist', done: 'All done! 🎉', burst: ['✨','🎉','⭐']};
+    var items = Array.prototype.slice.call(ul.children);
+
+    var box = document.createElement('div'); box.className = 'quest';
+    box.innerHTML = '<div class="quest-head"><span class="quest-title"></span>' +
+      '<span class="quest-count" aria-live="polite"></span>' +
+      '<button type="button" class="quest-reset" title="Untick all">↺</button></div>' +
+      '<div class="quest-bar"><i></i></div>';
+    box.querySelector('.quest-title').textContent = q.title;
+    ul.parentNode.insertBefore(box, ul); box.appendChild(ul);
+    if (!ul.closest('.prep')) ul.classList.add('quest-grid');
+
+    function update(celebrate) {
+      var k = items.filter(function (li) { return li.classList.contains('is-done'); }).length;
+      var all = k === items.length;
+      box.querySelector('.quest-count').textContent = all ? q.done : k + ' / ' + items.length;
+      box.querySelector('.quest-bar i').style.width = (100 * k / items.length) + '%';
+      box.classList.toggle('is-cleared', all);
+      if (all && celebrate) burst(box, q.burst);
+    }
+    function set(li, i, on) {
+      li.classList.toggle('is-done', on);
+      var inp = li.querySelector('input[type="checkbox"]'); if (inp) { inp.checked = on; inp.removeAttribute('disabled'); }
+      store('jsdg-s1-' + id + '-' + i, on ? '1' : '0');
+    }
+    items.forEach(function (li, i) {
+      li.classList.add('quest-card');
+      var tick = document.createElement('span'); tick.className = 'quest-tick'; tick.setAttribute('aria-hidden', 'true');
+      li.insertBefore(tick, li.firstChild);
+      set(li, i, store('jsdg-s1-' + id + '-' + i) === '1');
+      li.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;           // links still work
+        e.preventDefault();
+        var on = !li.classList.contains('is-done');
+        set(li, i, on);
+        if (on) { li.classList.remove('pop'); void li.offsetWidth; li.classList.add('pop'); }
+        update(on);
+      });
+    });
+    box.querySelector('.quest-reset').addEventListener('click', function () {
+      items.forEach(function (li, i) { set(li, i, false); }); update(false);
+    });
+    update(false);
+  });
+
+  function burst(el, emojis) {
+    var r = el.querySelector('.quest-head');
+    for (var i = 0; i < 14; i++) {
+      var s = document.createElement('span'); s.className = 'quest-confetti';
+      s.textContent = emojis[i % emojis.length];
+      var a = Math.random() * Math.PI * 2, d = 50 + Math.random() * 90;
+      s.style.setProperty('--dx', Math.cos(a) * d + 'px');
+      s.style.setProperty('--dy', (Math.sin(a) * d - 30) + 'px');
+      s.style.left = (30 + Math.random() * 40) + '%';
+      r.appendChild(s);
+      setTimeout(function (x) { return function () { x.remove(); }; }(s), 1100);
+    }
+  }
+})();
+</script>
+
+<script>
+/* Flip cards in "But, how?" */
+document.querySelectorAll('.flip-card').forEach(function(card){card.addEventListener('click',function(){var f=card.classList.toggle('is-flipped');card.setAttribute('aria-pressed',String(f));});});
+</script>
+
+<script>
+/* Offline QML → R options prediction mini-lab; no JASP connection required. */
+(function () {
+  const root=document.getElementById('option-lab'); if (!root) return;
+  const one=(sel)=>root.querySelector(sel);
+  // Mini "JASP window" checkbox: o = {label, checked, disabled, indent}
+  function cb(o){return '<span class="mock-cb'+(o.disabled?' is-off':'')+(o.indent?' is-indent':'')+'"><i class="'+(o.checked?'on':'')+'"></i>'+o.label+'</span>'}
+  const levels=[
+    { code:'CheckBox\n{\n    name : "showPlot"\n    label: qsTr("Show histogram")\n}',
+      question:'Which text appears next to the checkbox in JASP?',
+      choices:[cb({label:'Show histogram'}), cb({label:'showPlot'}), cb({label:'CheckBox'})], answer:0,
+      explain:'<code>label</code> is the text users see. <code>name</code> is a hidden ID that R uses to read the value: we’ll need it in Session 2.',
+      window:{parent:{label:'Show histogram',checked:false}} },
+    { code:'CheckBox\n{\n    name   : "showPlot"\n    label  : qsTr("Show histogram")\n    checked: true\n}',
+      question:'You open the analysis. What does the checkbox look like?',
+      choices:[cb({label:'Show histogram',checked:true}), cb({label:'Show histogram'}), cb({label:'Show histogram: true'})], answer:0,
+      explain:'<code>checked: true</code> sets the <em>default</em>: it starts ticked. Delete that line and it starts unticked.',
+      window:{parent:{label:'Show histogram',checked:true}} },
+    { code:'CheckBox\n{\n    name : "showPlot"\n    label: qsTr("Show histogram")\n\n    CheckBox\n    {\n        name : "showMeanLine"\n        label: qsTr("Mark the mean")\n    }\n}',
+      question:'“Show histogram” is unticked. What happens to “Mark the mean”?',
+      choices:[cb({label:'Show histogram'})+cb({label:'Mark the mean'}), cb({label:'Show histogram'})+cb({label:'Mark the mean',indent:true,disabled:true}), cb({label:'Show histogram'})], answer:1,
+      explain:'A control <em>inside</em> a CheckBox is indented, and greyed out until its parent is ticked. Try it: tick “Show histogram” in the window on the left (or in Control Playground!).',
+      window:{parent:{label:'Show histogram',checked:false},child:{label:'Mark the mean'}} }
+  ];
+  let current=0,chosen=null; const solved=[false,false,false];
+  // Live, clickable mini window (shown after checking)
+  function renderWindow(revealed){
+    const w=one('#lab-window'), d=levels[current].window;
+    if(!revealed){w.innerHTML='<span class="lab-window-wait">❓ Make a prediction to reveal</span>';return;}
+    const st={p:d.parent.checked};
+    function paint(){
+      w.innerHTML=cb({label:d.parent.label,checked:st.p})+(d.child?cb({label:d.child.label,indent:true,disabled:!st.p,checked:st.c}):'');
+      const boxes=w.querySelectorAll('.mock-cb');
+      boxes[0].addEventListener('click',()=>{st.p=!st.p;paint()});
+      if(d.child) boxes[1].addEventListener('click',()=>{if(st.p){st.c=!st.c;paint()}});
+      const t=document.createElement('p');t.className='lab-mini-help';t.textContent='👆 This window is clickable.';w.append(t);
+    }
+    paint();
+  }
+  function draw(){
+    const d=levels[current]; chosen=null;
+    one('#lab-question').textContent=d.question;
+    one('#lab-code').textContent=d.code;
+    one('#lab-feedback').hidden=true; renderWindow(false); drawChoices();
+    root.querySelectorAll('.lab-tab').forEach((b,i)=>{b.classList.toggle('is-active',i===current);b.classList.toggle('is-solved',solved[i]);b.setAttribute('aria-pressed',String(i===current))});
+    one('#lab-score').textContent=solved.filter(Boolean).length+' / 3';
+  }
+  function drawChoices(){
+    const box=one('#lab-choices');box.replaceChildren();
+    levels[current].choices.forEach((html,i)=>{const b=document.createElement('button');b.type='button';b.className='mock-choice';b.innerHTML='<b>'+'ABC'[i]+'</b><span class="mock-win">'+html+'</span>';b.setAttribute('aria-pressed',String(chosen===i));b.addEventListener('click',()=>{chosen=i;drawChoices();one('#lab-feedback').hidden=true});box.append(b)});
+    one('#lab-check').disabled=chosen===null;
+  }
+  one('#lab-check').addEventListener('click',()=>{
+    if(chosen===null)return;
+    const d=levels[current], correct=chosen===d.answer, f=one('#lab-feedback');
+    if(correct)solved[current]=true;
+    f.hidden=false;f.classList.toggle('is-wrong',!correct);
+    f.innerHTML='<strong>'+(correct?'✅ You got it!':'🔎 Not quite: it’s '+'ABC'[d.answer])+'</strong><span>'+d.explain+'</span>';
+    renderWindow(true);
+    root.querySelectorAll('.lab-tab').forEach((b,i)=>b.classList.toggle('is-solved',solved[i]));one('#lab-score').textContent=solved.filter(Boolean).length+' / 3';
+  });
+  root.querySelectorAll('.lab-tab').forEach((b,i)=>b.addEventListener('click',()=>{current=i;draw()}));
+  one('#lab-reset').addEventListener('click',()=>{solved.fill(false);current=0;draw()});
+  draw();
+})();
+</script>
+
+<script>
+/* Interactive calendar: show a personal plan for each attendance choice */
+(function(){
+  var cal=document.getElementById('my-cal'); if(!cal) return;
+  var summaries={
+    both:'🎉 You can join everything. Come to Session 1 on <b>Thu 12</b> or <b>Tue 17</b>. At practicals, feel free to skip the 30-min recap and arrive at 15:30.',
+    sessions:'💡 You’ll join every session. Practical exercises are posted online: try them at home and ask questions on Mattermost.',
+    practicals:'🧩 Your Session 1 is on <b>Tue 17 Nov</b> (can’t make that either? No worries, we’ll set you up separately). Each practical starts with a 30-min recap of the session you missed. Session 3’s recap comes in January.'
+  };
+  function set(mode){
+    cal.dataset.mode=mode;
+    cal.querySelectorAll('.cal-modes button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.mode===mode));});
+    cal.querySelectorAll('.cal-ev').forEach(function(ev){
+      var st=ev.dataset[mode]||'go';
+      ev.classList.remove('is-go','is-alt','is-skip'); ev.classList.add('is-'+st);
+      ev.querySelector('.cal-note').textContent=ev.dataset['note'+mode.charAt(0).toUpperCase()+mode.slice(1)]||'';
+    });
+    document.getElementById('cal-summary').innerHTML=summaries[mode];
+  }
+  cal.querySelectorAll('.cal-modes button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.mode);});});
+  set('both');
+})();
+</script>
+
+<script>
+/* Loot badges: click to unlock */
+(function(){
+  var root=document.getElementById('loot'); if(!root) return;
+  var n=document.getElementById('loot-n');
+  root.querySelectorAll('.loot-badge').forEach(function(b){
+    b.addEventListener('click',function(){
+      var on=b.classList.toggle('is-unlocked'); b.setAttribute('aria-pressed',String(on));
+      if(on){b.classList.remove('just-unlocked'); void b.offsetWidth; b.classList.add('just-unlocked');}
+      n.textContent=root.querySelectorAll('.loot-badge.is-unlocked').length;
+    });
+  });
+})();
+</script>
+<script>
+// "Find the partner": click a QML name to light up the matching options$ in R (and vice versa)
+(function () {
+  var lab = document.getElementById('pair-lab'); if (!lab) return;
+  var hint = document.getElementById('pair-hint');
+  lab.querySelectorAll('.pair').forEach(function (el) {
+    el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button');
+    function go() {
+      var k = el.dataset.pair;
+      lab.querySelectorAll('.pair').forEach(function (x) { x.classList.toggle('is-lit', x.dataset.pair === k); });
+      lab.querySelectorAll('.pair.is-lit').forEach(function (x) { x.classList.remove('flash'); void x.offsetWidth; x.classList.add('flash'); });
+      hint.innerHTML = '✨ <code>name: "' + k + '"</code> in QML &nbsp;→&nbsp; <code>options$' + k + '</code> in R';
+    }
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+})();
+</script>
+<script>
+// Sticky "where are we" trail: one segment per timed section, shows the step you're reading.
+(function () {
+  var secs = Array.prototype.filter.call(document.querySelectorAll('section.level2[id]'), function (s) {
+    var h = s.querySelector(':scope > h2'); return h && h.querySelector('.timing');
+  });
+  if (!secs.length) return;
+  function label(s) {
+    var h = s.querySelector(':scope > h2').cloneNode(true);
+    h.querySelectorAll('.timing, .anchorjs-link').forEach(function (x) { x.remove(); });
+    return h.textContent.trim();
+  }
+  function clock(s) { var c = s.querySelector(':scope > h2 .clock'); return c ? c.textContent.trim() : ''; }
+
+  var bar = document.createElement('div'); bar.className = 'trail'; bar.setAttribute('aria-label', 'Session progress');
+  bar.innerHTML = '<div class="trail-top"><span class="trail-title">Session 01 · Your First JASP Module</span>' +
+    '<span class="trail-step"></span></div><div class="trail-segs"></div>' +
+    '<div class="trail-now"><span class="trail-pin">📍</span> <span class="trail-label"></span><span class="trail-clock"></span></div>';
+  var segs = bar.querySelector('.trail-segs');
+  secs.forEach(function (s, i) {
+    var a = document.createElement('a'); a.href = '#' + s.id; a.className = 'trail-seg';
+    a.title = (i + 1) + '. ' + label(s) + (clock(s) ? '  (' + clock(s) + ')' : '');
+    a.innerHTML = '<i></i><span>' + (i + 1) + '</span>';
+    segs.appendChild(a);
+  });
+  document.body.appendChild(bar);
+
+  var nav = document.querySelector('.jasp-wave-nav');
+  var current = -1;
+  function update() {
+    var y = window.scrollY, trigger = 140, idx = -1;
+    secs.forEach(function (s, i) { if (s.getBoundingClientRect().top - trigger <= 0) idx = i; });
+    // hysteresis: show a bit after the nav leaves, hide a bit before it returns (no flicker at the edge)
+    var edge = nav ? nav.getBoundingClientRect().bottom : 300 - y;
+    if (edge < -40) bar.classList.add('is-shown'); else if (edge > 0) bar.classList.remove('is-shown');
+    if (idx === current) return; current = idx;
+    var shown = Math.max(idx, 0);
+    segs.querySelectorAll('.trail-seg').forEach(function (a, i) {
+      a.classList.toggle('is-done', i < idx); a.classList.toggle('is-here', i === idx);
+    });
+    bar.querySelector('.trail-step').textContent = idx < 0 ? '' : 'Step ' + (idx + 1) + ' of ' + secs.length;
+    bar.querySelector('.trail-label').textContent = idx < 0 ? 'Getting started' : label(secs[shown]);
+    bar.querySelector('.trail-clock').textContent = idx < 0 ? '' : clock(secs[shown]);
+  }
+  var queued = false;
+  window.addEventListener('scroll', function () { if (!queued) { queued = true; requestAnimationFrame(function () { queued = false; update(); }); } }, {passive: true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+// Control gallery: live slider readout + copy buttons
+(function () {
+  document.querySelectorAll('.mk-slider').forEach(function (l) {
+    var r = l.querySelector('input'), o = l.querySelector('output');
+    r.addEventListener('input', function () { o.textContent = Number(r.value).toFixed(1); });
+  });
+  document.querySelectorAll('.ctl-copy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = b.parentElement.querySelector('code').textContent;
+      (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () {
+        b.textContent = 'Copied ✓'; setTimeout(function () { b.textContent = 'Copy'; }, 1400);
+      }, function () { b.textContent = 'Select & copy'; });
+    });
+  });
+})();
+</script>
+<script>
+// Interactive file tree: click a row → explanation; click a folder again → fold/unfold
+(function () {
+  var ft = document.getElementById('file-tree'); if (!ft) return;
+  var data = JSON.parse(document.getElementById('ft-data').textContent);
+  var rows = Array.prototype.slice.call(ft.querySelectorAll('.ft-row'));
+  var panel = document.getElementById('ft-info');
+  function show(row) {
+    var d = data[row.dataset.key];
+    rows.forEach(function (r) { r.classList.toggle('is-active', r === row); });
+    panel.innerHTML = '<div class="ft-card"><span class="ft-big">' + d.icon + '</span><h5>' + d.title + '</h5><p>' + d.text +
+      '</p><span class="ft-tag ' + d.cls + '">' + d.tag + '</span></div>';
+  }
+  function setOpen(row, open) {
+    row.classList.toggle('is-closed', !open);
+    var depth = +row.dataset.depth, i = rows.indexOf(row) + 1;
+    for (; i < rows.length && +rows[i].dataset.depth > depth; i++) {
+      // hide all descendants when closing; when opening, only show direct-open chains
+      var hidden = !open || rows.slice(rows.indexOf(row) + 1, i).some(function (p) {
+        return +p.dataset.depth < +rows[i].dataset.depth && p.classList.contains('is-closed') && +p.dataset.depth > depth;
+      });
+      rows[i].hidden = hidden;
+    }
+  }
+  rows.forEach(function (row) {
+    row.addEventListener('click', function () {
+      var isDir = row.classList.contains('ft-dir');
+      if (isDir && row.classList.contains('is-active') && row.dataset.key !== 'root') setOpen(row, row.classList.contains('is-closed'));
+      show(row);
+    });
+  });
+})();
+</script>
+<script>
+// Bug hunt: click the broken line
+(function () {
+  var root = document.getElementById('bug-hunt'); if (!root) return;
+  var bugs = JSON.parse(document.getElementById('bug-data').textContent);
+  var cur = 0, solved = bugs.map(function () { return false; });
+  var tabs = root.querySelector('.bug-tabs'), code = root.querySelector('#bug-code'), fb = root.querySelector('#bug-feedback');
+  function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function draw() {
+    var b = bugs[cur];
+    tabs.innerHTML = bugs.map(function (x, i) {
+      return '<button type="button" class="bug-tab' + (i === cur ? ' is-active' : '') + (solved[i] ? ' is-solved' : '') + '" data-i="' + i + '">Bug ' + (i + 1) + (solved[i] ? ' · ' + x.title : '') + '</button>';
+    }).join('');
+    tabs.querySelectorAll('.bug-tab').forEach(function (t) { t.addEventListener('click', function () { cur = +t.dataset.i; draw(); }); });
+    root.querySelector('#bug-symptom').innerHTML = '<b>Symptom:</b> ' + b.symptom;
+    code.innerHTML = b.lines.map(function (l, i) {
+      return '<button type="button" class="bug-line" data-i="' + i + '"><span class="bug-no">' + (i + 1) + '</span><code>' + (esc(l) || '&nbsp;') + '</code></button>';
+    }).join('');
+    code.querySelectorAll('.bug-line').forEach(function (line) {
+      line.addEventListener('click', function () {
+        var i = +line.dataset.i, hit = [].concat(b.bug).indexOf(i) > -1;
+        code.querySelectorAll('.bug-line').forEach(function (l) { l.classList.remove('is-miss'); });
+        line.classList.add(hit ? 'is-hit' : 'is-miss');
+        fb.hidden = false; fb.classList.toggle('is-wrong', !hit);
+        if (hit) {
+          solved[cur] = true;
+          fb.innerHTML = '<strong>🎯 Squashed!</strong> ' + b.explain + '<br><b>Fix:</b> ' + b.fix;
+          var tb = tabs.querySelectorAll('.bug-tab')[cur]; tb.classList.add('is-solved'); tb.textContent = 'Bug ' + (cur + 1) + ' · ' + b.title;
+        } else {
+          fb.innerHTML = '<strong>🔎 Not this line.</strong> Look again: compare it with the working example above.';
+        }
+        root.querySelector('#bug-score').textContent = '🐛 ' + solved.filter(Boolean).length + ' / ' + bugs.length + ' squashed' + (solved.every(Boolean) ? ' · Bug hunter! 🏆' : '');
+      });
+    });
+    fb.hidden = true;
+  }
+  draw();
+})();
+</script>
+<script>
+// Achievements: unlock from the quest cards and the bug hunt on this page
+(function () {
+  var root = document.getElementById('ach'); if (!root) return;
+  var badges = Array.prototype.slice.call(root.querySelectorAll('.ach-badge'));
+  function done(id) { // fraction of quest cards ticked in section id
+    var cards = document.querySelectorAll('#' + id + ' .quest-card');
+    var k = Array.prototype.filter.call(cards, function (c) { return c.classList.contains('is-done'); }).length;
+    return {k: k, n: cards.length};
+  }
+  function met(req) {
+    return req.split(',').every(function (part) {
+      var bits = part.split(':'), id = bits[0], min = bits[1] ? +bits[1] : null;
+      if (id === 'bugs') { var m = (document.getElementById('bug-score') || {}).textContent || ''; return (+(m.match(/(\d+)\s*\//) || [0, 0])[1]) >= min; }
+      var d = done(id); return min === null ? (d.n > 0 && d.k === d.n) : d.k >= min;
+    });
+  }
+  var first = true;
+  function update() {
+    var n = 0;
+    badges.forEach(function (b) {
+      var ok = met(b.dataset.need), was = b.classList.contains('is-unlocked');
+      b.classList.toggle('is-unlocked', ok);
+      if (ok && !was && !first) { b.classList.remove('just-unlocked'); void b.offsetWidth; b.classList.add('just-unlocked'); }
+      if (ok) n++;
+    });
+    document.getElementById('ach-n').textContent = n;
+    document.getElementById('ach-bar').style.width = (100 * n / badges.length) + '%';
+    document.getElementById('ach-done').hidden = n < badges.length;
+    first = false;
+  }
+  document.addEventListener('click', function () { setTimeout(update, 0); });
+  update();
+})();
+</script>
+<script>
+// R Detective puzzles: check answers, track progress per level (saved in this browser)
+(function () {
+  var puzzles = Array.prototype.slice.call(document.querySelectorAll('.puz')); if (!puzzles.length) return;
+  var KEY = 'jsdg-p1-solved';
+  var solved = {}; try { solved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(solved)); } catch (e) {} }
+  var norm = function (s) { return String(s).trim().toLowerCase().replace(/[`"'“”‘’]/g, '').replace(/\s+/g, ' '); };
+  var levelInfo = {1: ['🌱', 'First steps'], 2: ['🔍', 'Detective'], 3: ['🛠️', 'Toolbox'], 4: ['🚀', 'Almost JASP']};
+
+  // scoreboard
+  var board = document.getElementById('puz-board');
+  board.innerHTML = '<div class="pb-top"><strong>Your case file</strong><span id="pb-total">0 / ' + puzzles.length + ' solved</span><button type="button" class="quest-reset" id="pb-reset" title="Start over">↺</button></div>' +
+    '<div class="pb-levels">' + [1, 2, 3, 4].map(function (lv) {
+      return '<a class="pb-level" href="#l' + lv + '" data-level="' + lv + '"><span>' + levelInfo[lv][0] + '</span><b>' + levelInfo[lv][1] + '</b><small></small><i><em></em></i></a>';
+    }).join('') + '</div>';
+
+  var pill = document.createElement('a'); pill.className = 'pb-pill'; pill.href = '#puz-board'; document.body.appendChild(pill);
+  function levelOf(p) { return +p.closest('.puz-level').dataset.level; }
+  function updateBoard() {
+    var total = 0;
+    [1, 2, 3, 4].forEach(function (lv) {
+      var ps = puzzles.filter(function (p) { return levelOf(p) === lv; });
+      var k = ps.filter(function (p) { return solved[p.dataset.id]; }).length; total += k;
+      var el = board.querySelector('.pb-level[data-level="' + lv + '"]');
+      el.querySelector('small').textContent = k + ' / ' + ps.length;
+      el.querySelector('em').style.width = (100 * k / ps.length) + '%';
+      el.classList.toggle('is-complete', k === ps.length);
+    });
+    document.getElementById('pb-total').textContent = total + ' / ' + puzzles.length + ' solved' + (total === puzzles.length ? ' · Master detective! 🏆' : '');
+    var prev = pill.dataset.n; pill.dataset.n = total; pill.textContent = '🕵️ ' + total + ' / ' + puzzles.length;
+    if (prev !== undefined && +prev < total) { pill.classList.remove('bump'); void pill.offsetWidth; pill.classList.add('bump'); }
+  }
+  function markSolved(p, msg, celebrate) {
+    solved[p.dataset.id] = true; save();
+    p.classList.add('is-solved');
+    p.querySelector('.puz-state').textContent = '✓ Solved';
+    var fb = p.querySelector('.puz-feedback'); fb.hidden = false; fb.className = 'puz-feedback is-right'; fb.innerHTML = msg;
+    var note = p.querySelector('.puz-note'); if (note) note.hidden = false;
+    if (celebrate) { p.classList.remove('pop'); void p.offsetWidth; p.classList.add('pop'); }
+    updateBoard();
+  }
+  function check(p) {
+    var spec = JSON.parse(p.querySelector('.puz-spec').textContent);
+    var raw = p.querySelector('.puz-input').value, ok = false;
+    if (spec.kind === 'num') {
+      var v = parseFloat(String(raw).replace(',', '.'));
+      ok = !isNaN(v) && Math.abs(v - spec.answer) <= spec.tol + 1e-9;
+    } else if (spec.kind === 'text') {
+      ok = spec.answer.some(function (a) { return norm(a) === norm(raw); });
+    } else if (spec.kind === 'set') {
+      // IDs: "P003", "p3", "003" and "3" all count as the same participant
+      var id = function (t) { var m = norm(t).replace(/^p/, ''); return /^\d+$/.test(m) ? String(parseInt(m, 10)) : m; };
+      var got = norm(raw).split(/[\s,;]+/).filter(Boolean).map(id).sort();
+      var want = spec.answer.map(id).sort();
+      ok = got.length === want.length && got.every(function (g, i) { return g === want[i]; });
+    }
+    if (ok) markSolved(p, '🎯 Correct!', true);
+    else {
+      var fb = p.querySelector('.puz-feedback'); fb.hidden = false; fb.className = 'puz-feedback is-wrong';
+      fb.innerHTML = raw.trim() ? '🔎 Not quite. Check your code, or peek at the hint.' : 'Type an answer first 🙂';
+      p.classList.remove('shake'); void p.offsetWidth; p.classList.add('shake');
+    }
+  }
+  puzzles.forEach(function (p) {
+    var btn = p.querySelector('.puz-btn');
+    if (p.dataset.kind === 'done') btn.addEventListener('click', function () { markSolved(p, '🎉 Nice! Compare with the solution if you like.', true); });
+    else {
+      btn.addEventListener('click', function () { check(p); });
+      p.querySelector('.puz-input').addEventListener('keydown', function (e) { if (e.key === 'Enter') check(p); });
+    }
+    if (solved[p.dataset.id]) markSolved(p, '🎯 Solved earlier.', false);
+  });
+  document.getElementById('pb-reset').addEventListener('click', function () {
+    solved = {}; save();
+    puzzles.forEach(function (p) {
+      p.classList.remove('is-solved'); p.querySelector('.puz-state').textContent = '';
+      p.querySelector('.puz-feedback').hidden = true; var n = p.querySelector('.puz-note'); if (n) n.hidden = true;
+      var i = p.querySelector('.puz-input'); if (i) i.value = '';
+    });
+    updateBoard();
+  });
+  updateBoard();
+})();
+</script>
+<script>
+// R cheat sheet drawer
+(function () {
+  var btn = document.getElementById('cs-toggle'), panel = document.getElementById('cs-panel'); if (!btn) return;
+  document.body.appendChild(btn); document.body.appendChild(panel);
+  function set(open) { panel.hidden = !open; btn.setAttribute('aria-expanded', String(open)); btn.classList.toggle('is-open', open); }
+  btn.addEventListener('click', function () { set(panel.hidden); });
+  document.getElementById('cs-close').addEventListener('click', function () { set(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+})();
+</script>

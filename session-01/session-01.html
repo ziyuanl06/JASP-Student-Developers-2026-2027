@@ -3555,6 +3555,21 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 .stop-jump{display:inline-block;margin:6px 0 4px;padding:6px 14px;border-radius:999px;background:#fff4e2;border:1px dashed #e6ae60;color:#8a5a14 !important;font-weight:750;font-size:13.5px;text-decoration:none}
 .stop-jump:hover{background:#fdebd0}
 @media (prefers-reduced-motion: reduce){.stop-pin{animation:none}}
+
+.cs-toggle{position:fixed;left:18px;bottom:18px;z-index:1031;border:1px solid #f1dfbf;background:#fff8e8;color:#6b4a14;font-weight:750;font-size:14px;padding:8px 14px;border-radius:999px;box-shadow:0 6px 16px #2358752a;cursor:pointer}
+.cs-toggle.is-open{background:#fdeccf}
+.cs-panel{position:fixed;left:18px;bottom:66px;z-index:1032;width:min(560px,calc(100vw - 36px));max-height:70vh;overflow:auto;background:#fff;border:1px solid #f1dfbf;border-radius:16px;box-shadow:0 12px 30px #2358753a;padding:12px 14px}
+.cs-panel[hidden]{display:none}
+.cs-head{display:flex;align-items:center;margin-bottom:6px}
+.cs-head strong{font-family:'Fredoka',system-ui,sans-serif;font-size:17px;color:#6b4a14}
+.cs-close{margin-left:auto;border:0;background:none;font-size:16px;cursor:pointer;color:#9a8466}
+.cs-panel table{width:100%;border-collapse:collapse;font-size:13px}
+.cs-panel th{text-align:left;vertical-align:top;padding:6px 10px 6px 0;color:#9a6a1f;white-space:nowrap;font-weight:750}
+.cs-panel td{padding:6px 0;border-top:1px solid #f6ead3}
+.cs-panel tr:first-child td{border-top:0}
+.cs-panel td code{white-space:normal;font-size:12px;background:none;color:#245973}
+.cs-panel td small{color:#7a8f99}
+.cs-panel table{table-layout:fixed}.cs-panel th{width:140px;white-space:normal}
 </style>
 </head>
 
@@ -3562,7 +3577,7 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 <!-- JASP-inspired wave banner (this replaces the former desktop-style ribbon). -->
 <a id="top" href></a>
 <header class="jasp-wave-header">
@@ -3595,6 +3610,7 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 
 
 <a class="stop-jump" href="#stopped">📍 Jump to where we stopped</a>
+<button type="button" class="cs-toggle" id="cs-toggle" aria-expanded="false" aria-controls="cs-panel">📘 QML cheat sheet</button><aside class="cs-panel" id="cs-panel" aria-label="QML cheat sheet" hidden><div class="cs-head"><strong>📘 QML cheat sheet</strong><button type="button" class="cs-close" id="cs-close" aria-label="Close">✕</button></div><table data-quarto-disable-processing="true"><tbody><tr><th>🔁 Edit loop</th><td>Save → <code>renv::install(&quot;.&quot;)</code> → JASP: <b>Install Developer Module</b> → reopen the analysis</td></tr><tr><th>📂 Files</th><td><code>inst/Description.qml</code> = the menu<br><code>inst/qml/missingValues.qml</code> = the window<br><code>R/</code> = the computation (later!)</td></tr><tr><th>🧱 One control</th><td><code>CheckBox { name: &quot;showPlot&quot;; label: qsTr(&quot;Show plot&quot;) }</code><br><small>type · <b>name</b> (for R, later) · <b>label</b> (what users see)</small></td></tr><tr><th>☑️ CheckBox</th><td><code>CheckBox { name: &quot;x&quot;; label: qsTr(&quot;…&quot;); checked: true }</code></td></tr><tr><th>✏️ TextField</th><td><code>TextField { name: &quot;x&quot;; label: qsTr(&quot;…&quot;); defaultValue: &quot;999&quot; }</code></td></tr><tr><th>🔢 IntegerField / DoubleField</th><td><code>IntegerField { name: &quot;x&quot;; label: qsTr(&quot;…&quot;); defaultValue: 2; min: 0; max: 10 }</code></td></tr><tr><th>🎚️ Slider</th><td><code>Slider { name: &quot;x&quot;; label: qsTr(&quot;…&quot;); value: 1; min: 0; max: 5 }</code></td></tr><tr><th>🔽 DropDown</th><td><code>DropDown { name: &quot;x&quot;; label: qsTr(&quot;…&quot;); values: [&quot;A&quot;, &quot;B&quot;] }</code></td></tr><tr><th>🔘 RadioButtonGroup</th><td><code>RadioButtonGroup { name: &quot;x&quot;; title: qsTr(&quot;…&quot;)<br>  RadioButton { value: &quot;a&quot;; label: qsTr(&quot;A&quot;); checked: true } }</code></td></tr><tr><th>🗂️ Group</th><td><code>Group { title: qsTr(&quot;…&quot;)  …controls… }</code> · a titled box</td></tr><tr><th>📂 Section</th><td><code>Section { title: qsTr(&quot;…&quot;)  …controls… }</code> · folded away</td></tr><tr><th>🪆 Nesting</th><td>Put a control <b>inside</b> a CheckBox’s <code>{ }</code> → it’s greyed out until the box is ticked</td></tr><tr><th>⚠️ Three rules</th><td>Types start with a <b>Capital</b> · text goes in <b>&quot;quotes&quot;</b> · every <b>{</b> needs its <b>}</b></td></tr><tr><th>🆘 Stuck?</th><td>Menu gone → check brackets · Window won’t open → check spelling &amp; capitals of file names · Still stuck → compare with <code>controlPlayground.qml</code></td></tr></tbody></table></aside>
 <!--
   ✏️ HOW TO EDIT (for Leo)
   ⚠️ Edit this file in "Source" mode, NOT "Visual" mode.
@@ -4428,6 +4444,18 @@ document.querySelectorAll('.flip-card').forEach(function(card){card.addEventList
   }
   document.addEventListener('click', function () { setTimeout(update, 0); });
   update();
+})();
+</script>
+
+<script>
+// QML cheat sheet drawer
+(function () {
+  var btn = document.getElementById('cs-toggle'), panel = document.getElementById('cs-panel'); if (!btn) return;
+  document.body.appendChild(btn); document.body.appendChild(panel);
+  function set(open) { panel.hidden = !open; btn.setAttribute('aria-expanded', String(open)); btn.classList.toggle('is-open', open); }
+  btn.addEventListener('click', function () { set(panel.hidden); });
+  document.getElementById('cs-close').addEventListener('click', function () { set(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
 })();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
