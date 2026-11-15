@@ -3617,6 +3617,11 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 .cs-panel tr:first-child td{border-top:0}
 .cs-panel td code{white-space:normal;font-size:12.5px;background:none;color:#245973}
 .cs-panel table{table-layout:fixed}.cs-panel th{width:140px;white-space:normal}
+
+.puz details.puz-leo summary{background:#eefaf3;border-color:#5fbf8a;color:#1f6b43}
+.puz details.puz-leo[open] summary{background:#d6f2e2}
+.puz details.puz-leo pre,.puz details.puz-leo p{background:#f4fcf7;border-left-color:#5fbf8a}
+.puz details.puz-leo p{font-size:13px;color:#3d6b52}
 </style>
 </head>
 
@@ -3683,19 +3688,19 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 x * 2         # 10
 
 dim(d)        # a function: give it d, get back rows and columns</code></pre></div><div class="puz" id="puz-1" data-id="1" data-kind="num"><div class="puz-head"><span class="puz-num">1</span><strong>How big is it?</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">How many <b>rows</b> does the dataset have?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 351, "tol": 0}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Each row is one measurement, not one person. Keep that in mind!</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p>There is a function that returns rows <em>and</em> columns at once. Or try <code>nrow()</code>.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>dim(d)     # 351 rows, 15 columns
-nrow(d)    # 351</code></pre></details></div>
+nrow(d)    # 351</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>nrow(d)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="puz" id="puz-2" data-id="2" data-kind="text"><div class="puz-head"><span class="puz-num">2</span><strong>Name tags</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">One column name contains a <b>space</b>. Which one?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "text", "answer": ["ANXIETY 5"]}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Spaces in names are legal but annoying: you need <code>`backticks`</code> to use them. That’s why we loaded with <code>check.names = FALSE</code>.</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>names(d)</code> lists all column names.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>names(d)
 
 # a name with a space needs backticks:
-d$`ANXIETY 5`</code></pre></details></div>
+d$`ANXIETY 5`</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>colnames(d)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="concept"><div class="concept-head"><span>📘</span><b>New idea</b><strong>Picking things: $ and [ ]</strong></div><p><code>$</code> takes one column out of a data frame. Square brackets pick elements: <code>[i]</code> in a column, <code>[row, column]</code> in a data frame. Leave a side empty to get everything.</p><pre><code>d$Age          # the whole Age column
 d$Age[4]       # its 4th value
 d[4, ]         # the whole 4th row
 d[4, &quot;Age&quot;]    # row 4, column Age</code></pre></div><div class="puz" id="puz-3" data-id="3" data-kind="num"><div class="puz-head"><span class="puz-num">3</span><strong>First look</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">What is the <b>Age</b> in the <b>4th row</b>?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 31, "tol": 0}</script></div><p class="puz-feedback" hidden></p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>d$Age</code> gives the whole column. Square brackets pick one element.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>head(d$Age)   # first 6 values
-d$Age[4]      # 31</code></pre></details></div>
-<div class="puz" id="puz-4" data-id="4" data-kind="num"><div class="puz-head"><span class="puz-num">4</span><strong>Average age</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">What is the <b>mean Age</b>? (2 decimals)</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 49.75, "tol": 0.01}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Psychology students with an average age of almost 50? 🤔 Remember this number.</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>mean()</code></p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>mean(d$Age)   # 49.75</code></pre></details></div>
+d$Age[4]      # 31</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>d[4, &quot;Age&quot;]</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
+<div class="puz" id="puz-4" data-id="4" data-kind="num"><div class="puz-head"><span class="puz-num">4</span><strong>Average age</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">What is the <b>mean Age</b>? (2 decimals)</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 49.75, "tol": 0.01}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Psychology students with an average age of almost 50? 🤔 Remember this number.</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>mean()</code></p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>mean(d$Age)   # 49.75</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>mean(d$Age, na.rm = TRUE)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="puz" id="puz-5" data-id="5" data-kind="num"><div class="puz-head"><span class="puz-num">5</span><strong>The oldest participant</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">What is the <b>highest Age</b> in the data?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 999, "tol": 0}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Nobody is 999 years old. Somebody used 999 as a code for “unknown”. Detective work starts now.</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>max()</code>, or look at <code>sort(unique(d$Age))</code>.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>max(d$Age)              # 999
-sort(unique(d$Age))     # all different ages, sorted</code></pre></details></div>
+sort(unique(d$Age))     # all different ages, sorted</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>max(d$Age)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 </div>
 </section>
 <section id="l2" class="level2">
@@ -3707,22 +3712,29 @@ sum(d$Age &gt; 100)       # how many TRUEs
 d[d$Age &gt; 100, ]       # only those rows
 # also: ==  !=  &lt;  &gt;=  &amp; (and)  | (or)</code></pre></div><div class="puz" id="puz-6" data-id="6" data-kind="num"><div class="puz-head"><span class="puz-num">6</span><strong>Suspicious ages</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">How many <b>rows</b> have an Age above 100?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 11, "tol": 0}</script></div><p class="puz-feedback" hidden></p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>d$Age &gt; 100</code> gives TRUE/FALSE for every row. What happens if you <code>sum()</code> TRUEs?</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>d$Age &gt; 100              # TRUE / FALSE per row
 sum(d$Age &gt; 100)         # 11
-d[d$Age &gt; 100, ]          # show those rows</code></pre></details></div>
-<div class="puz" id="puz-7" data-id="7" data-kind="set"><div class="puz-head"><span class="puz-num">7</span><strong>Who are they?</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Which <b>participant IDs</b> have Age 999? (separate them with commas)</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "set", "answer": ["P003", "P071", "P087"]}</script></div><p class="puz-feedback" hidden></p><details class="stuck puz-hint"><summary>💡 Hint</summary><p>Combine a condition with <code>d$ID[ ... ]</code>. One person appears several times: <code>unique()</code> helps.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>unique(d$ID[d$Age == 999])   # &quot;P003&quot; &quot;P071&quot; &quot;P087&quot;</code></pre></details></div>
+d[d$Age &gt; 100, ]          # show those rows</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>sum(d$Age &gt; 100)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
+<div class="puz" id="puz-7" data-id="7" data-kind="set"><div class="puz-head"><span class="puz-num">7</span><strong>Who are they?</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Which <b>participant IDs</b> have Age 999? (separate them with commas)</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "set", "answer": ["P003", "P071", "P087"]}</script></div><p class="puz-feedback" hidden></p><details class="stuck puz-hint"><summary>💡 Hint</summary><p>Combine a condition with <code>d$ID[ ... ]</code>. One person appears several times: <code>unique()</code> helps.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>unique(d$ID[d$Age == 999])   # &quot;P003&quot; &quot;P071&quot; &quot;P087&quot;</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>d[d$Age == 999, &quot;ID&quot;]</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="concept"><div class="concept-head"><span>📘</span><b>New idea</b><strong>Missing values: NA</strong></div><p><code>NA</code> means “unknown”. Any calculation with an unknown gives an unknown, unless you tell the function to skip it.</p><pre><code>mean(c(4, NA, 6))                # NA
 mean(c(4, NA, 6), na.rm = TRUE)  # 5
 is.na(c(4, NA, 6))               # FALSE TRUE FALSE
 x[x == 999] &lt;- NA                # turn a code into NA</code></pre></div><div class="puz" id="puz-8" data-id="8" data-kind="num"><div class="puz-head"><span class="puz-num">8</span><strong>Fix and recompute</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Replace every 999 in Age by <code>NA</code>. What is the mean Age now? (2 decimals)</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 24.77, "tol": 0.01}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Much better! (Are there other odd ages left? Look at <code>sort(unique(d$Age))</code> again…)</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p>Assign into a selection: <code>d$Age[ condition ] &lt;- NA</code>. Then <code>mean()</code> needs one extra argument to skip NAs.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>d$Age[d$Age == 999] &lt;- NA
-mean(d$Age, na.rm = TRUE)   # 24.77</code></pre></details></div>
+mean(d$Age, na.rm = TRUE)   # 24.77</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>d[d$Age == 999, &quot;Age&quot;] &lt;- NA
+mean(d$Age, na.rm = TRUE)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="puz" id="puz-9" data-id="9" data-kind="num"><div class="puz-head"><span class="puz-num">9</span><strong>Holes everywhere</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Count the <code>NA</code>s in every column. What is the <b>highest</b> number of missing values in one column?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 122, "tol": 0}</script></div><p class="puz-feedback" hidden></p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>is.na(d)</code> is TRUE wherever a value is missing. <code>colSums()</code> adds up each column.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>colSums(is.na(d))   # anx.6 has 122
-# (if you already did puzzle 8, Age has 9 too)</code></pre></details></div>
+# (if you already did puzzle 8, Age has 9 too)</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>vec_na &lt;- c()
+for (col in colnames(d)){
+  vec_na &lt;- c(vec_na, sum(is.na(d[col])))
+}</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="concept"><div class="concept-head"><span>📘</span><b>New idea</b><strong>Working with text</strong></div><p>Text needs to be exactly the same to count as the same: <code>&quot;Male&quot;</code>, <code>&quot;male&quot;</code> and <code>&quot;male &quot;</code> are three different values for R.</p><pre><code>tolower(&quot;Male&quot;)          # &quot;male&quot;
 trimws(&quot;  male &quot;)        # &quot;male&quot;
 gsub(&quot;,&quot;, &quot;.&quot;, &quot;7,5&quot;)    # &quot;7.5&quot;
 grepl(&quot;anx&quot;, &quot;Anx3&quot;, ignore.case = TRUE)  # TRUE</code></pre></div><div class="puz" id="puz-10" data-id="10" data-kind="num"><div class="puz-head"><span class="puz-num">10</span><strong>How many genders?</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Clean up <b>gender</b>: make everything lowercase and remove extra spaces. How many <b>different values</b> are left?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 6, "tol": 0}</script></div><p class="puz-feedback" hidden></p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>table(d$gender)</code> shows all spellings. <code>tolower()</code> helps… but you might still get one too many. Look very carefully at the text.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>table(d$gender)                     # 9 different spellings
 length(unique(tolower(d$gender)))    # 7?!  &quot;f &quot; has a trailing space
 clean &lt;- trimws(tolower(d$gender))
-length(unique(clean))                # 6</code></pre></details></div>
+length(unique(clean))                # 6</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>lvl_gender &lt;- d$gender
+lvl_lower &lt;- tolower(lvl_gender)
+lvl_nospace &lt;- gsub(&quot; &quot;, &quot;&quot;, lvl_lower)
+lvl_name &lt;- levels(as.factor(lvl_nospace))</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 </div>
 </section>
 <section id="l3" class="level2">
@@ -3731,15 +3743,23 @@ length(unique(clean))                # 6</code></pre></details></div>
 <div class="puz-level" data-level="3">
 <div class="puz" id="puz-11" data-id="11" data-kind="num"><div class="puz-head"><span class="puz-num">11</span><strong>Find the anxiety items</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">The anxiety questions have messy names. How many columns <b>contain “anx”</b> in their name (any capitalisation)?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 6, "tol": 0}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Picking columns by name is exactly what the Variables box in JASP does for you.</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>grep(pattern, x, ignore.case = TRUE, value = TRUE)</code></p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>anx &lt;- grep(&quot;anx&quot;, names(d), ignore.case = TRUE, value = TRUE)
 anx          # 6 names
-d[anx]       # just those columns</code></pre></details></div>
+d[anx]       # just those columns</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>anx_cols &lt;- grep(&quot;anx&quot;, names(d), ignore.case = TRUE)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="concept"><div class="concept-head"><span>📘</span><b>New idea</b><strong>One function, many columns</strong></div><p><code>sapply()</code> runs a function on every column and collects the results. Extra arguments for that function go at the end.</p><pre><code>sapply(d[c(&quot;Age&quot;, &quot;anx.6&quot;)], mean, na.rm = TRUE)
 #   Age  anx.6
 # 49.75   3.22</code></pre></div><div class="puz" id="puz-12" data-id="12" data-kind="text"><div class="puz-head"><span class="puz-num">12</span><strong>Item averages</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Compute the mean of every anxiety item (skip NAs). Which item has the <b>highest</b> mean?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "text", "answer": ["anx.6"]}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>The items are on a 1–5 scale. Are all these means plausible? Is anx.6 really different, or are the others pulled down by something?</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>sapply(data, function)</code> runs a function on every column. Extra arguments go after the function.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>sapply(d[anx], mean, na.rm = TRUE)
-# anx.6 is highest (3.22)</code></pre></details></div>
+# anx.6 is highest (3.22)</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>mean_anx &lt;- sapply(d[, anx_cols], mean, na.rm = TRUE)
+max_anx_item &lt;- names(mean_anx)[which.max(mean_anx)]</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="puz" id="puz-13" data-id="13" data-kind="text"><div class="puz-head"><span class="puz-num">13</span><strong>Change over time</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Mean <code>anxiety_1</code> per <b>wave</b> (pre / post / follow-up). In which wave is it <b>lowest</b>?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "text", "answer": ["follow-up", "followup", "follow up"]}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Splitting by a group is what “Split by” does in JASP’s Descriptives.</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>tapply(values, groups, function, ...)</code>, or <code>aggregate()</code>.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>tapply(d$anxiety_1, d$wave, mean, na.rm = TRUE)
-# follow-up 1.99 · post 2.29 · pre 2.52</code></pre></details></div>
+# follow-up 1.99 · post 2.29 · pre 2.52</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>library(dplyr)
+
+anx_1 &lt;- d[, c(&quot;wave&quot;, &quot;anxiety_1&quot;)]
+anx_new &lt;- anx_1 %&gt;%
+  group_by(wave) %&gt;%
+  summarise(mean_anxiety = mean(anxiety_1, na.rm = TRUE))</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="puz" id="puz-14" data-id="14" data-kind="num"><div class="puz-head"><span class="puz-num">14</span><strong>Commas and dots</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task"><code>sleep_hrs</code> is stored as text, and some values use a comma (<code>7,5</code>). Turn it into numbers. What is the <b>mean sleep</b>? (2 decimals)</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 7.01, "tol": 0.01}</script></div><p class="puz-feedback" hidden></p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>gsub(&quot;,&quot;, &quot;.&quot;, x)</code> replaces commas, <code>as.numeric()</code> converts text to numbers.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>sleep &lt;- as.numeric(gsub(&quot;,&quot;, &quot;.&quot;, d$sleep_hrs))
-mean(sleep, na.rm = TRUE)   # 7.01</code></pre></details></div>
+mean(sleep, na.rm = TRUE)   # 7.01</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>sleep &lt;- d$sleep_hrs
+sleep_cleaned &lt;- gsub(&quot;,&quot;, &quot;.&quot;, sleep)
+mean_sleep &lt;- mean(as.numeric(sleep_cleaned), na.rm = TRUE)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="concept"><div class="concept-head"><span>📘</span><b>New idea</b><strong>Build your own data frame</strong></div><p>A data frame is a set of equally long columns. <code>c()</code> combines values into a column, <code>data.frame()</code> glues columns into a table.</p><pre><code>data.frame(
   name  = c(&quot;a&quot;, &quot;b&quot;),
   score = c(10, 20)
@@ -3755,7 +3775,11 @@ mean(sleep, na.rm = TRUE)   # 7.01</code></pre></details></div>
 #    variable mean   sd
 # 1 anxiety_1 2.28 9.62   &lt;- an SD of 9.6 on a 1–5 scale?!
 # ...
-# 6     anx.6 3.22 0.86</code></pre></details></div>
+# 6     anx.6 3.22 0.86</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>mean_anx &lt;- round(sapply(d[, anx_cols], mean, na.rm = TRUE), 2)
+sd_anx &lt;- round(sapply(d[, anx_cols], sd, na.rm = TRUE), 2)
+df_anx &lt;- data.frame(variable = names(mean_anx),
+                     mean = mean_anx,
+                     sd = sd_anx)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 </div>
 </section>
 <section id="l4" class="level2">
@@ -3769,7 +3793,10 @@ double_it(5)             # 10
 double_it(5, times = 3)  # 15</code></pre></div><div class="puz" id="puz-16" data-id="16" data-kind="num"><div class="puz-head"><span class="puz-num">16</span><strong>Your first function</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Write <code>pct_missing(x)</code>: it returns the <b>percentage</b> of missing values in a vector. What does <code>pct_missing(d$anx.6)</code> give? (2 decimals)</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 34.76, "tol": 0.01}</script></div><p class="puz-feedback" hidden></p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>my_fun &lt;- function(x) { ... }</code>. The mean of TRUE/FALSE is the proportion of TRUEs.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>pct_missing &lt;- function(x) {
   100 * mean(is.na(x))
 }
-pct_missing(d$anx.6)   # 34.76</code></pre></details></div>
+pct_missing(d$anx.6)   # 34.76</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>pct_missing &lt;- function(x){
+  return(mean(is.na(x)) * 100)
+}
+pct_missing(d$anx.6)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="puz" id="puz-17" data-id="17" data-kind="num"><div class="puz-head"><span class="puz-num">17</span><strong>A table-making function</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Write <code>missing_table(df, vars)</code>: for the chosen columns, return a data frame with <code>variable</code>, <code>n_missing</code> and <code>pct_missing</code>. Run it on the anxiety items: what is the <b>sum</b> of <code>n_missing</code>?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 134, "tol": 0}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Data in, chosen variables in, a table out. That’s the shape of most JASP analyses…</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p>Inside the function, <code>df[vars]</code> keeps only the chosen columns. You already know <code>colSums(is.na(...))</code>.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>missing_table &lt;- function(df, vars) {
   x &lt;- df[vars]
   n &lt;- colSums(is.na(x))
@@ -3779,7 +3806,23 @@ pct_missing(d$anx.6)   # 34.76</code></pre></details></div>
              row.names   = NULL)
 }
 res &lt;- missing_table(d, anx)
-sum(res$n_missing)   # 134</code></pre></details></div>
+sum(res$n_missing)   # 134</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>anx_cols_names &lt;- names(d)[anx_cols]
+
+missing_table &lt;- function(df, vars){
+  variable &lt;- c()
+  n_missing &lt;- c()
+  pct_miss &lt;- c()
+  for (var in vars){
+    dat_vec &lt;- df[, var]
+    n_missing &lt;- c(n_missing, sum(is.na(dat_vec)))
+    pct_miss &lt;- c(pct_miss, pct_missing(dat_vec))
+  }
+  return(data.frame(variable = vars,
+                    n_missing = n_missing,
+                    pct_miss = pct_miss))
+}
+
+sum(missing_table(d, anx_cols_names)$n_missing)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="puz" id="puz-18" data-id="18" data-kind="num"><div class="puz-head"><span class="puz-num">18</span><strong>Settings with defaults</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Add two arguments: <code>codes = c(999, -99)</code> (values that also count as missing) and <code>digits = 1</code>. Run it again on the anxiety items: what is the new <b>sum</b> of <code>n_missing</code>?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "num", "answer": 144, "tol": 0}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Arguments with defaults are like settings in an analysis window: they work out of the box, and users can change them.</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p>Before counting, turn the codes into NA: <code>v[v %in% codes] &lt;- NA</code>. <code>lapply()</code> does that for every column.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>missing_table &lt;- function(df, vars, codes = c(999, -99), digits = 1) {
   x &lt;- df[vars]
   x[] &lt;- lapply(x, function(v) { v[v %in% codes] &lt;- NA; v })
@@ -3789,7 +3832,24 @@ sum(res$n_missing)   # 134</code></pre></details></div>
              pct_missing = round(100 * n / nrow(x), digits),
              row.names   = NULL)
 }
-sum(missing_table(d, anx)$n_missing)   # 144</code></pre></details></div>
+sum(missing_table(d, anx)$n_missing)   # 144</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>missing_table &lt;- function(df, vars, codes = c(999, -99), digits = 1){
+  variable &lt;- c()
+  n_missing &lt;- c()
+  pct_miss &lt;- c()
+  for (var in vars){
+    dat_vec &lt;- df[, var]
+    
+    dat_vec[dat_vec %in% codes] &lt;- NA
+    
+    n_missing &lt;- c(n_missing, sum(is.na(dat_vec)))
+    pct_miss &lt;- c(pct_miss, round(pct_missing(dat_vec), digits))
+  }
+  return(data.frame(variable = vars,
+                    n_missing = n_missing,
+                    pct_miss = pct_miss))
+}
+
+sum(missing_table(d, anx_cols_names)$n_missing)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="puz" id="puz-19" data-id="19" data-kind="done"><div class="puz-head"><span class="puz-num">19</span><strong>Make it user-proof</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">What happens if someone types a column that doesn’t exist, like <code>missing_table(d, &quot;Agee&quot;)</code>? Make your function stop with a <b>friendly message</b> instead.</p><div class="puz-check"><button type="button" class="puz-btn puz-done-btn">✓ I did it</button></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Good software expects users to make mistakes, and tells them what went wrong.</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p><code>setdiff(vars, names(df))</code> lists names that don’t exist. <code>stop(&quot;your message&quot;)</code> ends the function with an error.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>missing_table &lt;- function(df, vars, codes = c(999, -99), digits = 1) {
   unknown &lt;- setdiff(vars, names(df))
   if (length(unknown) &gt; 0)
@@ -3797,7 +3857,27 @@ sum(missing_table(d, anx)$n_missing)   # 144</code></pre></details></div>
   # ... rest as before
 }
 missing_table(d, &quot;Agee&quot;)
-# Error: These columns don&#39;t exist: Agee</code></pre></details></div>
+# Error: These columns don&#39;t exist: Agee</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>missing_table &lt;- function(df, vars, codes = c(999, -99), digits = 1){
+  variable &lt;- c()
+  n_missing &lt;- c()
+  pct_miss &lt;- c()
+  unknown &lt;- setdiff(vars, names(df))
+  if (length(unknown) &gt; 0){
+    stop(&quot;These columns don&#39;t exist: &quot;, paste(unknown, collapse = &quot;, &quot;))
+  }
+  for (var in vars){
+    dat_vec &lt;- df[, var]
+    
+    dat_vec[dat_vec %in% codes] &lt;- NA
+    
+    n_missing &lt;- c(n_missing, sum(is.na(dat_vec)))
+    pct_miss &lt;- c(pct_miss, round(pct_missing(dat_vec), digits))
+  }
+  return(data.frame(variable = vars,
+                    n_missing = n_missing,
+                    pct_miss = pct_miss))
+}
+sum(missing_table(d, anx_cols_names)$n_missing)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 <div class="puz" id="puz-20" data-id="20" data-kind="text"><div class="puz-head"><span class="puz-num">20</span><strong>Boss: mini-Descriptives 👑</strong><span class="puz-state" aria-live="polite"></span></div><p class="puz-task">Write <code>describe(df, vars, split_by = NULL)</code> that returns <code>n</code>, <code>mean</code> and <code>sd</code> for each variable, optionally <b>per group</b>. Run <code>describe(d, &quot;stroop_RT_ms&quot;, split_by = &quot;wave&quot;)</code>: which wave has the <b>highest mean</b> reaction time?</p><div class="puz-check"><input type="text" class="puz-input" placeholder="Your answer" aria-label="Your answer"><button type="button" class="puz-btn">Check</button><script type="application/json" class="puz-spec">{"kind": "text", "answer": ["follow-up", "followup", "follow up"]}</script></div><p class="puz-feedback" hidden></p><p class="puz-note" hidden>Look at those SDs: 2083 ms?! Something lives in the tails… but that’s a case for another day. 🕵️ You just wrote your own Descriptives. Next step: putting functions like this inside JASP.</p><details class="stuck puz-hint"><summary>💡 Hint</summary><p>Start without groups. Then: if <code>split_by</code> is not NULL, <code>split(df, df[[split_by]])</code> gives one data frame per group, and you can run your function on each of them.</p></details><details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>describe &lt;- function(df, vars, split_by = NULL) {
   one &lt;- function(x) data.frame(
     variable = vars,
@@ -3814,7 +3894,33 @@ describe(d, &quot;stroop_RT_ms&quot;, split_by = &quot;wave&quot;)
 #       group     variable   n  mean     sd
 # 1 follow-up stroop_RT_ms 108 869.1 2083.1
 # 2      post stroop_RT_ms 122 647.8  104.8
-# 3       pre stroop_RT_ms 121 839.0 1567.2</code></pre></details></div>
+# 3       pre stroop_RT_ms 121 839.0 1567.2</code></pre></details><details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>library(dplyr)
+
+describe &lt;- function(df, vars, split_by = NULL) {
+  if (!is.null(split_by)) {
+    df &lt;- df %&gt;%
+      group_by(across(all_of(split_by)))
+  }
+  
+  results &lt;- list()
+  
+  for (var in vars) {
+    df_sum &lt;- df %&gt;%
+      summarise(
+        variable = var,
+        n = sum(!is.na(.data[[var]])),
+        mean = mean(.data[[var]], na.rm = TRUE),
+        sd = sd(.data[[var]], na.rm = TRUE),
+        .groups = &quot;drop&quot;
+      )
+    
+    results[[var]] &lt;- df_sum
+  }
+  
+  return(bind_rows(results))
+}
+
+describe(d, c(&quot;anxiety_1&quot;, &quot;stroop_RT_ms&quot;), split_by = &quot;wave&quot;)</code></pre><p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details></div>
 </div>
 </section>
 <section id="wrapup" class="level2">

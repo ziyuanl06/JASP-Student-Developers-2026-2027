@@ -568,3 +568,9 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 .cs-panel tr:first-child td{border-top:0}
 .cs-panel td code{white-space:normal;font-size:12.5px;background:none;color:#245973}
 .cs-panel table{table-layout:fixed}.cs-panel th{width:140px;white-space:normal}
+
+/* Leo's own solution: a second, green "key" */
+.puz details.puz-leo summary{background:#eefaf3;border-color:#5fbf8a;color:#1f6b43}
+.puz details.puz-leo[open] summary{background:#d6f2e2}
+.puz details.puz-leo pre,.puz details.puz-leo p{background:#f4fcf7;border-left-color:#5fbf8a}
+.puz details.puz-leo p{font-size:13px;color:#3d6b52}

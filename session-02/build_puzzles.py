@@ -2,7 +2,26 @@
 """Generates session-02.qmd (Practical 1 · R Puzzle Lab) from the puzzle list below.
 Edit the PUZZLES list, then run:  python3 build_puzzles.py && quarto render session-02.qmd
 """
-import html, json
+import html, json, re, os
+
+# 🧑‍💻 Leo's own solutions: read from leo_solution.R, split at lines like "#7"
+def load_leo(path=os.path.join(os.path.dirname(os.path.abspath(__file__)), "leo_solution.R")):
+    if not os.path.exists(path): return {}
+    src = open(path, encoding="utf-8").read()
+    setup = [l for l in src.split("\n") if l.startswith("library(")]
+    chunks, cur = {}, None
+    for line in src.split("\n"):
+        m = re.match(r"^#\s*(\d+)\s*$", line)
+        if m: cur = int(m.group(1)); chunks[cur] = []; continue
+        if cur is not None: chunks[cur].append(line)
+    out = {}
+    for k, lines in chunks.items():
+        code = "\n".join(lines).strip("\n")
+        if "%>%" in code or "across(" in code:   # needs the packages loaded at the top of the file
+            code = "\n".join(setup) + "\n\n" + code
+        out[k] = code
+    return out
+LEO = load_leo()
 
 def esc(s):
     return html.escape(s, quote=False)
@@ -214,6 +233,9 @@ def puzzle_html(i, p):
         parts.append(f'<p class="puz-note" hidden>{p["note"]}</p>')
     parts.append(f'<details class="stuck puz-hint"><summary>💡 Hint</summary><p>{p["hint"]}</p></details>')
     parts.append(f'<details class="stuck puz-sol"><summary>🔓 Solution</summary><pre><code>{esc(p["solution"])}</code></pre></details>')
+    if num in LEO:
+        parts.append(f'<details class="stuck puz-leo"><summary>🧑‍💻 Leo’s solution</summary><pre><code>{esc(LEO[num])}</code></pre>'
+                     '<p>One of many ways! It builds on objects from Leo’s earlier puzzles.</p></details>')
     parts.append('</div>')
     return "".join(parts)
 
