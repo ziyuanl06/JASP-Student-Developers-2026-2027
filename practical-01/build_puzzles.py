@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Generates session-02.qmd (Practical 1 · R Puzzle Lab) from the puzzle list below.
-Edit the PUZZLES list, then run:  python3 build_puzzles.py && quarto render session-02.qmd
+"""Generates practical-01.qmd (Practical 1 · R Puzzle Lab) from the puzzle list below.
+Edit the PUZZLES list, then run:  python3 build_puzzles.py && quarto render practical-01.qmd
 """
 import html, json, re, os
 
@@ -313,5 +313,5 @@ out.append('''
 <div class="sign-off"><span class="sign-wave">👋</span><strong>Great detective work today!</strong><p>Until next time, and happy coding.</p><em>Leo &amp; the JASP Student Developers</em></div>
 ```
 ''')
-open("session-02.qmd", "w").write("\n".join(out))
-print("wrote session-02.qmd with", len(PUZZLES), "puzzles")
+open("practical-01.qmd", "w").write("\n".join(out))
+print("wrote practical-01.qmd with", len(PUZZLES), "puzzles")
