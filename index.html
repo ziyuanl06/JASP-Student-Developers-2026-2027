@@ -42,6 +42,9 @@ h2{color:var(--deep);font-weight:600;font-size:28px;line-height:1.2;margin:44px 
 .card h3{margin:0;font-weight:550;font-size:20px;color:var(--deep)}
 .card p{margin:0;font-size:15px;color:#3f6475}
 .card.soon{opacity:.6}
+.card.is-today{opacity:1;box-shadow:0 0 0 3px var(--blue);position:relative}
+.card.is-today.practical{box-shadow:0 0 0 3px var(--green)}
+.today-tag{position:absolute;top:-11px;right:14px;background:var(--deep);color:#fff;font-size:12px;font-weight:800;padding:2px 10px;border-radius:999px}
 .go,.soon-tag{margin-top:8px;align-self:flex-start;font-size:13px;font-weight:800;border-radius:30px;padding:6px 14px;text-decoration:none}
 .go{background:linear-gradient(135deg,#3a8dcc,#63b8a3);color:#fff}
 .soon-tag{background:#eef2f4;color:#7d919b}
@@ -73,27 +76,27 @@ footer{margin-top:50px;font-size:14px;color:var(--muted);border-top:1px solid va
 
   <h2>📅 Sessions</h2>
   <div class="cards">
-    <div class="card session">
+    <div class="card session" data-dates="2026-11-12,2026-11-17">
       <span class="when">Thu 12 Nov 11:30 · 📍 REC L0.10<br>Tue 17 Nov 13:00 · 📍 REC GS.34</span>
       <h3>Session 1</h3><p>Your first JASP module</p>
       <a class="go" href="session-01/session-01.html">Open →</a>
     </div>
-    <div class="card practical">
+    <div class="card practical" data-dates="2026-11-19">
       <span class="when">Thu 19 Nov · 15:00–16:30<br>📍 REC GS.34</span>
       <h3>Practical 1</h3><p>R Puzzle Lab: 20 puzzles</p>
       <a class="go" href="practical-01/practical-01.html">Open →</a>
     </div>
-    <div class="card session soon">
+    <div class="card session soon" data-dates="2026-11-26">
       <span class="when">Thu 26 Nov · 11:30–13:00<br>📍 REC JKK.26</span>
       <h3>Session 2</h3><p>Your first R function in JASP</p>
       <span class="soon-tag">Coming soon</span>
     </div>
-    <div class="card practical soon">
+    <div class="card practical soon" data-dates="2026-12-03">
       <span class="when">Thu 3 Dec · 15:00–16:30<br>📍 REC GS.08</span>
       <h3>Practical 2</h3><p>Practice &amp; Q&amp;A</p>
       <span class="soon-tag">Coming soon</span>
     </div>
-    <div class="card session soon">
+    <div class="card session soon" data-dates="2026-12-10">
       <span class="when">Thu 10 Dec · 11:30–13:00<br>📍 REC V0.12</span>
       <h3>Session 3</h3><p>Your first data tool: missing values</p>
       <span class="soon-tag">Coming soon</span>
@@ -119,5 +122,16 @@ footer{margin-top:50px;font-size:14px;color:var(--muted);border-top:1px solid va
 
   <footer>JASP Student Developers Group · University of Amsterdam · <a href="https://jasp-stats.org">jasp-stats.org</a></footer>
 </div>
+<script>
+(function(){
+  var t=new Date(), iso=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+  document.querySelectorAll('.card[data-dates]').forEach(function(c){
+    if(c.dataset.dates.split(',').indexOf(iso)>-1){
+      c.classList.add('is-today');
+      var b=document.createElement('span'); b.className='today-tag'; b.textContent='📍 Today'; c.appendChild(b);
+    }
+  });
+})();
+</script>
 </body>
 </html>

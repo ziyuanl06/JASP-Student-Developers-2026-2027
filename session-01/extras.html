@@ -392,3 +392,12 @@ document.querySelectorAll('.flip-card').forEach(function(card){card.addEventList
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
 })();
 </script>
+
+<script>
+/* 📍 Mark today in the calendar */
+(function(){
+  var t=new Date(), iso=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+  var c=document.querySelector('.cal-day[data-date="'+iso+'"]');
+  if(c) c.classList.add('is-today');
+})();
+</script>
