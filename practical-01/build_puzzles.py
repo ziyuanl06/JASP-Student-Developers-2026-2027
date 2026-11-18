@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates practical-01.qmd (Practical 1 · R Puzzle Lab) from the puzzle list below.
+"""Generates practical-01.qmd (Practical 1 · R Puzzles) from the puzzle list below.
 Edit the PUZZLES list, then run:  python3 build_puzzles.py && quarto render practical-01.qmd
 """
 import html, json, re, os
@@ -241,7 +241,7 @@ def puzzle_html(i, p):
 
 out = []
 out.append('''---
-title: "Practical 1: R Puzzle Lab"
+title: "Practical 1: R Puzzles"
 format:
   html:
     title-block-style: none
