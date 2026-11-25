@@ -1,0 +1,562 @@
+<script>
+// Checklists → quest cards: click a card to tick it, watch the bar fill, clear the level.
+(function () {
+  var quests = {
+    before:  {title: 'Pre-flight check',  done: 'Ready for take-off! ✈️',        burst: ['✈️','✨','🎉']},
+    token:   {title: 'Set-up quest',      done: 'Module + token secured! 🔑',     burst: ['🔑','✨','📦']},
+    install: {title: 'Install quest',     done: 'Packages in the bag! 📦',        burst: ['📦','✨','🎉']},
+    button:  {title: 'Your first button', done: 'You built a JASP interface! 🛠️', burst: ['🛠️','⭐','🎉']},
+    start:   {title: 'Ready check',       done: 'Back in business! 🚀',           burst: ['🚀','✨','🎉']},
+    'bridge-check': {title: 'Backstage check',   done: 'You know how JASP talks to R! 🔄', burst: ['🔄','⏱️','🎉']},
+    rcode:   {title: 'R mission',         done: 'R answered! 🧠',                  burst: ['🧠','⭐','🎉']},
+    fix:     {title: 'Fix mission',       done: 'In sync! 🔧',                     burst: ['🔧','✨','🎉']},
+    levelup: {title: 'Level up',          done: 'Legendary! 🏆',                   burst: ['🏆','⭐','🎉']},
+    load:    {title: 'Lift-off',          done: 'JASP sees your module! 🚀',      burst: ['🚀','⭐','🎉']},
+    menu:    {title: 'Menu makeover',     done: 'You just changed JASP! ✨',       burst: ['✨','📋','🎉']},
+    spot:    {title: 'Missions',          done: 'Sharp eyes! 👀',                 burst: ['👀','🔍','✨']},
+    change:  {title: 'Missions',           done: 'Case closed! 🕵️',                burst: ['🕵️','✏️','🎉']},
+    detectives: {title: 'Detective missions', done: 'Case closed! 🕵️',           burst: ['🕵️','🔍','🎉']}
+  };
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+
+  document.querySelectorAll('ul.task-list').forEach(function (ul, n) {
+    if (ul.parentElement.closest('ul.task-list')) return;
+    var sec = ul.closest('.quest-scope[id], section[id]'), id = sec ? sec.id : 'list' + n;
+    var q = quests[id] || {title: 'Checklist', done: 'All done! 🎉', burst: ['✨','🎉','⭐']};
+    var items = Array.prototype.slice.call(ul.children);
+
+    var box = document.createElement('div'); box.className = 'quest';
+    box.innerHTML = '<div class="quest-head"><span class="quest-title"></span>' +
+      '<span class="quest-count" aria-live="polite"></span>' +
+      '<button type="button" class="quest-reset" title="Untick all">↺</button></div>' +
+      '<div class="quest-bar"><i></i></div>';
+    box.querySelector('.quest-title').textContent = q.title;
+    ul.parentNode.insertBefore(box, ul); box.appendChild(ul);
+    if (!ul.closest('.prep')) ul.classList.add('quest-grid');
+
+    function update(celebrate) {
+      var k = items.filter(function (li) { return li.classList.contains('is-done'); }).length;
+      var all = k === items.length;
+      box.querySelector('.quest-count').textContent = all ? q.done : k + ' / ' + items.length;
+      box.querySelector('.quest-bar i').style.width = (100 * k / items.length) + '%';
+      box.classList.toggle('is-cleared', all);
+      if (all && celebrate) burst(box, q.burst);
+    }
+    function set(li, i, on) {
+      li.classList.toggle('is-done', on);
+      var inp = li.querySelector('input[type="checkbox"]'); if (inp) { inp.checked = on; inp.removeAttribute('disabled'); }
+      store('jsdg-s2-' + id + '-' + i, on ? '1' : '0');
+    }
+    items.forEach(function (li, i) {
+      li.classList.add('quest-card');
+      var tick = document.createElement('span'); tick.className = 'quest-tick'; tick.setAttribute('aria-hidden', 'true');
+      li.insertBefore(tick, li.firstChild);
+      set(li, i, store('jsdg-s2-' + id + '-' + i) === '1');
+      li.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;           // links still work
+        e.preventDefault();
+        var on = !li.classList.contains('is-done');
+        set(li, i, on);
+        if (on) { li.classList.remove('pop'); void li.offsetWidth; li.classList.add('pop'); }
+        update(on);
+      });
+    });
+    box.querySelector('.quest-reset').addEventListener('click', function () {
+      items.forEach(function (li, i) { set(li, i, false); }); update(false);
+    });
+    update(false);
+  });
+
+  function burst(el, emojis) {
+    var r = el.querySelector('.quest-head');
+    for (var i = 0; i < 14; i++) {
+      var s = document.createElement('span'); s.className = 'quest-confetti';
+      s.textContent = emojis[i % emojis.length];
+      var a = Math.random() * Math.PI * 2, d = 50 + Math.random() * 90;
+      s.style.setProperty('--dx', Math.cos(a) * d + 'px');
+      s.style.setProperty('--dy', (Math.sin(a) * d - 30) + 'px');
+      s.style.left = (30 + Math.random() * 40) + '%';
+      r.appendChild(s);
+      setTimeout(function (x) { return function () { x.remove(); }; }(s), 1100);
+    }
+  }
+})();
+</script>
+
+<script>
+/* Flip cards in "But, how?" */
+document.querySelectorAll('.flip-card').forEach(function(card){card.addEventListener('click',function(){var f=card.classList.toggle('is-flipped');card.setAttribute('aria-pressed',String(f));});});
+</script>
+
+<script>
+/* Offline QML → R options prediction mini-lab; no JASP connection required. */
+(function () {
+  const root=document.getElementById('option-lab'); if (!root) return;
+  const one=(sel)=>root.querySelector(sel);
+  // Mini "JASP window" checkbox: o = {label, checked, disabled, indent}
+  function cb(o){return '<span class="mock-cb'+(o.disabled?' is-off':'')+(o.indent?' is-indent':'')+'"><i class="'+(o.checked?'on':'')+'"></i>'+o.label+'</span>'}
+  const levels=[
+    { code:'CheckBox\n{\n    name : "showPlot"\n    label: qsTr("Show histogram")\n}',
+      question:'Which text appears next to the checkbox in JASP?',
+      choices:[cb({label:'Show histogram'}), cb({label:'showPlot'}), cb({label:'CheckBox'})], answer:0,
+      explain:'<code>label</code> is the text users see. <code>name</code> is a hidden ID that R uses to read the value: we’ll need it in Session 2.',
+      window:{parent:{label:'Show histogram',checked:false}} },
+    { code:'CheckBox\n{\n    name   : "showPlot"\n    label  : qsTr("Show histogram")\n    checked: true\n}',
+      question:'You open the analysis. What does the checkbox look like?',
+      choices:[cb({label:'Show histogram',checked:true}), cb({label:'Show histogram'}), cb({label:'Show histogram: true'})], answer:0,
+      explain:'<code>checked: true</code> sets the <em>default</em>: it starts ticked. Delete that line and it starts unticked.',
+      window:{parent:{label:'Show histogram',checked:true}} },
+    { code:'CheckBox\n{\n    name : "showPlot"\n    label: qsTr("Show histogram")\n\n    CheckBox\n    {\n        name : "showMeanLine"\n        label: qsTr("Mark the mean")\n    }\n}',
+      question:'“Show histogram” is unticked. What happens to “Mark the mean”?',
+      choices:[cb({label:'Show histogram'})+cb({label:'Mark the mean'}), cb({label:'Show histogram'})+cb({label:'Mark the mean',indent:true,disabled:true}), cb({label:'Show histogram'})], answer:1,
+      explain:'A control <em>inside</em> a CheckBox is indented, and greyed out until its parent is ticked. Try it: tick “Show histogram” in the window on the left (or in Control Playground!).',
+      window:{parent:{label:'Show histogram',checked:false},child:{label:'Mark the mean'}} }
+  ];
+  let current=0,chosen=null; const solved=[false,false,false];
+  // Live, clickable mini window (shown after checking)
+  function renderWindow(revealed){
+    const w=one('#lab-window'), d=levels[current].window;
+    if(!revealed){w.innerHTML='<span class="lab-window-wait">❓ Make a prediction to reveal</span>';return;}
+    const st={p:d.parent.checked};
+    function paint(){
+      w.innerHTML=cb({label:d.parent.label,checked:st.p})+(d.child?cb({label:d.child.label,indent:true,disabled:!st.p,checked:st.c}):'');
+      const boxes=w.querySelectorAll('.mock-cb');
+      boxes[0].addEventListener('click',()=>{st.p=!st.p;paint()});
+      if(d.child) boxes[1].addEventListener('click',()=>{if(st.p){st.c=!st.c;paint()}});
+      const t=document.createElement('p');t.className='lab-mini-help';t.textContent='👆 This window is clickable.';w.append(t);
+    }
+    paint();
+  }
+  function draw(){
+    const d=levels[current]; chosen=null;
+    one('#lab-question').textContent=d.question;
+    one('#lab-code').textContent=d.code;
+    one('#lab-feedback').hidden=true; renderWindow(false); drawChoices();
+    root.querySelectorAll('.lab-tab').forEach((b,i)=>{b.classList.toggle('is-active',i===current);b.classList.toggle('is-solved',solved[i]);b.setAttribute('aria-pressed',String(i===current))});
+    one('#lab-score').textContent=solved.filter(Boolean).length+' / 3';
+  }
+  function drawChoices(){
+    const box=one('#lab-choices');box.replaceChildren();
+    levels[current].choices.forEach((html,i)=>{const b=document.createElement('button');b.type='button';b.className='mock-choice';b.innerHTML='<b>'+'ABC'[i]+'</b><span class="mock-win">'+html+'</span>';b.setAttribute('aria-pressed',String(chosen===i));b.addEventListener('click',()=>{chosen=i;drawChoices();one('#lab-feedback').hidden=true});box.append(b)});
+    one('#lab-check').disabled=chosen===null;
+  }
+  one('#lab-check').addEventListener('click',()=>{
+    if(chosen===null)return;
+    const d=levels[current], correct=chosen===d.answer, f=one('#lab-feedback');
+    if(correct)solved[current]=true;
+    f.hidden=false;f.classList.toggle('is-wrong',!correct);
+    f.innerHTML='<strong>'+(correct?'✅ You got it!':'🔎 Not quite: it’s '+'ABC'[d.answer])+'</strong><span>'+d.explain+'</span>';
+    renderWindow(true);
+    root.querySelectorAll('.lab-tab').forEach((b,i)=>b.classList.toggle('is-solved',solved[i]));one('#lab-score').textContent=solved.filter(Boolean).length+' / 3';
+  });
+  root.querySelectorAll('.lab-tab').forEach((b,i)=>b.addEventListener('click',()=>{current=i;draw()}));
+  one('#lab-reset').addEventListener('click',()=>{solved.fill(false);current=0;draw()});
+  draw();
+})();
+</script>
+
+<script>
+/* Interactive calendar: show a personal plan for each attendance choice */
+(function(){
+  var cal=document.getElementById('my-cal'); if(!cal) return;
+  var summaries={
+    both:'🎉 You can join everything. Come to Session 1 on <b>Thu 12</b> or <b>Tue 17</b>. At practicals, feel free to skip the 30-min recap and arrive at 15:30.',
+    sessions:'💡 You’ll join every session. Practical exercises are posted online: try them at home and ask questions on Mattermost.',
+    practicals:'🧩 Your Session 1 is on <b>Tue 17 Nov</b> (can’t make that either? No worries, we’ll set you up separately). Each practical starts with a 30-min recap of the session you missed. Session 3’s recap comes in January.'
+  };
+  function set(mode){
+    cal.dataset.mode=mode;
+    cal.querySelectorAll('.cal-modes button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.mode===mode));});
+    cal.querySelectorAll('.cal-ev').forEach(function(ev){
+      var st=ev.dataset[mode]||'go';
+      ev.classList.remove('is-go','is-alt','is-skip'); ev.classList.add('is-'+st);
+      ev.querySelector('.cal-note').textContent=ev.dataset['note'+mode.charAt(0).toUpperCase()+mode.slice(1)]||'';
+    });
+    document.getElementById('cal-summary').innerHTML=summaries[mode];
+  }
+  cal.querySelectorAll('.cal-modes button').forEach(function(b){b.addEventListener('click',function(){set(b.dataset.mode);});});
+  set('both');
+})();
+</script>
+
+<script>
+/* Loot badges: click to unlock */
+(function(){
+  var root=document.getElementById('loot'); if(!root) return;
+  var n=document.getElementById('loot-n');
+  root.querySelectorAll('.loot-badge').forEach(function(b){
+    b.addEventListener('click',function(){
+      var on=b.classList.toggle('is-unlocked'); b.setAttribute('aria-pressed',String(on));
+      if(on){b.classList.remove('just-unlocked'); void b.offsetWidth; b.classList.add('just-unlocked');}
+      n.textContent=root.querySelectorAll('.loot-badge.is-unlocked').length;
+    });
+  });
+})();
+</script>
+<script>
+// "Find the partner": click a QML name to light up the matching options$ in R (and vice versa)
+(function () {
+  var lab = document.getElementById('pair-lab'); if (!lab) return;
+  var hint = document.getElementById('pair-hint');
+  lab.querySelectorAll('.pair').forEach(function (el) {
+    el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button');
+    function go() {
+      var k = el.dataset.pair;
+      lab.querySelectorAll('.pair').forEach(function (x) { x.classList.toggle('is-lit', x.dataset.pair === k); });
+      lab.querySelectorAll('.pair.is-lit').forEach(function (x) { x.classList.remove('flash'); void x.offsetWidth; x.classList.add('flash'); });
+      hint.innerHTML = '✨ <code>name: "' + k + '"</code> in QML &nbsp;→&nbsp; <code>options$' + k + '</code> in R';
+    }
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+})();
+</script>
+<script>
+// Sticky "where are we" trail: one segment per timed section, shows the step you're reading.
+(function () {
+  var secs = Array.prototype.filter.call(document.querySelectorAll('section.level2[id]'), function (s) {
+    var h = s.querySelector(':scope > h2'); return h && h.querySelector('.timing');
+  });
+  if (!secs.length) return;
+  function label(s) {
+    var h = s.querySelector(':scope > h2').cloneNode(true);
+    h.querySelectorAll('.timing, .anchorjs-link').forEach(function (x) { x.remove(); });
+    return h.textContent.trim();
+  }
+  function clock(s) { var c = s.querySelector(':scope > h2 .clock'); return c ? c.textContent.trim() : ''; }
+
+  var bar = document.createElement('div'); bar.className = 'trail'; bar.setAttribute('aria-label', 'Session progress');
+  bar.innerHTML = '<div class="trail-top"><span class="trail-title">Session 02 · From Button to Output</span>' +
+    '<span class="trail-step"></span></div><div class="trail-segs"></div>' +
+    '<div class="trail-now"><span class="trail-pin">📍</span> <span class="trail-label"></span><span class="trail-clock"></span></div>';
+  var segs = bar.querySelector('.trail-segs');
+  secs.forEach(function (s, i) {
+    var a = document.createElement('a'); a.href = '#' + s.id; a.className = 'trail-seg';
+    a.title = (i + 1) + '. ' + label(s) + (clock(s) ? '  (' + clock(s) + ')' : '');
+    a.innerHTML = '<i></i><span>' + (i + 1) + '</span>';
+    segs.appendChild(a);
+  });
+  document.body.appendChild(bar);
+
+  var nav = document.querySelector('.jasp-wave-nav');
+  var current = -1;
+  function update() {
+    var y = window.scrollY, trigger = 140, idx = -1;
+    secs.forEach(function (s, i) { if (s.getBoundingClientRect().top - trigger <= 0) idx = i; });
+    // hysteresis: show a bit after the nav leaves, hide a bit before it returns (no flicker at the edge)
+    var edge = nav ? nav.getBoundingClientRect().bottom : 300 - y;
+    if (edge < -40) bar.classList.add('is-shown'); else if (edge > 0) bar.classList.remove('is-shown');
+    if (idx === current) return; current = idx;
+    var shown = Math.max(idx, 0);
+    segs.querySelectorAll('.trail-seg').forEach(function (a, i) {
+      a.classList.toggle('is-done', i < idx); a.classList.toggle('is-here', i === idx);
+    });
+    bar.querySelector('.trail-step').textContent = idx < 0 ? '' : 'Step ' + (idx + 1) + ' of ' + secs.length;
+    bar.querySelector('.trail-label').textContent = idx < 0 ? 'Getting started' : label(secs[shown]);
+    bar.querySelector('.trail-clock').textContent = idx < 0 ? '' : clock(secs[shown]);
+  }
+  var queued = false;
+  window.addEventListener('scroll', function () { if (!queued) { queued = true; requestAnimationFrame(function () { queued = false; update(); }); } }, {passive: true});
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+<script>
+// Control gallery: live slider readout + copy buttons
+(function () {
+  document.querySelectorAll('.mk-slider').forEach(function (l) {
+    var r = l.querySelector('input'), o = l.querySelector('output');
+    r.addEventListener('input', function () { o.textContent = Number(r.value).toFixed(1); });
+  });
+  document.querySelectorAll('.ctl-copy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = b.parentElement.querySelector('code').textContent;
+      (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () {
+        b.textContent = 'Copied ✓'; setTimeout(function () { b.textContent = 'Copy'; }, 1400);
+      }, function () { b.textContent = 'Select & copy'; });
+    });
+  });
+})();
+</script>
+<script>
+// Interactive file tree: click a row → explanation; click a folder again → fold/unfold
+(function () {
+  var ft = document.getElementById('file-tree'); if (!ft) return;
+  var data = JSON.parse(document.getElementById('ft-data').textContent);
+  var rows = Array.prototype.slice.call(ft.querySelectorAll('.ft-row'));
+  var panel = document.getElementById('ft-info');
+  function show(row) {
+    var d = data[row.dataset.key];
+    rows.forEach(function (r) { r.classList.toggle('is-active', r === row); });
+    panel.innerHTML = '<div class="ft-card"><span class="ft-big">' + d.icon + '</span><h5>' + d.title + '</h5><p>' + d.text +
+      '</p><span class="ft-tag ' + d.cls + '">' + d.tag + '</span></div>';
+  }
+  function setOpen(row, open) {
+    row.classList.toggle('is-closed', !open);
+    var depth = +row.dataset.depth, i = rows.indexOf(row) + 1;
+    for (; i < rows.length && +rows[i].dataset.depth > depth; i++) {
+      // hide all descendants when closing; when opening, only show direct-open chains
+      var hidden = !open || rows.slice(rows.indexOf(row) + 1, i).some(function (p) {
+        return +p.dataset.depth < +rows[i].dataset.depth && p.classList.contains('is-closed') && +p.dataset.depth > depth;
+      });
+      rows[i].hidden = hidden;
+    }
+  }
+  rows.forEach(function (row) {
+    row.addEventListener('click', function () {
+      var isDir = row.classList.contains('ft-dir');
+      if (isDir && row.classList.contains('is-active') && row.dataset.key !== 'root') setOpen(row, row.classList.contains('is-closed'));
+      show(row);
+    });
+  });
+})();
+</script>
+<script>
+// Bug hunt: click the broken line
+(function () {
+  var root = document.getElementById('bug-hunt'); if (!root) return;
+  var bugs = JSON.parse(document.getElementById('bug-data').textContent);
+  var cur = 0, solved = bugs.map(function () { return false; });
+  var tabs = root.querySelector('.bug-tabs'), code = root.querySelector('#bug-code'), fb = root.querySelector('#bug-feedback');
+  function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function draw() {
+    var b = bugs[cur];
+    tabs.innerHTML = bugs.map(function (x, i) {
+      return '<button type="button" class="bug-tab' + (i === cur ? ' is-active' : '') + (solved[i] ? ' is-solved' : '') + '" data-i="' + i + '">Bug ' + (i + 1) + (solved[i] ? ' · ' + x.title : '') + '</button>';
+    }).join('');
+    tabs.querySelectorAll('.bug-tab').forEach(function (t) { t.addEventListener('click', function () { cur = +t.dataset.i; draw(); }); });
+    root.querySelector('#bug-symptom').innerHTML = '<b>Symptom:</b> ' + b.symptom;
+    code.innerHTML = b.lines.map(function (l, i) {
+      return '<button type="button" class="bug-line" data-i="' + i + '"><span class="bug-no">' + (i + 1) + '</span><code>' + (esc(l) || '&nbsp;') + '</code></button>';
+    }).join('');
+    code.querySelectorAll('.bug-line').forEach(function (line) {
+      line.addEventListener('click', function () {
+        var i = +line.dataset.i, hit = [].concat(b.bug).indexOf(i) > -1;
+        code.querySelectorAll('.bug-line').forEach(function (l) { l.classList.remove('is-miss'); });
+        line.classList.add(hit ? 'is-hit' : 'is-miss');
+        fb.hidden = false; fb.classList.toggle('is-wrong', !hit);
+        if (hit) {
+          solved[cur] = true;
+          fb.innerHTML = '<strong>🎯 Squashed!</strong> ' + b.explain + '<br><b>Fix:</b> ' + b.fix;
+          var tb = tabs.querySelectorAll('.bug-tab')[cur]; tb.classList.add('is-solved'); tb.textContent = 'Bug ' + (cur + 1) + ' · ' + b.title;
+        } else {
+          fb.innerHTML = '<strong>🔎 Not this line.</strong> Look again: compare it with the working example above.';
+        }
+        root.querySelector('#bug-score').textContent = '🐛 ' + solved.filter(Boolean).length + ' / ' + bugs.length + ' squashed' + (solved.every(Boolean) ? ' · Bug hunter! 🏆' : '');
+      });
+    });
+    fb.hidden = true;
+  }
+  draw();
+})();
+</script>
+<script>
+// Achievements: unlock from the quest cards and the bug hunt on this page
+(function () {
+  var root = document.getElementById('ach'); if (!root) return;
+  var badges = Array.prototype.slice.call(root.querySelectorAll('.ach-badge'));
+  function done(id) { // fraction of quest cards ticked in section id
+    var cards = document.querySelectorAll('#' + id + ' .quest-card');
+    var k = Array.prototype.filter.call(cards, function (c) { return c.classList.contains('is-done'); }).length;
+    return {k: k, n: cards.length};
+  }
+  function met(req) {
+    return req.split(',').every(function (part) {
+      var bits = part.split(':'), id = bits[0], min = bits[1] ? +bits[1] : null;
+      if (id === 'bugs') { var m = (document.getElementById('bug-score') || {}).textContent || ''; return (+(m.match(/(\d+)\s*\//) || [0, 0])[1]) >= min; }
+      var d = done(id); return min === null ? (d.n > 0 && d.k === d.n) : d.k >= min;
+    });
+  }
+  var first = true;
+  function update() {
+    var n = 0;
+    badges.forEach(function (b) {
+      var ok = met(b.dataset.need), was = b.classList.contains('is-unlocked');
+      b.classList.toggle('is-unlocked', ok);
+      if (ok && !was && !first) { b.classList.remove('just-unlocked'); void b.offsetWidth; b.classList.add('just-unlocked'); }
+      if (ok) n++;
+    });
+    document.getElementById('ach-n').textContent = n;
+    document.getElementById('ach-bar').style.width = (100 * n / badges.length) + '%';
+    document.getElementById('ach-done').hidden = n < badges.length;
+    first = false;
+  }
+  document.addEventListener('click', function () { setTimeout(update, 0); });
+  update();
+})();
+</script>
+
+<script>
+// QML cheat sheet drawer
+(function () {
+  var btn = document.getElementById('cs-toggle'), panel = document.getElementById('cs-panel'); if (!btn) return;
+  document.body.appendChild(btn); document.body.appendChild(panel);
+  function set(open) { panel.hidden = !open; btn.setAttribute('aria-expanded', String(open)); btn.classList.toggle('is-open', open); }
+  btn.addEventListener('click', function () { set(panel.hidden); });
+  document.getElementById('cs-close').addEventListener('click', function () { set(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+})();
+</script>
+
+<script>
+/* 📍 Mark today in the calendar */
+(function(){
+  var t=new Date(), iso=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+  var c=document.querySelector('.cal-day[data-date="'+iso+'"]');
+  if(c) c.classList.add('is-today');
+})();
+</script>
+
+<script>
+/* 🔮 Predict, then try: lock in a guess (no answer revealed here) */
+(function () {
+  document.querySelectorAll('.predict[data-key]').forEach(function (box) {
+    var key = 'jsdg-s2-predict-' + box.dataset.key, go = box.querySelector('.predict-go'), btns = box.querySelectorAll('.predict-choices button');
+    function pick(c) {
+      btns.forEach(function (b) { var on = b.dataset.c === c; b.classList.toggle('is-picked', on); b.setAttribute('aria-pressed', String(on)); });
+      go.hidden = !c;
+    }
+    try { pick(localStorage.getItem(key)); } catch (e) {}
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () { pick(b.dataset.c); try { localStorage.setItem(key, b.dataset.c); } catch (e) {} });
+    });
+  });
+})();
+</script>
+<script>
+/* 📺 Previously: click a card to reveal the answer */
+(function () {
+  document.querySelectorAll('.prev-card').forEach(function (c) {
+    c.addEventListener('click', function () { var open = !c.classList.contains('is-open'); c.classList.toggle('is-open', open); c.setAttribute('aria-expanded', String(open)); });
+  });
+})();
+</script>
+<script>
+/* 📖 Take it apart: click a code part to see what it does */
+(function () {
+  document.querySelectorAll('.takeapart').forEach(function (box) {
+    var tks = box.querySelectorAll('.tk'), panel = box.querySelector('.tk-panel');
+    tks.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var n = t.dataset.n;
+        tks.forEach(function (x) { x.classList.toggle('is-on', x.dataset.n === n); });
+        panel.querySelectorAll('p').forEach(function (p) { p.hidden = p.dataset.n !== n; });
+      });
+    });
+  });
+})();
+</script>
+<script>
+/* 📦 Shelf simulator: a mini JASP in slow motion (v1 = clock, v2 = if, v3 = if + dependOn) */
+(function () {
+  var CODE = {
+    base: [
+      {t: 'box', label: 'welcome', title: 'Under construction', text: 'This analysis doesn’t compute…', src: 'jaspResults[["welcome"]] <- createJaspHtml(…)'},
+      {t: 'box', label: 'optionsSeen', title: 'What R received', text: function (st) { return 'showPercentage: ' + (st.ticked ? 'TRUE' : 'FALSE'); }, src: 'jaspResults[["optionsSeen"]] <- createJaspHtml(…)'},
+      {t: 'box', label: 'clock', title: 'R was here', text: function () { return new Date().toTimeString().slice(0, 8); }, src: 'jaspResults[["clock"]] <- createJaspHtml(… Sys.time() …)'}
+    ]
+  };
+  function lines(v) {
+    var L = CODE.base.slice();
+    if (v === 'v2' || v === 'v3') {
+      L.push({t: 'if', src: 'if (options$showPercentage) {'});
+      L.push({t: 'make', src: '  note <- createJaspHtml("Percentage missing", …)', inIf: true});
+      if (v === 'v3') L.push({t: 'tag', src: '  note$dependOn("showPercentage")', inIf: true});
+      L.push({t: 'box', label: 'percentage', title: 'Percentage missing', text: 'Coming soon: the real numbers arrive in Session 3!', src: '  jaspResults[["percentage"]] <- note', inIf: true, deps: v === 'v3' ? ['showPercentage'] : []});
+      L.push({t: 'end', src: '}'});
+    }
+    return L;
+  }
+  function esc(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+  document.querySelectorAll('.shelf-sim').forEach(function (sim) {
+    var v = sim.dataset.version, code = lines(v);
+    var chk = sim.querySelector('.ss-check input'), opt = sim.querySelector('.ss-opt b');
+    var ol = sim.querySelector('.ss-lines'), boxesEl = sim.querySelector('.ss-boxes'), log = sim.querySelector('.ss-log');
+    var st, busy = false, timer = [];
+    ol.innerHTML = code.map(function (c, i) { return '<li data-i="' + i + '"><code>' + esc(c.src) + '</code></li>'; }).join('');
+    var liEls = ol.querySelectorAll('li');
+
+    function draw(flags) {
+      flags = flags || {};
+      boxesEl.innerHTML = st.order.map(function (lab) {
+        var b = st.shelf[lab], f = flags[lab] || '';
+        return '<div class="sb ' + f + '" data-label="' + lab + '"><span class="sb-label">[["' + lab + '"]]</span><b>' + esc(b.title) + '</b><small>' + esc(b.text) + '</small>' +
+          (b.deps.length ? '<span class="sb-tag">🔗 ' + b.deps.join(', ') + '</span>' : '') +
+          (f === 'is-stale' ? '<span class="sb-stale">📌 left over from an earlier run</span>' : '') + '</div>';
+      }).join('') || '<p class="ss-empty">(empty shelf)</p>';
+    }
+    function say(html, cls) { var li = document.createElement('li'); li.innerHTML = html; if (cls) li.className = cls; log.appendChild(li); }
+    function hl(i) { liEls.forEach(function (l, j) { l.classList.toggle('is-run', j === i); }); }
+    function skipLines(from) { for (var j = from; j < code.length && code[j].inIf; j++) liEls[j].classList.add('is-skip'); }
+
+    function put(c, flags) {
+      var exists = !!st.shelf[c.label];
+      st.shelf[c.label] = {title: c.title, text: typeof c.text === 'function' ? c.text(st) : c.text, deps: (c.deps || []).slice()};
+      if (!exists) st.order.push(c.label);
+      st.touched[c.label] = true;
+      flags[c.label] = exists ? 'is-swapped' : 'is-new';
+      return exists;
+    }
+
+    function run(changed, instant) {
+      busy = true; chk.disabled = true; log.innerHTML = ''; st.touched = {};
+      liEls.forEach(function (l) { l.classList.remove('is-skip', 'is-run'); });
+      var steps = [], flags = {};
+      if (changed) {
+        steps.push(function () { say('👆 You ' + (st.ticked ? 'ticked' : 'unticked') + ' the checkbox → <code>options$showPercentage</code> is now <b>' + (st.ticked ? 'TRUE' : 'FALSE') + '</b>'); });
+        steps.push(function () {
+          var gone = st.order.filter(function (lab) { return st.shelf[lab].deps.indexOf('showPercentage') > -1; });
+          if (v !== 'v3') { say('❓❓❓ <i>Before R runs, JASP does something with the shelf… but what?</i>', 'ss-mystery'); return; }
+          if (gone.length) {
+            gone.forEach(function (lab) { flags[lab] = 'is-leaving'; }); draw(flags);
+            say('🧹 JASP checks the tags: <b>[["' + gone.join('"]], [["') + '"]]</b> is tagged 🔗 showPercentage → thrown off the shelf', 'ss-clean');
+            timer.push(setTimeout(function () { gone.forEach(function (lab) { delete st.shelf[lab]; st.order.splice(st.order.indexOf(lab), 1); delete flags[lab]; }); draw(flags); }, 420));
+          } else say('🧹 JASP checks the tags on the shelf… no box is tagged <code>showPercentage</code>, so nothing is thrown off.', 'ss-clean');
+        });
+        steps.push(function () { say('🧠 R runs <code>missingValues()</code>, from the first line to the last:'); });
+      }
+      var inSkip = false;
+      code.forEach(function (c, i) {
+        steps.push(function () {
+          hl(i);
+          if (c.t === 'if') { inSkip = !st.ticked; if (inSkip) { skipLines(i + 1); if (changed) say('🔀 <code>if (FALSE)</code> → R skips everything inside'); } else if (changed) say('🔀 <code>if (TRUE)</code> → R goes inside'); return; }
+          if (c.t === 'end') { inSkip = false; return; }
+          if (c.inIf && inSkip) return;
+          if (c.t === 'make') { if (changed) say('📝 R makes a note…'); return; }
+          if (c.t === 'tag') { if (changed) say('🔗 …and sticks a tag on it: <i>throw me off when showPercentage changes</i>'); return; }
+          var swapped = put(c, flags); draw(flags);
+          if (changed) say('📦 [["' + c.label + '"]] → ' + (swapped ? 'same label, box <b>swapped</b>' : '<b>new</b> box on the shelf'));
+        });
+      });
+      steps.push(function () {
+        hl(-1);
+        var stale = st.order.filter(function (lab) { return !st.touched[lab]; });
+        stale.forEach(function (lab) { flags[lab] = 'is-stale'; }); draw(flags);
+        if (changed) {
+          if (stale.length) say('📌 Nobody touched <b>[["' + stale.join('"]], [["') + '"]]</b> this run: it’s still on the shelf, left over from before.', 'ss-stale');
+          say('✅ Run finished. This is what you see on the right side of JASP.', 'ss-done');
+        }
+        busy = false; chk.disabled = false;
+      });
+      if (instant) { steps.forEach(function (f) { f(); }); return; }
+      steps.forEach(function (f, k) { timer.push(setTimeout(f, k * 520)); });
+    }
+
+    function reset() {
+      timer.forEach(clearTimeout); timer = [];
+      st = {ticked: false, shelf: {}, order: [], touched: {}};
+      chk.checked = false; opt.textContent = 'FALSE';
+      run(false, true);
+      log.innerHTML = '<li class="ss-hint">👆 Tick the checkbox to change an option…</li>';
+    }
+    chk.addEventListener('change', function () {
+      if (busy) { chk.checked = !chk.checked; return; }
+      st.ticked = chk.checked; opt.textContent = st.ticked ? 'TRUE' : 'FALSE';
+      run(true, false);
+    });
+    sim.querySelector('.ss-reset').addEventListener('click', reset);
+    reset();
+  });
+})();
+</script>

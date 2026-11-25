@@ -529,3 +529,15 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 .jasp-wave-home{display:inline-block;color:#fff !important;text-decoration:none !important;font-size:14px;font-weight:700;padding:4px 13px;border-radius:999px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45);transition:background .15s}
 .jasp-wave-home:hover{background:rgba(255,255,255,.34)}
 .jasp-wave-nav a.nav-home{font-weight:750}
+
+/* To be continued + calendar link (after the Session 1 / 2 split) */
+.continued{display:flex;align-items:center;gap:14px;margin:26px 0 10px;padding:16px 20px;border-radius:18px;text-decoration:none!important;color:#173f56!important;background:linear-gradient(120deg,#e3f2fb,#eef8ef);border:1.5px solid #b9dbe9;transition:transform .15s,box-shadow .15s}
+.continued:hover{transform:translateY(-2px);box-shadow:0 8px 20px #23587522}
+.continued-icon{font-size:26px}
+.continued strong{display:block;font-family:"Fredoka",system-ui,sans-serif;font-size:19px}
+.continued small{color:#4b6b7c;font-size:13.5px}
+.continued-go{margin-left:auto;font-weight:800;color:#2f6f91}
+.cal-link{display:block;margin:14px 0;padding:14px 18px;border-radius:14px;text-align:center;font-weight:750;text-decoration:none!important;color:#235875!important;background:#eef7fb;border:1px dashed #9fcbe0}
+.cal-link:hover{background:#e2f1f8}
+a.next-card{display:block;text-decoration:none!important;color:inherit!important;transition:transform .15s}
+a.next-card:hover{transform:translateY(-2px)}
