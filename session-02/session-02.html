@@ -3781,7 +3781,7 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
   <button type="button" class="prev-card" aria-expanded="false"><span class="prev-n">03</span><strong>You changed a file. Now what?</strong><span class="prev-a">💾 Save → <code>renv::install(&quot;.&quot;)</code> → JASP: <b>Install Developer Module</b> → reopen the analysis<br><small>You’ll do this a lot today. It’s also in the 📘 cheat sheet.</small></span><span class="prev-cue">Click to remember ↻</span></button>
   <button type="button" class="prev-card" aria-expanded="false"><span class="prev-n">04</span><strong>How did your heading get into the menu?</strong><span class="prev-a">A <code>GroupTitle { title: qsTr(&quot;…&quot;) }</code> block in <code>Description.qml</code>.</span><span class="prev-cue">Click to remember ↻</span></button>
 </div>
-<div class="prev-cliff">🎬 <b>Cliffhanger:</b> every control has a <code>name</code> that nobody ever sees in JASP. So what is it for? Find out today.</div>
+
 </section>
 <section id="start" class="level2">
 <h2 class="anchored" data-anchor-id="start">Welcome back! <span class="timing">⏱ 5 min</span> <span class="timing clock">0:05–0:10</span></h2>
@@ -3824,7 +3824,7 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    TextField                 <span class="co">// one control…</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">name </span><span class="op">:</span> <span class="st">&quot;yourName&quot;</span>     <span class="co">// 🤔 hmm, what is this for?</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">name </span><span class="op">:</span> <span class="st">&quot;yourName&quot;</span>     <span class="co">// the name R uses (more on that later today)</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">label</span><span class="op">:</span> <span class="fu">qsTr</span>(<span class="st">&quot;Your name&quot;</span>)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
@@ -3841,13 +3841,13 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 <ul class="task-list">
 <li><label><input type="checkbox"><strong>The welcome note.</strong> Near the top of the file is a line starting with <code>info:</code>. Where does that text appear in JASP?</label></li>
 <li><label><input type="checkbox"><strong>Ticked from the start.</strong> Which boxes are already ticked when the window opens? Find the line that makes each one ticked.</label></li>
-<li><label><input type="checkbox"><strong>The grey one.</strong> “Mark the mean” is greyed out. Why? Find the reason in the code.</label></li>
+<li><label><input type="checkbox"><strong>The grey one.</strong> Untick “Show histogram”. What happens to “Mark the mean”? Find the reason in the code.</label></li>
 <li><label><input type="checkbox"><strong>The hidden drawer.</strong> Some options are hidden when the window opens. Find them in JASP, and find what hides them in the code.</label></li>
 <li><label><input type="checkbox"><strong>Wider box.</strong> The <em>Your name</em> field has <code>fieldWidth: 160</code>. Change it to <code>300</code>. What happens?</label></li>
 <li><label><input type="checkbox"><strong>Over the limit.</strong> Type <code>20000</code> as <em>Sample size</em> in JASP. What happens? Change the code so <code>20000</code> is allowed.</label></li>
 </ul>
 </div>
-<details class="stuck"><summary>🔍 Reveal the answers (after you&#39;ve tried!)</summary><p><code>info</code> is the help text behind the ⓘ button. Ticked at start: “Show histogram”, “Teal” and “Show what R received”, each with <code>checked: true</code>. “Mark the mean” sits <em>inside</em> the “Show histogram” CheckBox, so it follows its parent. The drawer is a <code>Section</code>. The name box gets wider. JASP won’t accept 20000 because of <code>max: 10000</code>: raise it to e.g. <code>max: 50000</code>.</p></details>
+<details class="stuck"><summary>🔍 Reveal the answers (after you&#39;ve tried!)</summary><p><code>info</code> is the help text behind the ⓘ button. Ticked at start: “Show histogram”, “Teal” and “Show what R received”, each with <code>checked: true</code>. Untick “Show histogram” and “Mark the mean” turns grey: it sits <em>inside</em> the “Show histogram” CheckBox, so it only works while its parent is ticked. The drawer is a <code>Section</code>. The name box gets wider. JASP won’t accept 20000 because of <code>max: 10000</code>: raise it to e.g. <code>max: 50000</code>.</p></details>
 </section>
 </section>
 <section id="readqml" class="level2">
@@ -3860,7 +3860,7 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
     <div class="lab-pane"><div class="lab-pane-heading"><span>📄 THE QML</span><span class="lab-status">READ THIS</span></div><pre class="lab-code" id="lab-code"></pre><div class="lab-window"><span>🪟 JASP WINDOW</span><div id="lab-window" class="lab-window-body"></div></div></div>
     <div class="lab-pane lab-predict"><div class="lab-pane-heading"><span>🧠 YOUR PREDICTION</span><span class="lab-status">THINK FIRST</span></div><p class="lab-question" id="lab-question"></p><div class="lab-choices" id="lab-choices" role="group" aria-label="Possible outcomes"></div><button type="button" id="lab-check" class="lab-action" disabled>Check my prediction →</button><div id="lab-feedback" class="lab-feedback" aria-live="polite" hidden></div></div>
   </div>
-  <div class="lab-bottom"><span>🔗 <strong>Remember:</strong> <code>label</code> is what users see · <code>name</code> is… 🤔 you’ll find out very soon!</span><button type="button" id="lab-reset" class="lab-reset">↻ Try again</button></div>
+  <div class="lab-bottom"><span>🔗 <strong>Remember:</strong> <code>label</code> is what users see · <code>name</code> is what R uses (more on that later today)</span><button type="button" id="lab-reset" class="lab-reset">↻ Try again</button></div>
   <p class="lab-disclaimer">Teaching simulation only: the mini window imitates JASP; it doesn&#39;t run JASP. Check your answers for real in Control Playground.</p>
 </div>
 <p class="gallery-link">🧰 Curious what else is in the toolbox? Every control, live and clickable: <a href="#bonus">see the control gallery in the Appendix →</a></p>

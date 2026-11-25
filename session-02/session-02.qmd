@@ -42,7 +42,7 @@ format:
   <button type="button" class="prev-card" aria-expanded="false"><span class="prev-n">03</span><strong>You changed a file. Now what?</strong><span class="prev-a">💾 Save → <code>renv::install(".")</code> → JASP: <b>Install Developer Module</b> → reopen the analysis<br><small>You’ll do this a lot today. It’s also in the 📘 cheat sheet.</small></span><span class="prev-cue">Click to remember ↻</span></button>
   <button type="button" class="prev-card" aria-expanded="false"><span class="prev-n">04</span><strong>How did your heading get into the menu?</strong><span class="prev-a">A <code>GroupTitle { title: qsTr("…") }</code> block in <code>Description.qml</code>.</span><span class="prev-cue">Click to remember ↻</span></button>
 </div>
-<div class="prev-cliff">🎬 <b>Cliffhanger:</b> every control has a <code>name</code> that nobody ever sees in JASP. So what is it for? Find out today.</div>
+
 ```
 
 ## Welcome back! [⏱ 5 min]{.timing} [0:05–0:10]{.timing .clock} {#start}
@@ -102,7 +102,7 @@ Form                          // the whole window
 
     TextField                 // one control…
     {
-        name : "yourName"     // 🤔 hmm, what is this for?
+        name : "yourName"     // the name R uses (more on that later today)
         label: qsTr("Your name")
     }
 
@@ -125,14 +125,14 @@ The first four: just look. The last two: **predict first**, then edit and check 
 ::: {#spot .quest-scope}
 - [ ] **The welcome note.** Near the top of the file is a line starting with `info:`. Where does that text appear in JASP?
 - [ ] **Ticked from the start.** Which boxes are already ticked when the window opens? Find the line that makes each one ticked.
-- [ ] **The grey one.** “Mark the mean” is greyed out. Why? Find the reason in the code.
+- [ ] **The grey one.** Untick “Show histogram”. What happens to “Mark the mean”? Find the reason in the code.
 - [ ] **The hidden drawer.** Some options are hidden when the window opens. Find them in JASP, and find what hides them in the code.
 - [ ] **Wider box.** The *Your name* field has `fieldWidth: 160`. Change it to `300`. What happens?
 - [ ] **Over the limit.** Type `20000` as *Sample size* in JASP. What happens? Change the code so `20000` is allowed.
 :::
 
 ```{=html}
-<details class="stuck"><summary>🔍 Reveal the answers (after you've tried!)</summary><p><code>info</code> is the help text behind the ⓘ button. Ticked at start: “Show histogram”, “Teal” and “Show what R received”, each with <code>checked: true</code>. “Mark the mean” sits <em>inside</em> the “Show histogram” CheckBox, so it follows its parent. The drawer is a <code>Section</code>. The name box gets wider. JASP won’t accept 20000 because of <code>max: 10000</code>: raise it to e.g. <code>max: 50000</code>.</p></details>
+<details class="stuck"><summary>🔍 Reveal the answers (after you've tried!)</summary><p><code>info</code> is the help text behind the ⓘ button. Ticked at start: “Show histogram”, “Teal” and “Show what R received”, each with <code>checked: true</code>. Untick “Show histogram” and “Mark the mean” turns grey: it sits <em>inside</em> the “Show histogram” CheckBox, so it only works while its parent is ticked. The drawer is a <code>Section</code>. The name box gets wider. JASP won’t accept 20000 because of <code>max: 10000</code>: raise it to e.g. <code>max: 50000</code>.</p></details>
 ```
 
 ## Read the QML, predict the window 🎮 [⏱ 5 min]{.timing} [0:30–0:35]{.timing .clock} {#readqml}
@@ -147,7 +147,7 @@ One more detective skill before you build: read QML **without** JASP open, and p
     <div class="lab-pane"><div class="lab-pane-heading"><span>📄 THE QML</span><span class="lab-status">READ THIS</span></div><pre class="lab-code" id="lab-code"></pre><div class="lab-window"><span>🪟 JASP WINDOW</span><div id="lab-window" class="lab-window-body"></div></div></div>
     <div class="lab-pane lab-predict"><div class="lab-pane-heading"><span>🧠 YOUR PREDICTION</span><span class="lab-status">THINK FIRST</span></div><p class="lab-question" id="lab-question"></p><div class="lab-choices" id="lab-choices" role="group" aria-label="Possible outcomes"></div><button type="button" id="lab-check" class="lab-action" disabled>Check my prediction →</button><div id="lab-feedback" class="lab-feedback" aria-live="polite" hidden></div></div>
   </div>
-  <div class="lab-bottom"><span>🔗 <strong>Remember:</strong> <code>label</code> is what users see · <code>name</code> is… 🤔 you’ll find out very soon!</span><button type="button" id="lab-reset" class="lab-reset">↻ Try again</button></div>
+  <div class="lab-bottom"><span>🔗 <strong>Remember:</strong> <code>label</code> is what users see · <code>name</code> is what R uses (more on that later today)</span><button type="button" id="lab-reset" class="lab-reset">↻ Try again</button></div>
   <p class="lab-disclaimer">Teaching simulation only: the mini window imitates JASP; it doesn't run JASP. Check your answers for real in Control Playground.</p>
 </div>
 ```
