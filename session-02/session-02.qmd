@@ -39,7 +39,7 @@ format:
 <div class="prev-reel">
   <button type="button" class="prev-card" aria-expanded="false"><span class="prev-n">01</span><strong>What is a JASP module, really?</strong><span class="prev-a">An <b>R package</b>, plus a few files that tell JASP what to show.</span><span class="prev-cue">Click to remember ↻</span></button>
   <button type="button" class="prev-card" aria-expanded="false"><span class="prev-n">02</span><strong>Which three files make one analysis?</strong><span class="prev-a">📋 <code>Description.qml</code>: the menu<br>🎛️ <code>inst/qml/….qml</code>: the window<br>📊 <code>R/….R</code>: the computation</span><span class="prev-cue">Click to remember ↻</span></button>
-  <button type="button" class="prev-card" aria-expanded="false"><span class="prev-n">03</span><strong>You changed a file. Now what?</strong><span class="prev-a">💾 Save → <code>renv::install(".")</code> → JASP: <b>Install Developer Module</b> → reopen the analysis</span><span class="prev-cue">Click to remember ↻</span></button>
+  <button type="button" class="prev-card" aria-expanded="false"><span class="prev-n">03</span><strong>You changed a file. Now what?</strong><span class="prev-a">💾 Save → <code>renv::install(".")</code> → JASP: <b>Install Developer Module</b> → reopen the analysis<br><small>You’ll do this a lot today. It’s also in the 📘 cheat sheet.</small></span><span class="prev-cue">Click to remember ↻</span></button>
   <button type="button" class="prev-card" aria-expanded="false"><span class="prev-n">04</span><strong>How did your heading get into the menu?</strong><span class="prev-a">A <code>GroupTitle { title: qsTr("…") }</code> block in <code>Description.qml</code>.</span><span class="prev-cue">Click to remember ↻</span></button>
 </div>
 <div class="prev-cliff">🎬 <b>Cliffhanger:</b> every control has a <code>name</code> that nobody ever sees in JASP. So what is it for? Find out today.</div>
@@ -120,7 +120,7 @@ Form                          // the whole window
 </div>
 ```
 
-The first four: just look. The last two: **predict first**, then edit, reinstall (`renv::install(".")`) and check in JASP.
+The first four: just look. The last two: **predict first**, then edit and check in JASP (the edit loop from 📺 *Previously*).
 
 ::: {#spot .quest-scope}
 - [ ] **The welcome note.** Near the top of the file is a line starting with `info:`. Where does that text appear in JASP?
@@ -159,10 +159,6 @@ One more detective skill before you build: read QML **without** JASP open, and p
 ## Add your first button ☑️ [⏱ 10 min]{.timing} [0:35–0:45]{.timing .clock} {#button}
 
 Time to build in **your own** window: **Missing Values**. Open `inst/qml/missingValues.qml`, look at the target picture, and rebuild it. Today it won’t just *look* right: by the end of the session, it will talk to R.
-
-```{=html}
-<div class="route-strip build-loop"><span>💾 Save <code>.qml</code></span><b>→</b><span>🛠️ <code>renv::install(".")</code></span><b>→</b><span>🔄 Install Developer Module</span><b>→</b><span>👀 Open Missing Values</span><b>↺</b></div>
-```
 
 ::: {.callout-note .option icon="false" collapse="false"}
 ## ⭐ A first question
@@ -238,6 +234,16 @@ Inside the function, the first thing it does is make the *Under construction* no
 </div>
 ```
 
+```{=html}
+<details class="bubble"><summary>💬 Wait… <code>options$showPercentage</code> but <code>jaspResults[["welcome"]]</code>? <code>$</code> or <code>[[ ]]</code>?</summary>
+<div class="bubble-body"><p>Both pick <b>one thing by its name</b> out of a list:</p>
+<table data-quarto-disable-processing="true"><tr><th>You write</th><th>It means</th></tr>
+<tr><td><code>options$showPercentage</code></td><td>the item called <code>showPercentage</code></td></tr>
+<tr><td><code>options[["showPercentage"]]</code></td><td>exactly the same item: the name is just in quotes</td></tr>
+<tr><td><code>jaspResults[["welcome"]]</code></td><td>the box labelled <code>welcome</code> on the shelf</td></tr></table>
+<p>💡 <b>Rule of thumb for today:</b> read options with <code>$</code>, put boxes on the shelf with <code>[[" "]]</code>. The shelf is a special JASP object, so always use <code>[[" "]]</code> there.</p></div></details>
+```
+
 **Check yourself**, then peek:
 
 ```{=html}
@@ -270,10 +276,6 @@ jaspResults[["clock"]] <- createJaspHtml(
 )
 ```
 
-```{=html}
-<div class="route-strip build-loop"><span>💾 Save <code>.R</code></span><b>→</b><span>🛠️ <code>renv::install(".")</code></span><b>→</b><span>🔄 Install Developer Module</span><b>→</b><span>👀 Open Missing Values</span><b>↺</b></div>
-```
-
 Now tick, untick, wait a few seconds, tick again… and keep an eye on the clock. ⏱️
 
 ```{=html}
@@ -292,40 +294,66 @@ Now tick, untick, wait a few seconds, tick again… and keep an eye on the clock
 <div class="prev-cliff">🧩 <b>Keep this in mind:</b> the clock is new after every click. Is <em>all</em> output new after every click? We’ll find out soon…</div>
 ```
 
+::: {#bridge-check .quest-scope}
+- [ ] I can name the three parts, and where each one shows up in JASP
+- [ ] My clock shows the time, and I know when R runs
+:::
+
+## Your first R code 🧠 [⏱ 15 min]{.timing} [1:00–1:15]{.timing .clock} {#rcode}
+
+Your turn to write R, in two small steps.
+
+### ✍️ Step 1: put your own box on the shelf
+
+```{=html}
+<div class="goal-shot"><span class="goal-tag">🎯 Your goal: this box in the JASP output</span><img src="img/target-r1.png" alt="A text block titled 'Percentage missing' with the text 'Coming soon: the real numbers arrive in Session 3!'"></div>
+```
+
+Use the same shape as the welcome note. This time we do it in **two moves**: first *make* the box, then *put it on the shelf*. (You’ll see why that’s handy later.) Fill in the blanks, and paste it inside the function, just above `return()`:
+
+``` r
+note <- createJaspHtml(
+  title = "________",
+  text  = "________"
+)
+jaspResults[["________"]] <- note
+```
+
+```{=html}
+<details class="stuck"><summary>💡 Hint</summary><p><code>title</code> and <code>text</code> are just text: write anything you like, in quotes. The last blank is the label for your box: a short name in quotes that no other box on the shelf uses.</p></details>
+<details class="stuck"><summary>🔓 Still stuck? Show the answer</summary><pre><code>note &lt;- createJaspHtml(
+  title = "Percentage missing",
+  text  = "Coming soon: the real numbers arrive in Session 3!"
+)
+jaspResults[["percentage"]] &lt;- note</code></pre></details>
+```
+
+Now tick and untick your checkbox. Your box is always there, just like the clock.
+
 ### 🤔 Wait… what if I *don’t* want it every time?
 
-The clock appears after every click, because R makes it in every run. But some output should only appear when the user **asks** for it. That’s what controls are for: your checkbox! So, how does R know whether it’s ticked? Look at the output in JASP: the table **What R received**.
+Your box shows up after every click, because R makes it in every run. But this box should only appear when the user **asks** for it: that’s what your checkbox is for! So, how does R know whether it’s ticked? Look at the output in JASP: the table **What R received**.
 
 ```{=html}
 <div class="concept"><div class="concept-head"><span>🌉</span><b>New idea</b><strong>The name is the bridge</strong></div><p>The <code>name</code> you gave your CheckBox in QML is how R finds it:</p><pre>CheckBox { name: "showPercentage"; … }   →   options$showPercentage</pre><p>Remember <code>d$Age</code> from R Puzzles? <code>options</code> is a list too, and <code>$</code> picks one thing out of it. A ticked box arrives as <code>TRUE</code>, an unticked one as <code>FALSE</code>.</p></div>
 ```
 
-::: {#bridge-check .quest-scope}
-- [ ] I can name the three boxes, and where each one shows up in JASP
-- [ ] My clock shows the time, and I know when R runs
-- [ ] I found my checkbox in *What R received*: `TRUE` when ticked, `FALSE` when not
-:::
+### 🔀 Step 2: only when the checkbox is ticked
 
-## Your first R code 🧠 [⏱ 15 min]{.timing} [1:00–1:15]{.timing .clock} {#rcode}
-
-R knows whether your box is ticked. Now let it **act** on it.
-
-**Your mission:** when *Show percentage missing* is ticked, show a note in the output. Fill in the blanks, and paste it inside the function, just above `return()`:
+In R, “only when…” is spelled `if`. Wrap your box in it: you only add **two lines**, one above and one below.
 
 ``` r
-if (options$________) {
+if (options$________) {              # ⬅ new
   note <- createJaspHtml(
-    title = "________",
-    text  = "________"
+    title = "Percentage missing",
+    text  = "Coming soon: the real numbers arrive in Session 3!"
   )
-  jaspResults[["________"]] <- note
-}
+  jaspResults[["percentage"]] <- note
+}                                     # ⬅ new
 ```
 
 ```{=html}
-<div class="route-strip build-loop"><span>💾 Save <code>.R</code></span><b>→</b><span>🛠️ <code>renv::install(".")</code></span><b>→</b><span>🔄 Install Developer Module</span><b>→</b><span>👀 Open Missing Values</span><b>↺</b></div>
-<details class="stuck"><summary>💡 Hint 1</summary><p>The first blank: you met it in <em>What R received</em> a minute ago.</p></details>
-<details class="stuck"><summary>💡 Hint 2</summary><p><code>title</code> and <code>text</code> are just text: write anything you like, in quotes. The last blank is a label for this piece of output: a short name in quotes that no other output uses.</p></details>
+<details class="stuck"><summary>💡 Hint</summary><p>The blank: you just met it in <em>What R received</em>.</p></details>
 <details class="stuck"><summary>🔓 Still stuck? Show the answer</summary><pre><code>if (options$showPercentage) {
   note &lt;- createJaspHtml(
     title = "Percentage missing",
@@ -335,7 +363,11 @@ if (options$________) {
 }</code></pre></details>
 ```
 
-- [ ] Ticking the box shows my note
+::: {#rcode-check .quest-scope}
+- [ ] My own box shows up in JASP
+- [ ] I found my checkbox in *What R received*: `TRUE` when ticked, `FALSE` when not
+- [ ] Ticking the checkbox shows my box
+:::
 
 ## Predict, then try 🔮 [⏱ 5 min]{.timing} [1:15–1:20]{.timing .clock} {#predict}
 
@@ -536,7 +568,7 @@ Checkboxes are just the start. **Control Playground** uses a whole toolbox of co
 }</code></pre></div></details></div></div>
 ```
 
-**How to try one for real:** copy a snippet into `inst/qml/missingValues.qml` (inside the `Form { }`), save, run `renv::install(".")`, and refresh JASP. All of them live in `inst/qml/controlPlayground.qml` too, if you want to see them in context.
+**How to try one for real:** copy a snippet into `inst/qml/missingValues.qml` (inside the `Form { }`), save, and reinstall (the usual edit loop). All of them live in `inst/qml/controlPlayground.qml` too, if you want to see them in context.
 
 ```{=html}
 <details class="stuck"><summary>🧩 Mini challenge: tweak the Slider</summary><p>Make the Slider run from <code>0</code> to <code>100</code>, start at <code>50</code>, and show no decimals. Which three lines do you change? (Answer: <code>min</code>, <code>max</code> and <code>value</code>, plus <code>decimals: 0</code>.)</p></details>
