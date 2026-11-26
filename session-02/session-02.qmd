@@ -425,57 +425,25 @@ Your note is on screen. Now you **untick** the box. What happens to the note? **
 - [ ] Unticking makes my note disappear
 - [ ] Ticking brings it back
 
-## Level up ⭐ [Optional · for fast finishers]{.optional-badge} {#levelup}
+## One more, together 🤝 [If there’s time]{.optional-badge} {#levelup}
 
-Done already? Pick a challenge. Go as far as you like.
+If we still have a few minutes, let’s do this one together.
 
 ::: {.callout-note .option icon="false" collapse="false"}
-## ⭐⭐ The other side
+## 🤝 The other side
 
-*An empty output looks broken. When the box is **unticked**, show a friendly tip instead: “Tick* Show percentage missing *to see the report.”*
+*An empty output looks broken. When the checkbox is **unticked**, put a friendly tip on the shelf instead: “Tick* Show percentage missing *to see the report.”*
 
 ```{=html}
 <details class="stuck"><summary>💡 Hint 1</summary><p><code>if (…) { … } else { … }</code>: the <code>else</code> part runs when the condition is <code>FALSE</code>.</p></details>
-<details class="stuck"><summary>💡 Hint 2</summary><p>Tick and untick a few times. Does your tip ever overstay its welcome? Think back to the 🔮 prediction.</p></details>
+<details class="stuck"><summary>💡 Hint 2</summary><p>Tick and untick a few times. Does your tip ever overstay its welcome? Think back to the 🔮 prediction, and to the tags on the boxes.</p></details>
+<details class="stuck"><summary>🔓 Show the answer</summary><pre><code>} else {
+  tip &lt;- createJaspHtml(title = "Tip", text = "Tick “Show percentage missing” to see the report.")
+  tip$dependOn("showPercentage")
+  jaspResults[["tip"]] &lt;- tip
+}</code></pre><p>The tip needs its own tag too, or it stays on the shelf once you tick the checkbox.</p></details>
 ```
 :::
-
-::: {.callout-note .option icon="false" collapse="true"}
-## ⭐⭐ Missing isn't always empty
-
-*Plot twist: the team didn’t only leave cells empty. Some research assistants typed `999`, others `-99`, whenever a participant skipped a question. A good tool lets users decide what counts as missing, and how to sort the report… but these settings only matter once someone actually asks for the report.*
-
-**Build this:**
-
-![](img/target-2.png){.target-shot width=520 fig-alt="Target: a group titled What counts as missing? with an Empty cells checkbox (ticked), a text box with 999, -99, and a Sort variables by dropdown"}
-
-```{=html}
-<details class="stuck"><summary>💡 Hint</summary><p>Every control here also appears in <code>controlPlayground.qml</code> or in the <a href="#bonus">control gallery</a> in the Appendix 🧰</p></details>
-```
-
-**Then, in R:** make your note mention the codes, e.g. *“Treating 999, -99 as missing”*.
-
-```{=html}
-<details class="stuck"><summary>💡 Hint for the R part</summary><p>A TextField arrives in R as text, under its <code>name</code>. <code>paste0("a", "b")</code> glues pieces of text together.</p></details>
-```
-:::
-
-::: {.callout-note .option icon="false" collapse="true"}
-## ⭐⭐⭐ Boss level: the vanishing participants
-
-*Some participants skipped half the questionnaire. The team wants to spot them, but only when they ask for it. And this is an advanced option, so keep it tucked away until someone opens it.*
-
-**Build this:**
-
-![](img/target-3.png){.target-shot width=760 fig-alt="Target: a fold-out section Participants with a checkbox Flag participants with missing values and a nested number field Flag if more than 2 values are missing, greyed out"}
-
-No hints this time. 😈
-:::
-
-
-- [ ] ⭐⭐ The other side
-- [ ] ⭐⭐ Missing isn't always empty
-- [ ] ⭐⭐⭐ The vanishing participants
 
 ## Wrap-up [⏱ 5 min]{.timing} [1:30–1:35]{.timing .clock} {#wrapup}
 
@@ -510,6 +478,36 @@ Your badges light up by themselves as you tick off the missions on this page. Ho
 ```{=html}
 <div class="sign-off"><span class="sign-wave">👋</span><strong>Thank you for building with us today!</strong><p>Until next time, and happy coding.</p><em>Leo &amp; the JASP Student Developers</em></div>
 ```
+
+## Appendix: more QML challenges 🧩 {#qmlmore}
+
+Two window-building challenges from Session 1, for a practical or a rainy evening. Rebuild the target picture in `missingValues.qml`.
+
+::: {.callout-note .option icon="false" collapse="true"}
+## ⭐⭐ Missing isn't always empty
+
+*Plot twist: the team didn’t only leave cells empty. Some research assistants typed `999`, others `-99`, whenever a participant skipped a question. A good tool lets users decide what counts as missing, and how to sort the report… but these settings only matter once someone actually asks for the report.*
+
+**Build this:**
+
+![](img/target-2.png){.target-shot width=520 fig-alt="Target: a group titled What counts as missing? with an Empty cells checkbox (ticked), a text box with 999, -99, and a Sort variables by dropdown"}
+
+```{=html}
+<details class="stuck"><summary>💡 Hint</summary><p>Every control here also appears in <code>controlPlayground.qml</code> or in the <a href="#bonus">control gallery</a> in the Appendix 🧰</p></details>
+```
+:::
+
+::: {.callout-note .option icon="false" collapse="true"}
+## ⭐⭐⭐ Boss level: the vanishing participants
+
+*Some participants skipped half the questionnaire. The team wants to spot them, but only when they ask for it. And this is an advanced option, so keep it tucked away until someone opens it.*
+
+**Build this:**
+
+![](img/target-3.png){.target-shot width=760 fig-alt="Target: a fold-out section Participants with a checkbox Flag participants with missing values and a nested number field Flag if more than 2 values are missing, greyed out"}
+
+No hints this time. 😈
+:::
 
 ## Appendix: the control gallery 🧰 {#bonus}
 
