@@ -451,7 +451,13 @@ Everything you wrote today, in one picture.
 
 ## One more, together 🤝 [If there’s time]{.optional-badge} {#levelup}
 
-Let’s build one more feature from scratch, all the way from a **checkbox** to the **output**. Same moves as today, one small step at a time. Think about each step first, then open the code.
+A message just came in from a JASP user:
+
+```{=html}
+<div class="user-msg"><div class="um-avatar">🧑‍🎓</div><div class="um-body"><div class="um-from"><b>Sam</b> · first-year psychology student</div><p>Hi! I opened <b>Missing Values</b>, but honestly… what <em>is</em> a missing value? 😅 Could the analysis explain it to me?</p><p>Oh, but only when I ask for it, please. My supervisor hates clutter in the output!</p></div></div>
+```
+
+Let’s build that for Sam, all the way from a **checkbox** to the **output**. Same moves as today, one small step at a time. Think about each step first, then open the code.
 
 ```{=html}
 <ol class="together">

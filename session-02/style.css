@@ -710,3 +710,10 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 .tg-jasp .tg-kind{background:#e9f6ec;color:#2f7a4f}
 .tg-r .tg-kind{background:#f1ecff;color:#5b47b8}
 .tg-qml::before{border-color:#2f8fb0}.tg-jasp::before{border-color:#4fae7d}.tg-r::before{border-color:#6e57c9}
+/* 📨 A user's message */
+.user-msg{display:flex;gap:12px;align-items:flex-start;margin:12px 0 16px;max-width:640px}
+.um-avatar{flex:0 0 44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:#eaf4fb;border:1.5px solid #cfe5f2}
+.um-body{position:relative;padding:12px 16px;border-radius:4px 18px 18px 18px;background:#fff;border:1.5px solid #cfe5f2;box-shadow:0 4px 14px #2f6f9112}
+.um-from{font-size:12.5px;color:#6b8899;margin-bottom:4px}
+.um-from b{color:#1f5f80}
+.um-body p{margin:4px 0;font-size:14.5px;color:#2b4a5c}
