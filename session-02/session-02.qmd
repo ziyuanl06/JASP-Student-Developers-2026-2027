@@ -451,23 +451,38 @@ Everything you wrote today, in one picture.
 
 ## One more, together 🤝 [If there’s time]{.optional-badge} {#levelup}
 
-If we still have a few minutes, let’s do this one together.
-
-::: {.callout-note .option icon="false" collapse="false"}
-## 🤝 The other side
-
-*An empty output looks broken. When the checkbox is **unticked**, put a friendly tip on the shelf instead: “Tick* Show percentage missing *to see the report.”*
+Let’s build one more feature from scratch, all the way from a **checkbox** to the **output**. Same moves as today, one small step at a time. Think about each step first, then open the code.
 
 ```{=html}
-<details class="stuck"><summary>💡 Hint 1</summary><p><code>if (…) { … } else { … }</code>: the <code>else</code> part runs when the condition is <code>FALSE</code>.</p></details>
-<details class="stuck"><summary>💡 Hint 2</summary><p>Tick and untick a few times. Does your tip ever overstay its welcome? Think back to the 🔮 prediction, and to the tags on the boxes.</p></details>
-<details class="stuck"><summary>🔓 Show the answer</summary><pre><code>} else {
-  tip &lt;- createJaspHtml(title = "Tip", text = "Tick “Show percentage missing” to see the report.")
-  tip$dependOn("showPercentage")
-  jaspResults[["tip"]] &lt;- tip
-}</code></pre><p>The tip needs its own tag too, or it stays on the shelf once you tick the checkbox.</p></details>
+<ol class="together">
+<li class="tg tg-qml"><div class="tg-head"><span class="tg-n">1</span><span class="tg-kind">🎛️ QML</span><strong>A new checkbox</strong></div><p>In <code>inst/qml/missingValues.qml</code>, add a second CheckBox, right below your first one. Label: <em>Explain missing values</em>. Pick a good <code>name</code>.</p><details class="stuck"><summary>🔓 Show the code</summary><pre><code>CheckBox
+{
+    name  : "showExplanation"
+    label : qsTr("Explain missing values")
+}</code></pre></details></li>
+<li class="tg tg-jasp"><div class="tg-head"><span class="tg-n">2</span><span class="tg-kind">👀 JASP</span><strong>See it in the window</strong></div><p>Edit loop: save, <code>renv::install(".")</code>, Install Developer Module, reopen Missing Values. Is your new checkbox there?</p></li>
+<li class="tg tg-jasp"><div class="tg-head"><span class="tg-n">3</span><span class="tg-kind">👀 JASP</span><strong>Find it on the R side</strong></div><p>Look at <em>What R received</em>. Find your <code>name</code>. What is its value now? Tick it: what changes?</p></li>
+<li class="tg tg-r"><div class="tg-head"><span class="tg-n">4</span><span class="tg-kind">🧠 R</span><strong>📝 What’s in the box</strong></div><p>In <code>R/missingValues.R</code>, make the content: a title and a text, saved as an object.</p><details class="stuck"><summary>🔓 Show the code</summary><pre><code>explanation &lt;- createJaspHtml(
+  title = "What is a missing value?",
+  text  = "A spot in your data where no answer was recorded. Some are empty, some hide as codes like 999."
+)</code></pre></details></li>
+<li class="tg tg-r"><div class="tg-head"><span class="tg-n">5</span><span class="tg-kind">🧠 R</span><strong>📦 Box on the shelf</strong></div><p>Put it on the shelf, under a new label. Reinstall: is it there? (Hint: it should be there <em>all</em> the time now.)</p><details class="stuck"><summary>🔓 Show the code</summary><pre><code>jaspResults[["explanation"]] &lt;- explanation</code></pre></details></li>
+<li class="tg tg-r"><div class="tg-head"><span class="tg-n">6</span><span class="tg-kind">🧠 R</span><strong>🙋 Only when asked</strong></div><p>Wrap steps 4 and 5 in an <code>if</code>, using the name from step 3.</p><details class="stuck"><summary>🔓 Show the code</summary><pre><code>if (options$showExplanation) {
+  explanation &lt;- createJaspHtml(…)
+  jaspResults[["explanation"]] &lt;- explanation
+}</code></pre></details></li>
+<li class="tg tg-r"><div class="tg-head"><span class="tg-n">7</span><span class="tg-kind">🧠 R</span><strong>🔗 Gone when it should be</strong></div><p>Tick, then untick. Is the box left on the shelf? Give it a tag, between making the box and putting it on the shelf.</p><details class="stuck"><summary>🔓 Show the code</summary><pre><code>explanation$dependOn("showExplanation")</code></pre></details></li>
+<li class="tg tg-jasp"><div class="tg-head"><span class="tg-n">8</span><span class="tg-kind">👀 JASP</span><strong>Test it</strong></div><p>Tick → the box appears. Untick → it’s gone. Tick your <em>first</em> checkbox too: do the two boxes stay out of each other’s way?</p></li>
+</ol>
+<details class="stuck"><summary>🧩 The whole thing, for checking afterwards</summary><pre><code>if (options$showExplanation) {
+  explanation &lt;- createJaspHtml(
+    title = "What is a missing value?",
+    text  = "A spot in your data where no answer was recorded. Some are empty, some hide as codes like 999."
+  )
+  explanation$dependOn("showExplanation")
+  jaspResults[["explanation"]] &lt;- explanation
+}</code></pre></details>
 ```
-:::
 
 ## Wrap-up [⏱ 5 min]{.timing} [1:30–1:35]{.timing .clock} {#wrapup}
 
@@ -502,36 +517,6 @@ Your badges light up by themselves as you tick off the missions on this page. Ho
 ```{=html}
 <div class="sign-off"><span class="sign-wave">👋</span><strong>Thank you for building with us today!</strong><p>Until next time, and happy coding.</p><em>Leo &amp; the JASP Student Developers</em></div>
 ```
-
-## Appendix: more QML challenges 🧩 {#qmlmore}
-
-Two window-building challenges from Session 1, for a practical or a rainy evening. Rebuild the target picture in `missingValues.qml`.
-
-::: {.callout-note .option icon="false" collapse="true"}
-## ⭐⭐ Missing isn't always empty
-
-*Plot twist: the team didn’t only leave cells empty. Some research assistants typed `999`, others `-99`, whenever a participant skipped a question. A good tool lets users decide what counts as missing, and how to sort the report… but these settings only matter once someone actually asks for the report.*
-
-**Build this:**
-
-![](img/target-2.png){.target-shot width=520 fig-alt="Target: a group titled What counts as missing? with an Empty cells checkbox (ticked), a text box with 999, -99, and a Sort variables by dropdown"}
-
-```{=html}
-<details class="stuck"><summary>💡 Hint</summary><p>Every control here also appears in <code>controlPlayground.qml</code> or in the <a href="#bonus">control gallery</a> in the Appendix 🧰</p></details>
-```
-:::
-
-::: {.callout-note .option icon="false" collapse="true"}
-## ⭐⭐⭐ Boss level: the vanishing participants
-
-*Some participants skipped half the questionnaire. The team wants to spot them, but only when they ask for it. And this is an advanced option, so keep it tucked away until someone opens it.*
-
-**Build this:**
-
-![](img/target-3.png){.target-shot width=760 fig-alt="Target: a fold-out section Participants with a checkbox Flag participants with missing values and a nested number field Flag if more than 2 values are missing, greyed out"}
-
-No hints this time. 😈
-:::
 
 ## Appendix: the control gallery 🧰 {#bonus}
 

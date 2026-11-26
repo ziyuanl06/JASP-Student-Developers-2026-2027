@@ -696,3 +696,17 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 .recap-code span{display:inline-block;border-radius:5px;padding:0 4px}
 .recap-code .hl1{background:#fdf0d8}.recap-code .hl2{background:#dff3e7}.recap-code .hl3{background:#e2f1f8}.recap-code .hl4{background:#ece6ff}
 @media(max-width:760px){.recap4{grid-template-columns:1fr}.rc-arrow{justify-content:center;transform:rotate(90deg)}}
+/* 🤝 One more, together: step trail */
+.together{list-style:none;margin:14px 0;padding:0 0 0 18px;border-left:3px dashed #cfe3ee}
+.tg{position:relative;margin:0 0 12px;padding:12px 14px;border-radius:14px;background:#fff;border:1.5px solid #e1ecf2}
+.tg::before{content:"";position:absolute;left:-27px;top:16px;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #9fd0e4}
+.tg-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tg-n{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;color:#fff;background:#2f8fb0}
+.tg-kind{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:99px}
+.tg strong{font-family:"Fredoka",system-ui,sans-serif;font-size:16px;color:#173f56}
+.tg p{margin:6px 0 4px;font-size:14.5px}
+.tg .stuck{margin-top:6px}
+.tg-qml .tg-kind{background:#e2f1f8;color:#1f5f80}
+.tg-jasp .tg-kind{background:#e9f6ec;color:#2f7a4f}
+.tg-r .tg-kind{background:#f1ecff;color:#5b47b8}
+.tg-qml::before{border-color:#2f8fb0}.tg-jasp::before{border-color:#4fae7d}.tg-r::before{border-color:#6e57c9}
