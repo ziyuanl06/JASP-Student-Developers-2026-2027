@@ -3725,6 +3725,23 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 .goal-shot{margin:12px 0 16px;padding:12px 14px 14px;border-radius:16px;background:#f1f9ea;border:1.5px dashed #9fd17e}
 .goal-tag{display:block;font-size:13px;font-weight:800;color:#3f7a2a;margin-bottom:8px}
 .goal-shot img{display:block;max-width:440px;width:100%;border-radius:10px;border:1px solid #dfe8d8;background:#fff;box-shadow:0 4px 12px #2358750f}
+
+.recap4{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:6px;align-items:stretch;margin:14px 0}
+.rc{position:relative;display:flex;flex-direction:column;gap:5px;padding:14px 12px 12px;border-radius:16px;border:1.5px solid;background:#fff}
+.rc-n{position:absolute;top:-10px;left:12px;width:22px;height:22px;border-radius:50%;font-size:12px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center}
+.rc-icon{font-size:26px;line-height:1}
+.rc strong{font-family:"Fredoka",system-ui,sans-serif;font-size:15px;color:#173f56}
+.rc code{font-size:11px;white-space:normal;word-break:break-word;background:none!important;padding:0}
+.rc small{font-size:12px;color:#557585;line-height:1.35}
+.rc-arrow{display:flex;align-items:center;color:#9ab6c4;font-weight:800}
+.rc1{border-color:#f1dfbf;background:#fffaf0}.rc1 .rc-n{background:#d9a441}
+.rc2{border-color:#bfe3cf;background:#f3fbf6}.rc2 .rc-n{background:#4fae7d}
+.rc3{border-color:#cfe3ee;background:#f2f9fc}.rc3 .rc-n{background:#2f8fb0}
+.rc4{border-color:#ddd3f7;background:#f7f4ff}.rc4 .rc-n{background:#6e57c9}
+.recap-code{margin:10px 0 18px;padding:14px 16px;border-radius:14px;background:#fbfcfd;border:1px solid #e1ecf2;font-size:13px;line-height:1.6;overflow-x:auto}
+.recap-code span{display:inline-block;border-radius:5px;padding:0 4px}
+.recap-code .hl1{background:#fdf0d8}.recap-code .hl2{background:#dff3e7}.recap-code .hl3{background:#e2f1f8}.recap-code .hl4{background:#ece6ff}
+@media(max-width:760px){.recap4{grid-template-columns:1fr}.rc-arrow{justify-content:center;transform:rotate(90deg)}}
 </style>
 </head>
 
@@ -3754,7 +3771,7 @@ details.stuck pre + p{margin-top:0;border-radius:0 0 10px 0;border-top:0}
 </header>
 <nav class="jasp-wave-nav" aria-label="Session sections">
   <a href="../index.html" class="nav-home">🏠 Home</a><a href="#previously">📺 Previously</a><a href="#start">Welcome back</a><a href="#bughunt">🐛 Warm-up</a><a href="#detectives">👯 Detectives</a><a href="#readqml">🎮 Window</a><a href="#button">☑️ Button</a><a href="#bridge">🔄 Behind the scenes</a><a href="#rcode">🧠 R code</a>
-  <a href="#predict">🔮 Predict</a><a href="#fix">🔧 Fix</a><a href="#levelup">🤝 One more</a><a href="#wrapup">Wrap-up</a><a href="#qmlmore">🧩 Appendix</a>
+  <a href="#predict">🔮 Predict</a><a href="#fix">🔧 Fix</a><a href="#recap">📦 Recap</a><a href="#levelup">🤝 One more</a><a href="#wrapup">Wrap-up</a><a href="#qmlmore">🧩 Appendix</a>
 </nav>
 
 <header id="title-block-header">
@@ -4060,6 +4077,27 @@ jaspResults[[&quot;percentage&quot;]] &lt;- note</code></pre></details>
 <li><label><input type="checkbox">Unticking makes my note disappear</label></li>
 <li><label><input type="checkbox">Ticking brings it back</label></li>
 </ul>
+</section>
+<section id="recap" class="level2">
+<h2 class="anchored" data-anchor-id="recap">Recap: your R in four moves 📦</h2>
+<p>Everything you wrote today, in one picture.</p>
+<div class="recap4">
+  <div class="rc rc1"><span class="rc-n">1</span><span class="rc-icon">📝</span><strong>What’s in the box</strong><code>note &lt;- createJaspHtml(…)</code><small>Make the content: a title and a text.</small></div>
+  <div class="rc-arrow">→</div>
+  <div class="rc rc2"><span class="rc-n">2</span><span class="rc-icon">📦</span><strong>Box on the shelf</strong><code>jaspResults[[&quot;percentage&quot;]] &lt;- note</code><small>Put it on the shelf, under a label. Now JASP shows it.</small></div>
+  <div class="rc-arrow">→</div>
+  <div class="rc rc3"><span class="rc-n">3</span><span class="rc-icon">🙋</span><strong>Only when asked</strong><code>if (options$showPercentage) { … }</code><small>The user decides, with your checkbox.</small></div>
+  <div class="rc-arrow">→</div>
+  <div class="rc rc4"><span class="rc-n">4</span><span class="rc-icon">🔗</span><strong>Gone when it should be</strong><code>note$dependOn(&quot;showPercentage&quot;)</code><small>A tag: JASP throws the box off when the option changes.</small></div>
+</div>
+<pre class="recap-code"><span class="hl3">if (options$showPercentage) {</span>
+<span class="hl1">  note &lt;- createJaspHtml(
+    title = &quot;Percentage missing&quot;,
+    text  = &quot;Coming soon: the real numbers arrive in Session 3!&quot;
+  )</span>
+<span class="hl4">  note$dependOn(&quot;showPercentage&quot;)</span>
+<span class="hl2">  jaspResults[[&quot;percentage&quot;]] &lt;- note</span>
+<span class="hl3">}</span></pre>
 </section>
 <section id="levelup" class="level2">
 <h2 class="anchored" data-anchor-id="levelup">One more, together 🤝 <span class="optional-badge">If there’s time</span></h2>

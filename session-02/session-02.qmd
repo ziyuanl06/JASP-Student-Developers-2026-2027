@@ -425,6 +425,30 @@ Your note is on screen. Now you **untick** the box. What happens to the note? **
 - [ ] Unticking makes my note disappear
 - [ ] Ticking brings it back
 
+## Recap: your R in four moves 📦 {#recap}
+
+Everything you wrote today, in one picture.
+
+```{=html}
+<div class="recap4">
+  <div class="rc rc1"><span class="rc-n">1</span><span class="rc-icon">📝</span><strong>What’s in the box</strong><code>note &lt;- createJaspHtml(…)</code><small>Make the content: a title and a text.</small></div>
+  <div class="rc-arrow">→</div>
+  <div class="rc rc2"><span class="rc-n">2</span><span class="rc-icon">📦</span><strong>Box on the shelf</strong><code>jaspResults[["percentage"]] &lt;- note</code><small>Put it on the shelf, under a label. Now JASP shows it.</small></div>
+  <div class="rc-arrow">→</div>
+  <div class="rc rc3"><span class="rc-n">3</span><span class="rc-icon">🙋</span><strong>Only when asked</strong><code>if (options$showPercentage) { … }</code><small>The user decides, with your checkbox.</small></div>
+  <div class="rc-arrow">→</div>
+  <div class="rc rc4"><span class="rc-n">4</span><span class="rc-icon">🔗</span><strong>Gone when it should be</strong><code>note$dependOn("showPercentage")</code><small>A tag: JASP throws the box off when the option changes.</small></div>
+</div>
+<pre class="recap-code"><span class="hl3">if (options$showPercentage) {</span>
+<span class="hl1">  note &lt;- createJaspHtml(
+    title = "Percentage missing",
+    text  = "Coming soon: the real numbers arrive in Session 3!"
+  )</span>
+<span class="hl4">  note$dependOn("showPercentage")</span>
+<span class="hl2">  jaspResults[["percentage"]] &lt;- note</span>
+<span class="hl3">}</span></pre>
+```
+
 ## One more, together 🤝 [If there’s time]{.optional-badge} {#levelup}
 
 If we still have a few minutes, let’s do this one together.
