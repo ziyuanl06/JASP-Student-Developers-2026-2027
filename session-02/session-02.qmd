@@ -31,6 +31,10 @@ format:
 -->
 ```
 
+```{=html}
+<a class="stop-jump" href="#stopped">📍 Jump to where we stopped</a>
+```
+
 ## Previously… 📺 [⏱ 5 min]{.timing} [0:00–0:05]{.timing .clock} {#previously}
 
 *Previously, on JASP Student Developers…* Before you peek: can you still answer these? **Think first, then click.**
@@ -250,6 +254,10 @@ Inside the function, the first thing it does is make the *Under construction* no
 <details class="stuck"><summary>1️⃣ You want the heading to say “Hello!”. Which part do you change?</summary><p>The text after <code>title =</code>: <code>title = "Hello!"</code>.</p></details>
 <details class="stuck"><summary>2️⃣ How many blocks do you see on the right side of JASP? Find the line in <code>missingValues.R</code> that makes each one.</summary><p>Two blocks, two labels: <code>[["welcome"]]</code> makes <em>Under construction</em>, and <code>[["optionsSeen"]]</code> makes <em>What R received</em>.</p></details>
 <details class="stuck"><summary>3️⃣ Two pieces of output use the same label. What happens?</summary><p>The second box is <b>swapped in</b> for the first: one label, one box. Keep that in mind for the next experiment…</p></details>
+```
+
+```{=html}
+<div class="stop-here" id="stopped"><span class="stop-pin">📍</span><div><strong>We stopped here</strong><small>Thu 26 Nov · next time we’ll pick up from the clock experiment (⏱️ <em>R was here</em>) together</small></div></div>
 ```
 
 ### ⏱️ R was here: when does R run?
